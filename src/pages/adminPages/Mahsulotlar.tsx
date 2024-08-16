@@ -38,18 +38,6 @@ export function Mahsulotlar() {
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
         <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
-        <Typography>sfdsfsdfd</Typography>
       </Box>
     </Box>
   );

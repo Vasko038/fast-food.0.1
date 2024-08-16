@@ -6,6 +6,10 @@ export interface IFilial {
   ishVaqt: string;
 }
 
-export interface IBuyurtma {
+export interface IMahsulot {
   id: number | string;
+  categoryId: number | string;
+  name: string;
+  narx: number;
+  malumot: string;
 }
