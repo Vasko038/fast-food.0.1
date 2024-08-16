@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { LoginPage } from "./pages/Login";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme, CssBaseline } from "@mui/material";
+import { AdminPage } from "./pages/Admin";
+import { MainRoute } from "./components/Context";
+
+const pages: Record<string, React.ReactNode> = {
+  LoginPage: <LoginPage></LoginPage>,
+  AdminPage: <AdminPage></AdminPage>,
+};
+
+const defaultTheme = createTheme();
 
 function App() {
+  const [activePage, setActivePage] = useState("LoginPage");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={defaultTheme}>
+      <MainRoute.Provider value={{ activePage, setActivePage }}>
+        <CssBaseline>{pages[activePage]}</CssBaseline>
+      </MainRoute.Provider>
+    </ThemeProvider>
   );
 }
 
