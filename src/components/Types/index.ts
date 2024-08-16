@@ -7,7 +7,7 @@ export interface IFilial {
 }
 
 export interface IMahsulot {
-  id: number | string;
+  id: number;
   categoryId: number | string;
   name: string;
   narx: number;
