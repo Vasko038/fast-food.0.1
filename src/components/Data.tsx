@@ -1,4 +1,4 @@
-import { IFilial, IMahsulot } from "./Types";
+import { IFilial, IKategoriya, IMahsulot } from "./Types";
 export const AdminData = [
   {
     email: "husan@gmail.com",
@@ -9,7 +9,11 @@ export const AdminData = [
     password: "1",
   },
 ];
-
+export const KategoriyaData: IKategoriya[] = [
+  { id: 1, nameUz: "Fast Food ", nameRu: "Fast Food" },
+  { id: 2, nameUz: "Salad ", nameRu: "Salad" },
+  { id: 3, nameUz: "Ichimlik", nameRu: "Ichimlik" },
+];
 export const FiliallarData: IFilial[] = [
   {
     id: 1,

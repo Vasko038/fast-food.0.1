@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import BasicModal from "./Modal";
+import BasicModal from "./LogOutModal";
 import React, { useContext } from "react";
 import Image from "../components/images/Bitmap.png";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";

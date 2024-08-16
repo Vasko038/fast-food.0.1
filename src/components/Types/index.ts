@@ -7,9 +7,14 @@ export interface IFilial {
 }
 
 export interface IMahsulot {
-  id: number;
+  id: number | string;
   categoryId: number | string;
   name: string;
   narx: number;
   malumot: string;
+}
+export interface IKategoriya {
+  id: number | string;
+  nameUz: string;
+  nameRu: string;
 }
