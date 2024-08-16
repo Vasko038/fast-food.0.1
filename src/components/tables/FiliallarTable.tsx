@@ -8,7 +8,7 @@ export const FiliallarTable = () => {
 	const { filiallar } = useDataContext();
 
 	return (
-		<Box className="py-5">
+		<Box className="pt-5">
 			<Box className="py-5 bg-white shadow-xl ps-12">
 				<Grid container>
 					<Grid item xs={2} className="ps-4">
@@ -55,8 +55,9 @@ export const FiliallarTable = () => {
 			</Box>
 			<Box
 				sx={{
-					padding: "20px 38px",
-					minHeight: "400px",
+					paddingInline: "38px",
+					height: "525px",
+					marginTop: "15px",
 					overflowY: "auto",
 				}}
 			>
