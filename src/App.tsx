@@ -7,21 +7,21 @@ import { AdminPage } from "./pages/Admin";
 import { MainRoute } from "./components/Context";
 
 const pages: Record<string, React.ReactNode> = {
-  LoginPage: <LoginPage></LoginPage>,
-  AdminPage: <AdminPage></AdminPage>,
+	LoginPage: <LoginPage></LoginPage>,
+	AdminPage: <AdminPage></AdminPage>,
 };
 
 const defaultTheme = createTheme();
 
 function App() {
-  const [activePage, setActivePage] = useState("LoginPage");
-  return (
-    <ThemeProvider theme={defaultTheme}>
-      <MainRoute.Provider value={{ activePage, setActivePage }}>
-        <CssBaseline>{pages[activePage]}</CssBaseline>
-      </MainRoute.Provider>
-    </ThemeProvider>
-  );
+	const [activePage, setActivePage] = useState("LoginPage");
+	return (
+		<ThemeProvider theme={defaultTheme}>
+			<MainRoute.Provider value={{ activePage, setActivePage }}>
+				<CssBaseline>{pages["AdminPage"]}</CssBaseline>
+			</MainRoute.Provider>
+		</ThemeProvider>
+	);
 }
 
 export default App;
