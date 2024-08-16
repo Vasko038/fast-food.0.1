@@ -1,4 +1,5 @@
-import { IFilial } from "./Types";
+import { IFilial, IMahsulot } from "./Types";
+
 export const AdminData = [
   {
     email: "husan@gmail.com",
@@ -34,5 +35,13 @@ export const FiliallarData: IFilial[] = [
   },
 ];
 
-function CreateBuyurtma() {}
+function createBuyurtmaData(
+  id: number,
+  categoryId: number | string,
+  name: string,
+  narx: number,
+  malumot: string
+): IMahsulot {
+  return { id, categoryId, name, narx, malumot };
+}
 export const MahsulotData = [];
