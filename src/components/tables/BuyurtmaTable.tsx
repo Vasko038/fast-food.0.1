@@ -21,8 +21,8 @@ const rows = [
 
 export default function BuyurtmaTable() {
   return (
-    <>
-      <Box className="my-5 py-3 bg-white">
+    <Box className="py-5">
+      <Box className="py-5 bg-white">
         <Grid container>
           <Grid item xs={3}>
             Mahsulot
@@ -38,6 +38,6 @@ export default function BuyurtmaTable() {
           </Grid>
         </Grid>
       </Box>
-    </>
+    </Box>
   );
 }
