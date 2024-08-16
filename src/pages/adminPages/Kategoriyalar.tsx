@@ -42,7 +42,7 @@ export function Kategoriyalar() {
         className="relative"
       >
         <KategoriyaTable></KategoriyaTable>
-        <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
+        <Drawer setOpen={setOpenDrawer} open={openDrawer}>dsfsd</Drawer>
       </Box>
     </Box>
   );

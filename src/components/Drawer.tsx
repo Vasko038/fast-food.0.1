@@ -5,9 +5,11 @@ import React, { Fragment } from "react";
 export function Drawer({
   open,
   setOpen,
+  children,
 }: {
   open: boolean;
   setOpen: (value: boolean) => void;
+  children?: React.ReactNode;
 }) {
   const toggleDrawer = () => {
     setOpen(!open);
@@ -45,8 +47,8 @@ export function Drawer({
           <Box
             sx={{
               position: "absolute",
-              height: "100%",
               right: 0,
+              height: "100%",
               top: 0,
               width: "320px",
               backgroundColor: "white",
@@ -57,17 +59,20 @@ export function Drawer({
             }}
           >
             <Box className="relative h-full w-full">
-              <IconButton
-                sx={{
-                  backgroundColor: "white",
-                  borderRadius: "50% 0 0 50%",
-                  "&:hover": { backgroundColor: "white" },
-                }}
-                className="bg-white border-r-8 border-l-gray-100 absolute -left-[46px] top-9"
-                onClick={toggleDrawer}
-              >
-                <CloseIcon />
-              </IconButton>
+              <Box className="absolute">
+                <IconButton
+                  sx={{
+                    backgroundColor: "white",
+                    borderRadius: "50% 0 0 50%",
+                    "&:hover": { backgroundColor: "white" },
+                  }}
+                  className="bg-white border-r-8 border-l-gray-100 absolute -left-[46px] top-9"
+                  onClick={toggleDrawer}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </Box>
+              {children}
             </Box>
           </Box>
         </>

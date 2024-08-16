@@ -39,7 +39,9 @@ export function Mahsulotlar() {
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
         <MahsulotTable></MahsulotTable>
-        <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
+        <Drawer setOpen={setOpenDrawer} open={openDrawer}>
+          dsfdsfs
+        </Drawer>
       </Box>
     </Box>
   );
