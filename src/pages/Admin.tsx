@@ -19,7 +19,7 @@ const pages: Record<string, React.ReactNode> = {
   Hisobotlar: <Hisobotlar />,
 };
 
-export const DataContext = React.createContext<{
+const DataContext = React.createContext<{
   filiallar: IFilial[];
   setFiliallar: (value: IFilial[]) => void;
 }>({

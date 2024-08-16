@@ -2,6 +2,7 @@ import { Box, Fab, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "../../components/Drawer";
+import MahsulotTable from "../../components/tables/MahsulotTable";
 export function Mahsulotlar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   return (
@@ -37,6 +38,7 @@ export function Mahsulotlar() {
         </Grid>
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
+        <MahsulotTable></MahsulotTable>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
       </Box>
     </Box>
