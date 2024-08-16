@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useDataContext } from "../Admin";
 import { Drawer } from "../../components/Drawer";
+import { FiliallarTable } from "../../components/tables/FiliallarTable";
 
 export function Filiallar() {
 	const { filiallar, setFiliallar } = useDataContext();
@@ -54,52 +55,7 @@ export function Filiallar() {
 				}}
 				className="relative"
 			>
-				<Box className="py-5">
-					<Box className="py-5 bg-white px-5">
-						<Grid container>
-							<Grid item xs={2}>
-								Filial nomi (uz)
-							</Grid>
-							<Divider
-								orientation="vertical"
-								flexItem
-								sx={{ marginX: 2 }}
-							/>
-
-							<Grid item xs={2}>
-								Filial nomi (ru)
-							</Grid>
-							<Divider
-								orientation="vertical"
-								flexItem
-								sx={{ marginX: 2 }}
-							/>
-
-							<Grid item xs={2}>
-								Mo'ljal
-							</Grid>
-
-							<Divider
-								orientation="vertical"
-								flexItem
-								sx={{ marginX: 2 }}
-							/>
-
-							<Grid item xs={2}>
-								Ish vaqti
-							</Grid>
-							<Divider
-								orientation="vertical"
-								flexItem
-								sx={{ marginX: 2 }}
-							/>
-
-							<Grid item xs={2}>
-								Actions
-							</Grid>
-						</Grid>
-					</Box>
-				</Box>
+				<FiliallarTable />
 				<Drawer
 					setOpen={setOpenDrawer}
 					open={openDrawer}
