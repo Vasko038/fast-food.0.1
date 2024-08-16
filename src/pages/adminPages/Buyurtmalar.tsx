@@ -48,17 +48,7 @@ export function Buyurtmalar() {
         sx={{ height: "calc(100vh - 90px)", boxSizing: "border-box" }}
         className="relative"
       >
-        <Box
-          sx={{
-            boxSizing: "border-box",
-            position: "relative", // Ensures the Box doesn't affect absolute positioning of Drawer
-            zIndex: 1, // Keeps the Box below the Drawer
-            margin: 0, // Remove any margin that might affect Drawer
-            padding: 0, // Remove any padding that might affect Drawer
-          }}
-        >
-          <BuyurtmaTable />
-        </Box>
+        <BuyurtmaTable />
         <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
       </Box>
     </Box>

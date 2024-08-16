@@ -20,8 +20,8 @@ export function LoginPage() {
         severity: "error",
       });
     } else if (
-      AdminData[0].email === email &&
-      AdminData[0].password === password
+      AdminData[1].email === email &&
+      AdminData[1].password === password
     ) {
       setAlertMessage({ message: "Xush kelibsiz!", severity: "success" });
       setActivePage("AdminPage");
