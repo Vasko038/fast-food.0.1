@@ -1,8 +1,17 @@
-import { Box, Fab, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Fab,
+  FormLabel,
+  Grid,
+  IconButton,
+  OutlinedInput,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "../../components/Drawer";
 import MahsulotTable from "../../components/tables/MahsulotTable";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 export function Mahsulotlar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   return (
@@ -33,8 +42,36 @@ export function Mahsulotlar() {
           <Grid
             item
             xs={10}
-            className="border-l-8 border-solid border-slate-100 h-full"
-          ></Grid>
+            className="border-l-8 border-solid border-slate-100 h-full flex align-middle px-5"
+          >
+            <Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
+              <OutlinedInput
+                className="border-0 outline-none flex-1"
+                id="search"
+                name="search"
+                type="name"
+                placeholder="Search"
+                sx={{
+                  border: "none",
+                  outline: "none",
+                  "& fieldset": {
+                    border: "none",
+                  },
+                  "&:focus-visible": {
+                    outline: "none",
+                  },
+                  "&.Mui-focused": {
+                    boxShadow: "none",
+                  },
+                }}
+              />
+              <FormLabel htmlFor="search">
+                <IconButton>
+                  <SearchOutlinedIcon></SearchOutlinedIcon>
+                </IconButton>
+              </FormLabel>
+            </Box>
+          </Grid>
         </Grid>
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
