@@ -51,6 +51,7 @@ export function Drawer({
               height: "100%",
               top: 0,
               width: "320px",
+
               backgroundColor: "white",
               borderTop: "8px solid #f1f1f1",
               transform: open ? "translateX(0)" : "translateX(100%)",

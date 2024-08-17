@@ -3,9 +3,21 @@ import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
 import { useDataContext } from "../Context";
 import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
+import { MahsulotForm } from "../forms/MahsulotForm";
+import { Drawer } from "../Drawer";
 
 export default function MahsulotTable() {
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [selectedId, setSelectedId] = React.useState<number | string>("");
   const { mahsulotlar, setMahsulotlar, kategoriyalar } = useDataContext();
+  function handleDelete(id: number | string) {
+    const UpdateData = mahsulotlar.filter((item) => item.id !== id);
+    setMahsulotlar(UpdateData);
+  }
+  function handleEdit(id: number | string) {
+    setSelectedId(id);
+    setOpenDrawer(true);
+  }
   return (
     <React.Fragment>
       <Box className="py-5 flex">
@@ -75,11 +87,9 @@ export default function MahsulotTable() {
                   flexItem
                   sx={{ marginX: 2, height: "100%" }}
                 />
-                {
-                  kategoriyalar.find((k) => {
-                    return k.id === item.categoryId;
-                  })?.nameUz
-                }
+                {kategoriyalar.find((k) => k.id === item.categoryId)
+                  ? kategoriyalar.find((k) => k.id === item.categoryId)?.nameUz
+                  : "-"}
               </Grid>
               <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
                 <Divider
@@ -114,6 +124,7 @@ export default function MahsulotTable() {
                   sx={{ marginX: 2, height: "100%" }}
                 />
                 <IconButton
+                  onClick={() => handleEdit(item.id)}
                   sx={{
                     border: "4px solid #EDEFF3",
                     marginRight: "12px",
@@ -122,6 +133,7 @@ export default function MahsulotTable() {
                   <MdOutlineEdit />
                 </IconButton>
                 <IconButton
+                  onClick={() => handleDelete(item.id)}
                   sx={{
                     border: "4px solid #EDEFF3",
                   }}
@@ -133,6 +145,9 @@ export default function MahsulotTable() {
           </Box>
         ))}
       </Box>
+      <Drawer setOpen={setOpenDrawer} open={openDrawer}>
+        <MahsulotForm id={selectedId} />
+      </Drawer>
     </React.Fragment>
   );
 }

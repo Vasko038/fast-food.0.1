@@ -15,6 +15,7 @@ import MahsulotTable from "../../components/tables/MahsulotTable";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Popover from "@mui/material/Popover";
+import { MahsulotForm } from "../../components/forms/MahsulotForm";
 
 export function Mahsulotlar() {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -130,7 +131,7 @@ export function Mahsulotlar() {
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
         <MahsulotTable></MahsulotTable>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}>
-          dsfdsfs
+          <MahsulotForm></MahsulotForm>
         </Drawer>
       </Box>
     </Box>

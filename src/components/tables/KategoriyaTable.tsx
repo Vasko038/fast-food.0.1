@@ -5,6 +5,10 @@ import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
 export default function KategoriyaTable() {
   const { kategoriyalar, setKategoriyalar, mahsulotlar } = useDataContext();
+  function handleDelete(id: number | string) {
+    const updateData = kategoriyalar.filter((item) => item.id !== id);
+    setKategoriyalar(updateData);
+  }
   return (
     <React.Fragment>
       <Box className="py-5">
@@ -87,6 +91,7 @@ export default function KategoriyaTable() {
                   <MdOutlineEdit />
                 </IconButton>
                 <IconButton
+                  onClick={() => handleDelete(item.id)}
                   sx={{
                     border: "4px solid #EDEFF3",
                   }}
