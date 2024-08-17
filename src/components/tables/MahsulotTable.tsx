@@ -1,10 +1,11 @@
 import * as React from "react";
 import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
-import { MahsulotData } from "../Data";
+import { useDataContext } from "../Context";
 import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
 
 export default function MahsulotTable() {
+  const { mahsulotlar, setMahsulotlar, kategoriyalar } = useDataContext();
   return (
     <React.Fragment>
       <Box className="py-5 flex">
@@ -49,7 +50,7 @@ export default function MahsulotTable() {
         </Box>
       </Box>
       <Box sx={{ overflow: "auto", height: 600 }}>
-        {MahsulotData.map((item) => (
+        {mahsulotlar.map((item) => (
           <Box
             sx={{
               marginBottom: "10px",
@@ -58,6 +59,10 @@ export default function MahsulotTable() {
               borderRadius: "10px",
               boxShadow: "0px 2px 2px 0px #AEB0B550",
               padding: "10px",
+              //   "&:hover": {
+              //     transform: "scale(1.03)",
+              //     boxShadow: "0px 4px 4px 0px #AEB0B550",
+              //   },
             }}
           >
             <Grid container>
@@ -70,7 +75,11 @@ export default function MahsulotTable() {
                   flexItem
                   sx={{ marginX: 2, height: "100%" }}
                 />
-                {item.categoryId}
+                {
+                  kategoriyalar.find((k) => {
+                    return k.id === item.categoryId;
+                  })?.nameUz
+                }
               </Grid>
               <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
                 <Divider

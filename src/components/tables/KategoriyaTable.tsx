@@ -1,13 +1,14 @@
 import * as React from "react";
 import { Box, Divider, Grid, IconButton } from "@mui/material";
-import { KategoriyaData } from "../Data";
+import { useDataContext } from "../Context";
 import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
 export default function KategoriyaTable() {
+  const { kategoriyalar, setKategoriyalar, mahsulotlar } = useDataContext();
   return (
     <React.Fragment>
       <Box className="py-5">
-        <Box className=" py-3 px-[50px]   shadow-xl px-5 bg-white">
+        <Box className=" py-3 px-[50px]   shadow-xl  bg-white">
           <Grid container>
             <Grid item xs={3} sx={{ display: "flex", alignItems: "center" }}>
               Kategoriya {`(UZ)`}
@@ -40,7 +41,7 @@ export default function KategoriyaTable() {
         </Box>
       </Box>
       <Box sx={{ overflow: "auto", height: 600 }}>
-        {KategoriyaData.map((item) => (
+        {kategoriyalar.map((item) => (
           <Box
             sx={{
               marginBottom: "10px",
@@ -69,7 +70,7 @@ export default function KategoriyaTable() {
                   flexItem
                   sx={{ marginX: 2, height: "100%" }}
                 />
-                0
+                {mahsulotlar.filter((m) => m.categoryId === item.id).length}
               </Grid>
               <Grid item xs={3} sx={{ display: "flex", alignItems: "center" }}>
                 <Divider

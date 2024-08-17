@@ -1,5 +1,5 @@
 import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Buyurtmalar } from "./adminPages/Buyurtmalar";
 import { Filiallar } from "./adminPages/Filiallar";
 import { Kategoriyalar } from "./adminPages/Kategoriyalar";
@@ -8,8 +8,13 @@ import { Hisobotlar } from "./adminPages/Hisobot";
 import { Mijozlar } from "./adminPages/Mijozlar";
 import { AdminRoute } from "../components/Context";
 import { AdminDrawer } from "../components/AdminDrawer";
-import { IFilial } from "../components/Types";
-import { FiliallarData } from "../components/Data";
+import { IFilial, IKategoriya, IMahsulot } from "../components/Interface";
+import {
+  FiliallarData,
+  KategoriyaData,
+  MahsulotData,
+} from "../components/Data";
+import { DataContext } from "../components/Context";
 const pages: Record<string, React.ReactNode> = {
   Buyurtmalar: <Buyurtmalar />,
   Filiallar: <Filiallar />,
@@ -19,26 +24,26 @@ const pages: Record<string, React.ReactNode> = {
   Hisobotlar: <Hisobotlar />,
 };
 
-const DataContext = React.createContext<{
-  filiallar: IFilial[];
-  setFiliallar: (value: IFilial[]) => void;
-}>({
-  filiallar: [],
-  setFiliallar: (value: IFilial[]) => {},
-});
-
-export const useDataContext = () => {
-  return useContext(DataContext);
-};
-
 const defaultTheme = createTheme();
 export function AdminPage() {
   const [activePage, setActivePage] = useState("Buyurtmalar");
   const [filiallar, setFiliallar] = useState<IFilial[]>(FiliallarData);
+  const [mahsulotlar, setMahsulotlar] = useState<IMahsulot[]>(MahsulotData);
+  const [kategoriyalar, setKategoriyalar] =
+    useState<IKategoriya[]>(KategoriyaData);
   return (
     <ThemeProvider theme={defaultTheme}>
       <AdminRoute.Provider value={{ activePage, setActivePage }}>
-        <DataContext.Provider value={{ filiallar, setFiliallar }}>
+        <DataContext.Provider
+          value={{
+            filiallar,
+            setFiliallar,
+            mahsulotlar,
+            setMahsulotlar,
+            kategoriyalar,
+            setKategoriyalar,
+          }}
+        >
           <CssBaseline>
             <Box className="flex">
               <AdminDrawer></AdminDrawer>

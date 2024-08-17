@@ -1,4 +1,4 @@
-import { IFilial, IKategoriya, IMahsulot } from "./Types";
+import { IFilial, IKategoriya, IMahsulot } from "./Interface";
 export const AdminData = [
   {
     email: "husan@gmail.com",

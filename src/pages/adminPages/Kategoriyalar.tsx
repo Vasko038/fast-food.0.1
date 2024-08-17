@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Fab,
   FormLabel,
   Grid,
@@ -12,8 +13,22 @@ import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "../../components/Drawer";
 import KategoriyaTable from "../../components/tables/KategoriyaTable";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import Popover from "@mui/material/Popover";
 export function Kategoriyalar() {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
+
+  const handleClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setPopover(event.currentTarget);
+  };
+
+  const handleClosePopover = () => {
+    setPopover(null);
+  };
+
+  const openPopover = Boolean(popover);
+  const PopoverId = openPopover ? "simple-popover" : undefined;
   return (
     <Box className="bg-slate-100 w-full h-full">
       <Box className="h-[90px] bg-white ">
@@ -71,6 +86,42 @@ export function Kategoriyalar() {
                 </IconButton>
               </FormLabel>
             </Box>
+            <Button
+              sx={{
+                minWidth: "50px",
+                maxWidth: "50px",
+                minHeight: "50px",
+                maxHeight: "50px",
+                bgcolor: "white",
+                color: "gray",
+                borderRadius: "50% 50%",
+                border: "4px solid  rgb(241 245 249)",
+                boxShadow: "0 0 0 0",
+                marginY: "auto",
+                marginX: 2,
+                "&:hover": {
+                  bgcolor: "white",
+                  boxShadow: "0 0 0 0",
+                },
+              }}
+              aria-describedby={PopoverId}
+              variant="contained"
+              onClick={handleClickPopover}
+            >
+              <FilterAltIcon></FilterAltIcon>
+            </Button>
+            <Popover
+              id={PopoverId}
+              open={openPopover}
+              anchorEl={popover}
+              onClose={handleClosePopover}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+            </Popover>
           </Grid>
         </Grid>
       </Box>

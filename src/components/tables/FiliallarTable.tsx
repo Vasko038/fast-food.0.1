@@ -1,6 +1,6 @@
 import { Box, Divider, Grid, IconButton } from "@mui/material";
 import React from "react";
-import { useDataContext } from "../../pages/Admin";
+import { useDataContext } from "../Context";
 import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
 
