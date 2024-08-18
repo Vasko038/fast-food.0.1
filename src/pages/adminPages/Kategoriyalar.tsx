@@ -15,6 +15,7 @@ import KategoriyaTable from "../../components/tables/KategoriyaTable";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Popover from "@mui/material/Popover";
+import { KategoriyaForm } from "../../components/forms/KategoriyaForm";
 export function Kategoriyalar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
@@ -131,7 +132,7 @@ export function Kategoriyalar() {
       >
         <KategoriyaTable></KategoriyaTable>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}>
-          dsfsd
+          <KategoriyaForm></KategoriyaForm>
         </Drawer>
       </Box>
     </Box>
