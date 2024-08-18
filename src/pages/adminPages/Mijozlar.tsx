@@ -6,6 +6,9 @@ import {
 	Typography,
 	IconButton,
 	Divider,
+	OutlinedInput,
+	FormLabel,
+	Popover,
 } from "@mui/material";
 import React, { useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -15,19 +18,40 @@ import { Form, Input, message } from "antd";
 import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
 import { IMijoz } from "../../components/Interface";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import { FiSlash } from "react-icons/fi";
+
 import { v4 as uuidv4 } from "uuid";
 
 export function Mijozlar() {
 	const { mijozlar, setMijozlar } = useDataContext();
 	const [openDrawer, setOpenDrawer] = useState(false);
-
 	const [editingMijoz, setEditingMijoz] = useState<IMijoz | null>(
 		null
 	);
-
 	const [form] = Form.useForm();
 
-	const onFinish = (values: Omit<IMijoz, "id">) => {
+	const [search, setSearch] = useState<string | null>(null);
+
+	const [popover, setPopover] =
+		React.useState<HTMLButtonElement | null>(null);
+
+	const handleClickPopover = (
+		event: React.MouseEvent<HTMLButtonElement>
+	) => {
+		setPopover(event.currentTarget);
+	};
+
+	const handleClosePopover = () => {
+		setPopover(null);
+	};
+
+	const openPopover = Boolean(popover);
+	const PopoverId = openPopover ? "simple-popover" : undefined;
+
+	const onFinish = (values: Omit<IMijoz, "id" | "active">) => {
 		if (editingMijoz) {
 			const updatedMijoz = mijozlar.map((m) =>
 				m.id === editingMijoz.id ? { ...m, ...values } : m
@@ -58,18 +82,44 @@ export function Mijozlar() {
 	const onDelete = (id: number | string) => {
 		const filteredMijoz = mijozlar.filter((m) => m.id !== id);
 		setMijozlar(filteredMijoz);
+		message.success("Deleted successfully");
 	};
+
+	const toggleBlock = (id: number | string) => {
+		setMijozlar(
+			mijozlar.map((mijoz) =>
+				mijoz.id === id
+					? { ...mijoz, active: !mijoz.active }
+					: mijoz
+			)
+		);
+	};
+
+	let filteredMijozlar: IMijoz[] = mijozlar;
+
+	if (search) {
+		filteredMijozlar = mijozlar.filter((mijoz) =>
+			mijoz.name
+				.toLocaleLowerCase()
+				.includes(search.toLocaleLowerCase())
+		);
+	}
 
 	return (
 		<Box className="bg-slate-100 w-full h-full">
-			<Box className="h-[90px] bg-white ">
-				<Grid container className="h-full">
+			<Box className="h-[90px] bg-white">
+				<Grid container className="h-full ">
 					<Grid
 						item
 						xs={2}
 						className="border-l-8 border-solid border-slate-100 h-full px-4 flex gap-3 items-center justify-center"
 					>
 						<Fab
+							onClick={() => {
+								setEditingMijoz(null);
+								form.resetFields();
+								setOpenDrawer(true);
+							}}
 							sx={{
 								width: "40px",
 								height: "40px",
@@ -79,24 +129,86 @@ export function Mijozlar() {
 							size="small"
 							color="success"
 							aria-label="add"
-							onClick={() => {
-								setEditingMijoz(null);
-								setOpenDrawer(true);
-							}}
 						>
 							<AddIcon />
 						</Fab>
 						<Typography variant="body2">
-							{" "}
-							Yangi Mijoz Qoshish
+							Yangi Mahsulot Qoshish
 						</Typography>
 					</Grid>
 					<Grid
 						item
 						xs={10}
-						className="border-l-8 border-solid border-slate-100 h-full"
+						className="border-l-8 border-solid border-slate-100 h-full  flex align-middle  px-5"
 					>
-						Search
+						<Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
+							<OutlinedInput
+								onChange={(event) => {
+									setSearch(event.target.value);
+								}}
+								className="border-0 outline-none flex-1"
+								id="search"
+								name="search"
+								type="name"
+								placeholder="Search"
+								sx={{
+									border: "none",
+									outline: "none",
+									"& fieldset": {
+										border: "none",
+									},
+									"&:focus-visible": {
+										outline: "none",
+									},
+									"&.Mui-focused": {
+										boxShadow: "none",
+									},
+								}}
+							/>
+							<FormLabel htmlFor="search">
+								<IconButton>
+									<SearchOutlinedIcon></SearchOutlinedIcon>
+								</IconButton>
+							</FormLabel>
+						</Box>
+						<Button
+							sx={{
+								minWidth: "50px",
+								maxWidth: "50px",
+								minHeight: "50px",
+								maxHeight: "50px",
+								bgcolor: "white",
+								color: "gray",
+								borderRadius: "50% 50%",
+								border: "4px solid  rgb(241 245 249)",
+								boxShadow: "0 0 0 0",
+								marginY: "auto",
+								marginX: 2,
+								"&:hover": {
+									bgcolor: "white",
+									boxShadow: "0 0 0 0",
+								},
+							}}
+							aria-describedby={PopoverId}
+							variant="contained"
+							onClick={handleClickPopover}
+						>
+							<FilterAltIcon></FilterAltIcon>
+						</Button>
+						<Popover
+							id={PopoverId}
+							open={openPopover}
+							anchorEl={popover}
+							onClose={handleClosePopover}
+							anchorOrigin={{
+								vertical: "bottom",
+								horizontal: "left",
+							}}
+						>
+							<Typography sx={{ p: 2 }}>
+								The content of the Popover.
+							</Typography>
+						</Popover>
 					</Grid>
 				</Grid>
 			</Box>
@@ -126,17 +238,14 @@ export function Mijozlar() {
 								flexItem
 								sx={{ marginX: 2 }}
 							/>
-
 							<Grid item xs={2}>
 								Buyurtmalar soni
 							</Grid>
-
 							<Divider
 								orientation="vertical"
 								flexItem
 								sx={{ marginX: 2 }}
 							/>
-
 							<Grid item xs={2}>
 								Status
 							</Grid>
@@ -145,7 +254,6 @@ export function Mijozlar() {
 								flexItem
 								sx={{ marginX: 2 }}
 							/>
-
 							<Grid item xs={2}>
 								Actions
 							</Grid>
@@ -159,94 +267,119 @@ export function Mijozlar() {
 							overflowY: "auto",
 						}}
 					>
-						<Box
-							sx={{
-								width: "100%",
-							}}
-						>
-							{mijozlar.map((m) => {
-								return (
-									<Box
-										sx={{
-											marginBlock: "10px",
-											backgroundColor: "white",
-											borderRadius: "10px",
-											boxShadow:
-												"0px 2px 2px 0px #AEB0B550",
-											padding: "20px 10px",
-										}}
-									>
-										<Grid container>
-											<Grid
-												item
-												xs={2}
-												className="ps-4"
-											>
-												{m.name}
-											</Grid>
-											<Divider
-												orientation="vertical"
-												flexItem
-												sx={{ marginX: 2 }}
-											/>
-											<Grid item xs={2}>
-												{m.phone}
-											</Grid>
-											<Divider
-												orientation="vertical"
-												flexItem
-												sx={{ marginX: 2 }}
-											/>
-
-											<Grid item xs={2}>
-												{m.id}
-											</Grid>
-
-											<Divider
-												orientation="vertical"
-												flexItem
-												sx={{ marginX: 2 }}
-											/>
-
-											<Grid item xs={2}>
-												{m.active}
-											</Grid>
-											<Divider
-												orientation="vertical"
-												flexItem
-												sx={{ marginX: 2 }}
-											/>
-
-											<Grid item xs={2}>
-												<IconButton
-													sx={{
-														border: "4px solid #EDEFF3",
-														marginRight:
-															"12px",
-													}}
-													onClick={() => {
-														onEdit(m);
-													}}
-												>
-													<MdOutlineEdit />
-												</IconButton>
-												<IconButton
-													sx={{
-														border: "4px solid #EDEFF3",
-													}}
-													onClick={() => {
-														onDelete(
-															m.id
-														);
-													}}
-												>
-													<LuTrash2 />
-												</IconButton>
-											</Grid>
+						<Box sx={{ width: "100%" }}>
+							{filteredMijozlar.map((m) => (
+								<Box
+									key={m.id}
+									sx={{
+										marginBlock: "10px",
+										backgroundColor: "white",
+										borderRadius: "10px",
+										boxShadow:
+											"0px 2px 2px 0px #AEB0B550",
+										padding: "10px",
+									}}
+								>
+									<Grid container>
+										<Grid
+											item
+											xs={2}
+											className="ps-4 flex items-center"
+										>
+											{m.name}
 										</Grid>
-									</Box>
-								);
-							})}
+										<Divider
+											orientation="vertical"
+											flexItem
+											sx={{ marginX: 2 }}
+										/>
+										<Grid
+											item
+											xs={2}
+											className="flex items-center"
+										>
+											{m.phone}
+										</Grid>
+										<Divider
+											orientation="vertical"
+											flexItem
+											sx={{ marginX: 2 }}
+										/>
+										<Grid
+											item
+											xs={2}
+											className="flex items-center"
+										>
+											{m.id}
+										</Grid>
+										<Divider
+											orientation="vertical"
+											flexItem
+											sx={{ marginX: 2 }}
+										/>
+										<Grid
+											item
+											xs={2}
+											className="flex items-center"
+										>
+											{m.active ? (
+												<p className="text-green-400 font-bold">
+													Aktiv
+												</p>
+											) : (
+												<p className="text-red-500 font-bold">
+													Block
+												</p>
+											)}
+										</Grid>
+										<Divider
+											orientation="vertical"
+											flexItem
+											sx={{ marginX: 2 }}
+										/>
+										<Grid item xs={2}>
+											<IconButton
+												sx={{
+													border: "4px solid #EDEFF3",
+													marginRight:
+														"12px",
+												}}
+												onClick={() => {
+													toggleBlock(m.id);
+												}}
+											>
+												{m.active ? (
+													<FiSlash />
+												) : (
+													<IoMdCheckmarkCircleOutline />
+												)}
+											</IconButton>
+											<IconButton
+												sx={{
+													border: "4px solid #EDEFF3",
+													marginRight:
+														"12px",
+												}}
+												onClick={() => {
+													onEdit(m);
+												}}
+											>
+												<MdOutlineEdit />
+											</IconButton>
+											<IconButton
+												sx={{
+													border: "4px solid #EDEFF3",
+												}}
+												onClick={() => {
+													onDelete(m.id);
+												}}
+											>
+												<LuTrash2 />
+											</IconButton>
+										</Grid>
+									</Grid>
+								</Box>
+							))}
 						</Box>
 					</Box>
 				</Box>
