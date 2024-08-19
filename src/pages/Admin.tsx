@@ -26,6 +26,12 @@ import {
 	MijozlarData,
 } from "../components/Data";
 import { DataContext } from "../components/Context";
+import {
+	BrowserRouter,
+	Outlet,
+	Route,
+	Routes,
+} from "react-router-dom";
 const pages: Record<string, React.ReactNode> = {
 	Buyurtmalar: <Buyurtmalar />,
 	Filiallar: <Filiallar />,
@@ -48,34 +54,79 @@ export function AdminPage() {
 	const [mijozlar, setMijozlar] = useState<IMijoz[]>(MijozlarData);
 
 	return (
-		<ThemeProvider theme={defaultTheme}>
-			<AdminRoute.Provider
-				value={{ activePage, setActivePage }}
-			>
-				<DataContext.Provider
-					value={{
-						filiallar,
-						setFiliallar,
-						mahsulotlar,
-						setMahsulotlar,
-						kategoriyalar,
-						setKategoriyalar,
-						mijozlar,
-						setMijozlar,
-					}}
+		<BrowserRouter>
+			<ThemeProvider theme={defaultTheme}>
+				<AdminRoute.Provider
+					value={{ activePage, setActivePage }}
 				>
-					<CssBaseline>
-						<Box className="flex">
-							<AdminDrawer></AdminDrawer>
-							<Box
-								sx={{ flexGrow: 1, overflow: "auto" }}
-							>
-								{pages[activePage]}
+					<DataContext.Provider
+						value={{
+							filiallar,
+							setFiliallar,
+							mahsulotlar,
+							setMahsulotlar,
+							kategoriyalar,
+							setKategoriyalar,
+							mijozlar,
+							setMijozlar,
+						}}
+					>
+						<CssBaseline>
+							<Box className="flex">
+								<AdminDrawer></AdminDrawer>
+								<Box
+									sx={{
+										flexGrow: 1,
+										overflow: "auto",
+									}}
+								>
+									<Routes>
+										<Route
+											path="/"
+											element={<Outlet />}
+										>
+											<Route
+												path="/buyurtmalar"
+												element={
+													<Buyurtmalar />
+												}
+											></Route>
+											<Route
+												path="/mahsulotlar"
+												element={
+													<Mahsulotlar />
+												}
+											></Route>
+											<Route
+												path="/kategoriyalar"
+												element={
+													<Kategoriyalar />
+												}
+											></Route>
+											<Route
+												path="/filiallar"
+												element={
+													<Filiallar />
+												}
+											></Route>
+											<Route
+												path="/mijozlar"
+												element={<Mijozlar />}
+											></Route>
+											<Route
+												path="/hisobotlar"
+												element={
+													<Hisobotlar />
+												}
+											></Route>
+										</Route>
+									</Routes>
+								</Box>
 							</Box>
-						</Box>
-					</CssBaseline>
-				</DataContext.Provider>
-			</AdminRoute.Provider>
-		</ThemeProvider>
+						</CssBaseline>
+					</DataContext.Provider>
+				</AdminRoute.Provider>
+			</ThemeProvider>
+		</BrowserRouter>
 	);
 }
