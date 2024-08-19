@@ -11,7 +11,6 @@ import { Kategoriyalar } from "./adminPages/Kategoriyalar";
 import { Mahsulotlar } from "./adminPages/Mahsulotlar";
 import { Hisobotlar } from "./adminPages/Hisobot";
 import { Mijozlar } from "./adminPages/Mijozlar";
-import { AdminRoute } from "../components/Context";
 import { AdminDrawer } from "../components/AdminDrawer";
 import {
 	IBuyurtma,
