@@ -220,7 +220,7 @@ export function Mijozlar() {
 				className="relative"
 			>
 				<Box className="pt-5">
-					<Box className="px-[38px] bg-white shadow-xl py-5">
+					<Box className="px-[38px] bg-white shadow-xl py-3">
 						<Grid container>
 							<Grid item xs={2} className="ps-6">
 								Mijoz ismi
