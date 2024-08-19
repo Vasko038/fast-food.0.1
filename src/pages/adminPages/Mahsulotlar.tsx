@@ -2,10 +2,16 @@ import {
   Box,
   Button,
   Fab,
+  FormControl,
+  FormControlLabel,
   FormLabel,
   Grid,
   IconButton,
+  MenuItem,
   OutlinedInput,
+  Radio,
+  RadioGroup,
+  Select,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -15,12 +21,15 @@ import MahsulotTable from "../../components/tables/MahsulotTable";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Popover from "@mui/material/Popover";
+import { useDataContext } from "../../components/Context";
 import { MahsulotForm } from "../../components/forms/MahsulotForm";
 
 export function Mahsulotlar() {
+  const { mahsulotlar, kategoriyalar } = useDataContext();
   const [openDrawer, setOpenDrawer] = useState(false);
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
-
+  const [search, setSearch] = React.useState<string>("");
+  const [selectRadio, setSelectRadio] = useState("");
   const handleClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     setPopover(event.currentTarget);
   };
@@ -28,6 +37,33 @@ export function Mahsulotlar() {
   const handleClosePopover = () => {
     setPopover(null);
   };
+
+  let searchData = mahsulotlar;
+  if (search !== "") {
+    searchData = filteredData().filter(
+      (item) =>
+        item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
+        item.narx
+          .toString()
+          .toLocaleLowerCase()
+          .includes(search.toLocaleLowerCase()) ||
+        item.malumot.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+    );
+  }
+  function filteredData() {
+    switch (selectRadio) {
+      case "narxO":
+        return searchData.sort((a, b) => a.narx - b.narx);
+      case "narxK":
+        return searchData.sort((a, b) => b.narx - a.narx);
+      case "nameAZ":
+        return searchData.sort((a, b) => a.name.localeCompare(b.name));
+      case "nameZA":
+        return searchData.sort((a, b) => b.name.localeCompare(a.name));
+      default:
+        return searchData;
+    }
+  }
 
   const openPopover = Boolean(popover);
   const PopoverId = openPopover ? "simple-popover" : undefined;
@@ -64,6 +100,7 @@ export function Mahsulotlar() {
           >
             <Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
               <OutlinedInput
+                onChange={(e) => setSearch(e.target.value)}
                 className="border-0 outline-none flex-1"
                 id="search"
                 name="search"
@@ -84,7 +121,7 @@ export function Mahsulotlar() {
                 }}
               />
               <FormLabel htmlFor="search">
-                <IconButton>
+                <IconButton disableRipple>
                   <SearchOutlinedIcon></SearchOutlinedIcon>
                 </IconButton>
               </FormLabel>
@@ -123,15 +160,93 @@ export function Mahsulotlar() {
                 horizontal: "left",
               }}
             >
-              <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+              <Box sx={{ p: 2, width: "300px" }}>
+                <FormLabel htmlFor="kategoriya">Kategoriyalar</FormLabel>
+                <Select
+                  defaultValue={"all"}
+                  sx={{
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "orange",
+                    },
+                  }}
+                  className="mb-3"
+                  size="small"
+                  fullWidth
+                  id="kategoriyda"
+                >
+                  <MenuItem value="all">Hammasi</MenuItem>
+                  {kategoriyalar.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.nameUz}
+                    </MenuItem>
+                  ))}
+                </Select>
+                <FormControl
+                  sx={{
+                    "& .MuiRadio-root": {
+                      "& .MuiSvgIcon-root": {
+                        borderRadius: "none",
+                      },
+                      "&.Mui-checked": {
+                        color: "orange",
+                      },
+                    },
+                  }}
+                >
+                  <RadioGroup
+                    value={selectRadio}
+                    onChange={(e) => setSelectRadio(e.target.value)}
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    name="radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      value="narxO"
+                      control={<Radio />}
+                      label="Narx bo'yicha (o'sish)"
+                    />
+                    <FormControlLabel
+                      value="narxK"
+                      control={<Radio />}
+                      label="Narx bo'yicha (kamayish)"
+                    />
+                    <FormControlLabel
+                      value="nameAZ"
+                      control={<Radio />}
+                      label="nom bo'yicha (A-Z)"
+                    />
+                    <FormControlLabel
+                      value="nameZA"
+                      control={<Radio />}
+                      label="nom bo'yicha (Z-A)"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <Box
+                  sx={{ "& .MuiButton-root": { textTransform: "none" } }}
+                  className="flex gap-4 justify-end"
+                >
+                  <Button variant="contained" color="inherit">
+                    Bekor qilish
+                  </Button>
+                  <Button
+                    sx={{ bgcolor: "orange", "&:hover": { bgcolor: "orange" } }}
+                    variant="contained"
+                  >
+                    Filter
+                  </Button>
+                </Box>
+              </Box>
             </Popover>
           </Grid>
         </Grid>
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
-        <MahsulotTable></MahsulotTable>
+        <MahsulotTable
+          searchData={searchData}
+          filterData={filteredData}
+        ></MahsulotTable>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}>
-          <MahsulotForm></MahsulotForm>
+          <MahsulotForm setOpenDrawer={setOpenDrawer}></MahsulotForm>
         </Drawer>
       </Box>
     </Box>

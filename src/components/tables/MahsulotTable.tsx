@@ -5,8 +5,15 @@ import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
 import { MahsulotForm } from "../forms/MahsulotForm";
 import { Drawer } from "../Drawer";
+import { IMahsulot } from "../Interface";
 
-export default function MahsulotTable() {
+export default function MahsulotTable({
+  searchData,
+  filterData,
+}: {
+  searchData: IMahsulot[];
+  filterData: () => IMahsulot[];
+}) {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<number | string>("");
   const { mahsulotlar, setMahsulotlar, kategoriyalar } = useDataContext();
@@ -18,6 +25,7 @@ export default function MahsulotTable() {
     setSelectedId(id);
     setOpenDrawer(true);
   }
+  filterData();
   return (
     <React.Fragment>
       <Box className="py-5 flex">
@@ -62,7 +70,7 @@ export default function MahsulotTable() {
         </Box>
       </Box>
       <Box sx={{ overflow: "auto", height: 600 }}>
-        {mahsulotlar.map((item) => (
+        {filterData().map((item) => (
           <Box
             sx={{
               marginBottom: "10px",
@@ -146,7 +154,7 @@ export default function MahsulotTable() {
         ))}
       </Box>
       <Drawer setOpen={setOpenDrawer} open={openDrawer}>
-        <MahsulotForm id={selectedId} />
+        <MahsulotForm setOpenDrawer={setOpenDrawer} id={selectedId} />
       </Drawer>
     </React.Fragment>
   );

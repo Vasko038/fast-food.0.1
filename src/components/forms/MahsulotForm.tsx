@@ -12,7 +12,13 @@ import React, { useState } from "react";
 import { useDataContext } from "../Context";
 import { IMahsulot } from "../Interface";
 import { v4 as uuidv4 } from "uuid";
-export function MahsulotForm({ id }: { id?: number | string }) {
+export function MahsulotForm({
+  id,
+  setOpenDrawer,
+}: {
+  id?: number | string;
+  setOpenDrawer: Function;
+}) {
   const { kategoriyalar, mahsulotlar, setMahsulotlar } = useDataContext();
   const mahsulot: IMahsulot | undefined = mahsulotlar.find(
     (item) => item.id === id
@@ -54,6 +60,7 @@ export function MahsulotForm({ id }: { id?: number | string }) {
         setMahsulotlar([newData, ...mahsulotlar]);
       }
     }
+    setOpenDrawer(false);
   }
 
   return (

@@ -1,4 +1,4 @@
-import { BlockLike } from "typescript";
+
 import { IFilial, IKategoriya, IMahsulot, IMijoz } from "./Interface";
 export const AdminData = [
 	{
