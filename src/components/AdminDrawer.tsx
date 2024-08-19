@@ -17,41 +17,40 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import CategoryIcon from "@mui/icons-material/Category";
-import { AdminRoute } from "./Context";
+import { Link } from "react-router-dom";
 const items = [
   {
-    key: "Buyurtmalar",
+    key: "buyurtmalar",
     icon: <CheckCircleOutlineIcon />,
-    label: "Buyurtmalar",
+    label: <Link to={"/buyurtmalar"}>Buyurtmalar</Link>,
   },
   {
-    key: "Mahsulotlar",
+    key: "mahsulotlar",
     icon: <Inventory2OutlinedIcon />,
-    label: "Mahsulotlar",
+    label: <Link to={"/mahsulotlar"}>Mahsulotlar</Link>,
   },
   {
-    key: "Kategoriyalar",
+    key: "kategoriyalar",
     icon: <CategoryIcon />,
-    label: "Kategoriyalar",
+    label: <Link to={"/kategoriyalar"}>Kategoriyalar</Link>,
   },
   {
-    key: "Filiallar",
+    key: "filiallar",
     icon: <LocationOnOutlinedIcon />,
-    label: "Filiallar",
+    label: <Link to={"/filiallar"}>Filiallar</Link>,
   },
   {
-    key: "Mijozlar",
+    key: "mijozlar",
     icon: <PeopleAltOutlinedIcon />,
-    label: "Mijozlar",
+    label: <Link to={"/mijozlar"}>Mijozlar</Link>,
   },
   {
-    key: "Hisobotlar",
+    key: "hisobotlar",
     icon: <BarChartOutlinedIcon />,
-    label: "Hisobotlar",
+    label: <Link to={"/hisobotlar"}>Hisobotlar</Link>,
   },
 ];
 export function AdminDrawer() {
-  const { setActivePage } = useContext(AdminRoute);
   const [index, setIndex] = React.useState(0);
   return (
     <Box
@@ -93,7 +92,6 @@ export function AdminDrawer() {
               <Button
                 onClick={() => {
                   setIndex(i);
-                  setActivePage(item.label);
                 }}
                 fullWidth
                 sx={{
