@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Box, Divider, Grid, IconButton, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Divider,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { useDataContext } from "../Context";
 import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
@@ -87,7 +94,8 @@ export default function MahsulotTable({
           >
             <Grid container>
               <Grid item xs={3} sx={{ display: "flex", alignItems: "center" }}>
-                {item.name}
+                <Avatar src={item.image}></Avatar>
+                <Typography className="ps-2"> {item.name}</Typography>
               </Grid>
               <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
                 <Divider

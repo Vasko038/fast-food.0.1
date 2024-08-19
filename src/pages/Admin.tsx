@@ -6,6 +6,7 @@ import { Kategoriyalar } from "./adminPages/Kategoriyalar";
 import { Mahsulotlar } from "./adminPages/Mahsulotlar";
 import { Hisobotlar } from "./adminPages/Hisobot";
 import { Mijozlar } from "./adminPages/Mijozlar";
+import { Hodimlar } from "./adminPages/Hodimlar";
 import { AdminDrawer } from "../components/AdminDrawer";
 import {
   IFilial,
@@ -82,6 +83,7 @@ export function AdminPage() {
                     <Route path="/filiallar" element={<Filiallar />}></Route>
                     <Route path="/mijozlar" element={<Mijozlar />}></Route>
                     <Route path="/hisobotlar" element={<Hisobotlar />}></Route>
+                    <Route path="/hodimlar" element={<Hodimlar />}></Route>
                   </Route>
                 </Routes>
               </Box>

@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Scrollbar traki */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 10px;
+  border: 2px solid transparent;
+}
+
+/* Scrollbar barmog'ini hover qilish */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+}
+
+/* Yuqori va pastki tugmalarni olib tashlash */
+::-webkit-scrollbar-button {
+  display: none;
+}
