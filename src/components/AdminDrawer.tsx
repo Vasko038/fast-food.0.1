@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
 import BasicModal from "./LogOutModal";
-import React, { useContext } from "react";
+import React from "react";
 import Image from "../components/images/Bitmap.png";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import Inventory2OutlinedIcon from "@mui/icons-material/Inventory2Outlined";
@@ -55,12 +55,17 @@ const items = [
     path: "/hisobotlar",
     label: "Hisobotlar",
   },
+  {
+    key: "Hodimlar",
+    icon: <BarChartOutlinedIcon />,
+    path: "/hodimlar",
+    label: "Hodimlar",
+  },
 ];
 
 export function AdminDrawer() {
   const location = useLocation();
 
-  // const [index, setIndex] = React.useState(0);
   return (
     <Box
       sx={{ width: "280px", flexShrink: 0 }}

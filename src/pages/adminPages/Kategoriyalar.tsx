@@ -2,10 +2,14 @@ import {
   Box,
   Button,
   Fab,
+  FormControl,
+  FormControlLabel,
   FormLabel,
   Grid,
   IconButton,
   OutlinedInput,
+  Radio,
+  RadioGroup,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -19,7 +23,9 @@ import { KategoriyaForm } from "../../components/forms/KategoriyaForm";
 export function Kategoriyalar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
-
+  const [selectRadio, setSelectRadio] = useState("");
+  const openPopover = Boolean(popover);
+  const PopoverId = openPopover ? "simple-popover" : undefined;
   const handleClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     setPopover(event.currentTarget);
   };
@@ -28,8 +34,6 @@ export function Kategoriyalar() {
     setPopover(null);
   };
 
-  const openPopover = Boolean(popover);
-  const PopoverId = openPopover ? "simple-popover" : undefined;
   return (
     <Box className="bg-slate-100 w-full h-full">
       <Box className="h-[90px] bg-white ">
@@ -121,7 +125,62 @@ export function Kategoriyalar() {
                 horizontal: "left",
               }}
             >
-              <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+              <Box sx={{ p: 2 }}>
+                <FormControl
+                  sx={{
+                    "& .MuiRadio-root": {
+                      "& .MuiSvgIcon-root": {
+                        borderRadius: "none",
+                      },
+                      "&.Mui-checked": {
+                        color: "orange",
+                      },
+                    },
+                  }}
+                >
+                  <RadioGroup
+                    value={selectRadio}
+                    onChange={(e) => setSelectRadio(e.target.value)}
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    name="radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      value="narxO"
+                      control={<Radio />}
+                      label="Narx bo'yicha (o'sish)"
+                    />
+                    <FormControlLabel
+                      value="narxK"
+                      control={<Radio />}
+                      label="Narx bo'yicha (kamayish)"
+                    />
+                    <FormControlLabel
+                      value="nameAZ"
+                      control={<Radio />}
+                      label="nom bo'yicha (A-Z)"
+                    />
+                    <FormControlLabel
+                      value="nameZA"
+                      control={<Radio />}
+                      label="nom bo'yicha (Z-A)"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <Box
+                  sx={{ "& .MuiButton-root": { textTransform: "none" } }}
+                  className="flex gap-4 justify-end"
+                >
+                  <Button variant="contained" color="inherit">
+                    Bekor qilish
+                  </Button>
+                  <Button
+                    sx={{ bgcolor: "orange", "&:hover": { bgcolor: "orange" } }}
+                    variant="contained"
+                  >
+                    Filter
+                  </Button>
+                </Box>
+              </Box>
             </Popover>
           </Grid>
         </Grid>
