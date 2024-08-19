@@ -1,6 +1,13 @@
 import * as React from "react";
 import { Box } from "@mui/material";
+import { IBuyurtma } from "../Interface";
 
-export default function BuyurtmaTable() {
-  return <Box className="py-5">dsfsdfds</Box>;
-}
+export const BuyurtmaTable = ({ table }: { table: IBuyurtma[] }) => {
+	return (
+		<div>
+			{table.map((t) => {
+				return <Box>{t.status}</Box>;
+			})}
+		</div>
+	);
+};
