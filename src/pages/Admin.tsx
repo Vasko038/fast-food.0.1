@@ -14,12 +14,14 @@ import { Mijozlar } from "./adminPages/Mijozlar";
 import { AdminRoute } from "../components/Context";
 import { AdminDrawer } from "../components/AdminDrawer";
 import {
+	IBuyurtma,
 	IFilial,
 	IKategoriya,
 	IMahsulot,
 	IMijoz,
 } from "../components/Interface";
 import {
+	BuyurtmalarData,
 	FiliallarData,
 	KategoriyaData,
 	MahsulotData,
@@ -33,14 +35,6 @@ import {
 	Route,
 	Routes,
 } from "react-router-dom";
-const pages: Record<string, React.ReactNode> = {
-	Buyurtmalar: <Buyurtmalar />,
-	Filiallar: <Filiallar />,
-	Kategoriyalar: <Kategoriyalar />,
-	Mahsulotlar: <Mahsulotlar />,
-	Mijozlar: <Mijozlar />,
-	Hisobotlar: <Hisobotlar />,
-};
 
 const defaultTheme = createTheme();
 export function AdminPage() {
@@ -50,6 +44,8 @@ export function AdminPage() {
 		useState<IMahsulot[]>(MahsulotData);
 	const [kategoriyalar, setKategoriyalar] =
 		useState<IKategoriya[]>(KategoriyaData);
+	const [buyurtmalar, setBuyurtmalar] =
+		useState<IBuyurtma[]>(BuyurtmalarData);
 
 	const [mijozlar, setMijozlar] = useState<IMijoz[]>(MijozlarData);
 
@@ -66,6 +62,8 @@ export function AdminPage() {
 						setKategoriyalar,
 						mijozlar,
 						setMijozlar,
+						buyurtmalar,
+						setBuyurtmalar,
 					}}
 				>
 					<CssBaseline>
