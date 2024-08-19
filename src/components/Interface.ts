@@ -26,3 +26,16 @@ export interface IMijoz {
   phone: string;
   active: boolean;
 }
+
+export interface IBuyurtma {
+	id: number | string;
+	userId: number | string;
+	filialId: number | string;
+	manzil: string;
+	status: "yangi" | "qabul" | "jonatilgan" | "yopilgan";
+	saqlangan: boolean;
+	mahsulotlar: {
+		mahsulotId: number | string;
+		count: number;
+	}[];
+}

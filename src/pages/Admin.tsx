@@ -9,12 +9,14 @@ import { Mijozlar } from "./adminPages/Mijozlar";
 import { Hodimlar } from "./adminPages/Hodimlar";
 import { AdminDrawer } from "../components/AdminDrawer";
 import {
+  IBuyurtma,
   IFilial,
   IKategoriya,
   IMahsulot,
   IMijoz,
 } from "../components/Interface";
 import {
+  BuyurtmalarData,
   FiliallarData,
   KategoriyaData,
   MahsulotData,
@@ -35,9 +37,9 @@ export function AdminPage() {
   const [mahsulotlar, setMahsulotlar] = useState<IMahsulot[]>(MahsulotData);
   const [kategoriyalar, setKategoriyalar] =
     useState<IKategoriya[]>(KategoriyaData);
+  const [buyurtmalar, setBuyurtmalar] = useState<IBuyurtma[]>(BuyurtmalarData);
 
   const [mijozlar, setMijozlar] = useState<IMijoz[]>(MijozlarData);
-
   return (
     <BrowserRouter>
       <ThemeProvider theme={defaultTheme}>
@@ -51,6 +53,8 @@ export function AdminPage() {
             setKategoriyalar,
             mijozlar,
             setMijozlar,
+            buyurtmalar,
+            setBuyurtmalar,
           }}
         >
           <CssBaseline>

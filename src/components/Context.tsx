@@ -1,6 +1,12 @@
 import React, { useContext } from "react";
 import { createContext } from "react";
-import { IFilial, IMahsulot, IKategoriya, IMijoz } from "./Interface";
+import {
+  IFilial,
+  IMahsulot,
+  IKategoriya,
+  IMijoz,
+  IBuyurtma,
+} from "./Interface";
 
 export const MainRoute = createContext<{
   activePage: string;
@@ -19,6 +25,8 @@ export const DataContext = React.createContext<{
   setKategoriyalar: (value: IKategoriya[]) => void;
   mijozlar: IMijoz[];
   setMijozlar: (value: IMijoz[]) => void;
+  buyurtmalar: IBuyurtma[];
+  setBuyurtmalar: (value: IBuyurtma[]) => void;
 }>({
   filiallar: [],
   setFiliallar: (value: IFilial[]) => {},
@@ -28,6 +36,8 @@ export const DataContext = React.createContext<{
   setKategoriyalar: (value: IKategoriya[]) => {},
   mijozlar: [],
   setMijozlar: (value: IMijoz[]) => {},
+  buyurtmalar: [],
+  setBuyurtmalar: (value: IBuyurtma[]) => {},
 });
 
 export const useDataContext = () => {

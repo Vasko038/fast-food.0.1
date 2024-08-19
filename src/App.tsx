@@ -18,7 +18,7 @@ function App() {
 	return (
 		<ThemeProvider theme={defaultTheme}>
 			<MainRoute.Provider value={{ activePage, setActivePage }}>
-				<CssBaseline>{pages["AdminPage"]}</CssBaseline>
+				<CssBaseline>{pages[activePage]}</CssBaseline>
 			</MainRoute.Provider>
 		</ThemeProvider>
 	);
