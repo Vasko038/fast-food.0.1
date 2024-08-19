@@ -17,41 +17,50 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import CategoryIcon from "@mui/icons-material/Category";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 const items = [
 	{
 		key: "buyurtmalar",
 		icon: <CheckCircleOutlineIcon />,
-		label: <Link to={"/buyurtmalar"}>Buyurtmalar</Link>,
+		path: "/buyurtmalar",
+		label: "Buyurtmalar",
 	},
 	{
 		key: "mahsulotlar",
 		icon: <Inventory2OutlinedIcon />,
-		label: <Link to={"/mahsulotlar"}>Mahsulotlar</Link>,
+		path: "/mahsulotlar",
+		label: "Mahsulotlar",
 	},
 	{
 		key: "kategoriyalar",
 		icon: <CategoryIcon />,
-		label: <Link to={"/kategoriyalar"}>Kategoriyalar</Link>,
+		path: "/kategoriyalar",
+		label: "Kategoriyalar",
 	},
 	{
 		key: "filiallar",
 		icon: <LocationOnOutlinedIcon />,
-		label: <Link to={"/filiallar"}>Filiallar</Link>,
+		path: "/filiallar",
+		label: "Filiallar",
 	},
 	{
 		key: "mijozlar",
 		icon: <PeopleAltOutlinedIcon />,
-		label: <Link to={"/mijozlar"}>Mijozlar</Link>,
+		path: "/mijozlar",
+		label: "Mijozlar",
 	},
 	{
 		key: "hisobotlar",
 		icon: <BarChartOutlinedIcon />,
-		label: <Link to={"/hisobotlar"}>Hisobotlar</Link>,
+		path: "/hisobotlar",
+		label: "Hisobotlar",
 	},
 ];
+
 export function AdminDrawer() {
-	const [index, setIndex] = React.useState(0);
+	const location = useLocation();
+
+	// const [index, setIndex] = React.useState(0);
 	return (
 		<Box
 			sx={{ width: "280px", flexShrink: 0 }}
@@ -85,36 +94,31 @@ export function AdminDrawer() {
 						paddingRight: "20px",
 					}}
 				>
-					{items.map((item, i) => (
-						<ListItem
-							className="relative"
-							key={item.key}
-							sx={{ padding: "0px" }}
-						>
+					{items.map((item) => (
+						<ListItem key={item.key} sx={{ padding: 0 }}>
 							<Button
-								onClick={() => {
-									setIndex(i);
-									// setActivePage(item.label);
-								}}
+								component={Link}
+								to={item.path}
 								fullWidth
 								sx={{
 									backgroundColor:
-										index === i
+										location.pathname ===
+										item.path
 											? "orange"
 											: "transparent",
 									padding: "10px 20px",
 									borderRadius: "0px 10px 10px 0px",
 									color:
-										index === i
+										location.pathname ===
+										item.path
 											? "white"
 											: "black",
-									transition:
-										"background-color 0.1s",
 									textTransform: "none",
 									textAlign: "left",
 									"&:hover": {
 										backgroundColor:
-											index === i
+											location.pathname ===
+											item.path
 												? "orange"
 												: "transparent",
 									},
@@ -123,17 +127,15 @@ export function AdminDrawer() {
 								<ListItemIcon
 									sx={{
 										color:
-											index === i
+											location.pathname ===
+											item.path
 												? "white"
-												: "black", // Iconning rangi tugma holatiga qarab o'zgaradi
-										transition: "color 0.1s", // Icon rangiga o'tish animatsiyasi
+												: "black",
 									}}
 								>
 									{item.icon}
 								</ListItemIcon>
-								<ListItemText>
-									{item.label}
-								</ListItemText>
+								<ListItemText primary={item.label} />
 							</Button>
 						</ListItem>
 					))}
