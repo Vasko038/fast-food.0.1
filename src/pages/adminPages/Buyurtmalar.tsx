@@ -45,7 +45,7 @@ export function Buyurtmalar() {
 	const [tabValue2, setTabValue2] = useState(0);
 	const [tabDisabled, setTabDisabled] = useState(false);
 
-	const { buyurtmalar, setBuyurtmalar } = useDataContext();
+	const { buyurtmalar } = useDataContext();
 
 	const handleChange1 = (
 		event: React.SyntheticEvent,
@@ -65,18 +65,6 @@ export function Buyurtmalar() {
 		} else {
 			setTabDisabled(false);
 		}
-	};
-
-	const [filteredBuyurtmalar, setFilteredBuyurtmalar] = useState<
-		IBuyurtma[]
-	>(buyurtmalar.filter((b) => b.status === "yangi"));
-
-	const filterBuyurtmalar = (name: string) => {
-		setFilteredBuyurtmalar(
-			buyurtmalar.filter((b) => b.status === name)
-		);
-
-		console.log(filteredBuyurtmalar);
 	};
 
 	return (
@@ -139,9 +127,6 @@ export function Buyurtmalar() {
 								className="bg-white"
 								label="Yangi"
 								{...a11yProps(0)}
-								onClick={() => {
-									filterBuyurtmalar("yangi");
-								}}
 							/>
 							<Tab
 								disableRipple
@@ -154,9 +139,6 @@ export function Buyurtmalar() {
 								}}
 								label="Qabul qilingan"
 								{...a11yProps(1)}
-								onClick={() => {
-									filterBuyurtmalar("qabul");
-								}}
 							/>
 							<Tab
 								disableRipple
@@ -169,9 +151,6 @@ export function Buyurtmalar() {
 								}}
 								label="Jonatilgan"
 								{...a11yProps(2)}
-								onClick={() => {
-									filterBuyurtmalar("jonatilgan");
-								}}
 							/>
 							<Tab
 								disableRipple
@@ -184,9 +163,6 @@ export function Buyurtmalar() {
 								}}
 								label="Yopilgan"
 								{...a11yProps(3)}
-								onClick={() => {
-									filterBuyurtmalar("yopilgan");
-								}}
 							/>
 						</Tabs>
 					</Grid>
@@ -255,22 +231,22 @@ export function Buyurtmalar() {
 				<CustomTabPanel value={tabValue2} index={0}>
 					<CustomTabPanel value={tabValue1} index={0}>
 						<BuyurtmaTable
-							table={filteredBuyurtmalar}
+							status={"yangi"}
 						></BuyurtmaTable>
 					</CustomTabPanel>
 					<CustomTabPanel value={tabValue1} index={1}>
 						<BuyurtmaTable
-							table={filteredBuyurtmalar}
+							status={"qabul"}
 						></BuyurtmaTable>
 					</CustomTabPanel>
 					<CustomTabPanel value={tabValue1} index={2}>
 						<BuyurtmaTable
-							table={filteredBuyurtmalar}
+							status={"jonatilgan"}
 						></BuyurtmaTable>
 					</CustomTabPanel>
 					<CustomTabPanel value={tabValue1} index={3}>
 						<BuyurtmaTable
-							table={filteredBuyurtmalar}
+							status={"yopilgan"}
 						></BuyurtmaTable>
 					</CustomTabPanel>
 				</CustomTabPanel>

@@ -267,7 +267,7 @@ function createMijozData(
 export const MijozlarData: IMijoz[] = [
 	createMijozData(1, "Abdulaziz Hakimov", "+998998051435", true),
 	createMijozData(2, "Botir Akramov", "+998335146987", false),
-	createMijozData(3, "Laziz Erkinov", "+998330086929", true),
+	createMijozData(3, "Laziz Erkinjonov", "+998330086929", true),
 	createMijozData(4, "Toshmat Odilov", "+998945789654", false),
 	createMijozData(5, "Bahodir Husanov", "+998905472168", true),
 ];
@@ -301,7 +301,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		1,
 		1,
 		"Toshkent, Chilonzor",
-		"yangi",
+		"jonatilgan",
 		true,
 		[
 			{ mahsulotId: 10, count: 3 },
@@ -319,7 +319,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 	),
 	createBuyurtmaData(
 		3,
-		1,
+		3,
 		3,
 		"Toshkent, Sergeli",
 		"jonatilgan",
@@ -343,7 +343,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 	),
 	createBuyurtmaData(
 		5,
-		2,
+		4,
 		3,
 		"Toshkent, Mirzo Ulug'bek",
 		"yangi",
