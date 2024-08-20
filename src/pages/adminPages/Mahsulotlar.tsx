@@ -1,18 +1,18 @@
 import {
-  Box,
-  Button,
-  Fab,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  IconButton,
-  MenuItem,
-  OutlinedInput,
-  Radio,
-  RadioGroup,
-  Select,
-  Typography,
+	Box,
+	Button,
+	Fab,
+	FormControl,
+	FormControlLabel,
+	FormLabel,
+	Grid,
+	IconButton,
+	MenuItem,
+	OutlinedInput,
+	Radio,
+	RadioGroup,
+	Select,
+	Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -316,4 +316,5 @@ export function Mahsulotlar() {
       </Box>
     </Box>
   );
+
 }

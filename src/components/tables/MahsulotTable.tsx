@@ -1,11 +1,11 @@
 import * as React from "react";
 import {
-  Avatar,
   Box,
   Divider,
   Grid,
   IconButton,
   Typography,
+  Avatar,
 } from "@mui/material";
 import { useDataContext } from "../Context";
 import { MdOutlineEdit } from "react-icons/md";
@@ -13,7 +13,6 @@ import { LuTrash2 } from "react-icons/lu";
 import { MahsulotForm } from "../forms/MahsulotForm";
 import { Drawer } from "../Drawer";
 import { IMahsulot } from "../Interface";
-
 export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<number | string>("");
