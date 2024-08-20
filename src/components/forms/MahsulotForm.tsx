@@ -4,6 +4,7 @@ import {
   FormLabel,
   Grid,
   MenuItem,
+  Paper,
   Select,
   TextField,
   Typography,
@@ -12,6 +13,7 @@ import React, { useState } from "react";
 import { useDataContext } from "../Context";
 import { IMahsulot } from "../Interface";
 import { v4 as uuidv4 } from "uuid";
+import UploadButton from "../UploadButton";
 export function MahsulotForm({
   id,
   setOpenDrawer,
@@ -91,7 +93,7 @@ export function MahsulotForm({
             ? "mahsulot malumotlarini ozgartirish"
             : "yangi mahsulot qo'shish"}
         </Typography>
-        <Grid container spacing={3}>
+        <Grid container className="flex align-middle" spacing={3}>
           <Grid item xs={12}>
             <TextField
               value={name}
@@ -142,6 +144,14 @@ export function MahsulotForm({
               fullWidth
               label="Qoshimcha ma'lumot"
             ></TextField>
+          </Grid>
+          <Grid item xs={3}>
+            <UploadButton></UploadButton>
+          </Grid>
+          <Grid item xs={3}>
+            <Paper className="h-full  w-full">
+              <img src="" alt="" />
+            </Paper>
           </Grid>
         </Grid>
       </Box>

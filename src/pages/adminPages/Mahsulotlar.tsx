@@ -14,7 +14,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "../../components/Drawer";
 import MahsulotTable from "../../components/tables/MahsulotTable";
@@ -23,24 +23,77 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Popover from "@mui/material/Popover";
 import { useDataContext } from "../../components/Context";
 import { MahsulotForm } from "../../components/forms/MahsulotForm";
+import CloseIcon from "@mui/icons-material/Close";
 
 export function Mahsulotlar() {
   const { mahsulotlar, kategoriyalar } = useDataContext();
+  const [iconSearch, setIconSearch] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
   const [search, setSearch] = React.useState<string>("");
-  const [selectRadio, setSelectRadio] = useState("");
+  const [filterRadio, setFilterRadio] = useState("");
+  const [filterCategoryId, setFilterCategoryId] = useState("all");
+  const [filteredData, setFilteredData] = useState(mahsulotlar);
+  const [searchData, setSearchData] = useState(mahsulotlar);
+  const [filterAdd, setFilterAdd] = useState(false);
+
+  const openPopover = Boolean(popover);
+  const PopoverId = openPopover ? "simple-popover" : undefined;
+
   const handleClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     setPopover(event.currentTarget);
+    setSearch("");
   };
 
   const handleClosePopover = () => {
     setPopover(null);
   };
+  const handleFilterClick = () => {
+    setFilterAdd(!filterAdd);
+    handleClosePopover();
+  };
 
-  let searchData = mahsulotlar;
-  if (search !== "") {
-    searchData = filteredData().filter(
+  const handleCancelFilter = () => {
+    setFilterRadio("");
+    setFilterCategoryId("all");
+    setFilteredData(mahsulotlar);
+    setSearchData(mahsulotlar);
+    handleClosePopover();
+  };
+
+  useEffect(() => {
+    let dataToFilter = [...mahsulotlar];
+    if (filterCategoryId !== "all") {
+      dataToFilter = mahsulotlar.filter(
+        (item) => String(item.categoryId) === String(filterCategoryId)
+      );
+    }
+    switch (filterRadio) {
+      case "narxO":
+        dataToFilter = dataToFilter.sort((a, b) => a.narx - b.narx);
+        break;
+      case "narxK":
+        dataToFilter = dataToFilter.sort((a, b) => b.narx - a.narx);
+        break;
+      case "nameAZ":
+        dataToFilter = dataToFilter.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        break;
+      case "nameZA":
+        dataToFilter = dataToFilter.sort((a, b) =>
+          b.name.localeCompare(a.name)
+        );
+        break;
+      default:
+        break;
+    }
+
+    setFilteredData(dataToFilter);
+  }, [filterAdd, mahsulotlar]);
+
+  useEffect(() => {
+    const dataToSearch = filteredData.filter(
       (item) =>
         item.name.toLocaleLowerCase().includes(search.toLocaleLowerCase()) ||
         item.narx
@@ -49,25 +102,17 @@ export function Mahsulotlar() {
           .includes(search.toLocaleLowerCase()) ||
         item.malumot.toLocaleLowerCase().includes(search.toLocaleLowerCase())
     );
-  }
-  function filteredData() {
-    switch (selectRadio) {
-      case "narxO":
-        return searchData.sort((a, b) => a.narx - b.narx);
-      case "narxK":
-        return searchData.sort((a, b) => b.narx - a.narx);
-      case "nameAZ":
-        return searchData.sort((a, b) => a.name.localeCompare(b.name));
-      case "nameZA":
-        return searchData.sort((a, b) => b.name.localeCompare(a.name));
-      default:
-        return searchData;
+
+    setSearchData(dataToSearch);
+  }, [search, filteredData]);
+
+  useEffect(() => {
+    if (search !== "") {
+      setIconSearch(true);
+    } else {
+      setIconSearch(false);
     }
-  }
-
-  const openPopover = Boolean(popover);
-  const PopoverId = openPopover ? "simple-popover" : undefined;
-
+  }, [search, filterRadio]);
   return (
     <Box className="bg-slate-100 w-full h-full ">
       <Box className="h-[90px] bg-white ">
@@ -100,6 +145,7 @@ export function Mahsulotlar() {
           >
             <Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
               <OutlinedInput
+                value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="border-0 outline-none flex-1"
                 id="search"
@@ -121,8 +167,24 @@ export function Mahsulotlar() {
                 }}
               />
               <FormLabel htmlFor="search">
-                <IconButton disableRipple>
-                  <SearchOutlinedIcon></SearchOutlinedIcon>
+                <IconButton
+                  onClick={() => {
+                    if (!iconSearch) {
+                      document.getElementById("search")?.blur();
+                    } else {
+                      setTimeout(() => {
+                        document.getElementById("search")?.blur();
+                      }, 0);
+                      setSearch("");
+                    }
+                    setIconSearch(!iconSearch);
+                  }}
+                >
+                  {iconSearch || search !== "" ? (
+                    <CloseIcon />
+                  ) : (
+                    <SearchOutlinedIcon />
+                  )}
                 </IconButton>
               </FormLabel>
             </Box>
@@ -163,7 +225,8 @@ export function Mahsulotlar() {
               <Box sx={{ p: 2, width: "300px" }}>
                 <FormLabel htmlFor="kategoriya">Kategoriyalar</FormLabel>
                 <Select
-                  defaultValue={"all"}
+                  value={filterCategoryId}
+                  onChange={(e) => setFilterCategoryId(e.target.value)}
                   sx={{
                     "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
                       borderColor: "orange",
@@ -194,8 +257,8 @@ export function Mahsulotlar() {
                   }}
                 >
                   <RadioGroup
-                    value={selectRadio}
-                    onChange={(e) => setSelectRadio(e.target.value)}
+                    value={filterRadio}
+                    onChange={(e) => setFilterRadio(e.target.value)}
                     aria-labelledby="demo-radio-buttons-group-label"
                     name="radio-buttons-group"
                   >
@@ -225,10 +288,15 @@ export function Mahsulotlar() {
                   sx={{ "& .MuiButton-root": { textTransform: "none" } }}
                   className="flex gap-4 justify-end"
                 >
-                  <Button variant="contained" color="inherit">
+                  <Button
+                    onClick={handleCancelFilter}
+                    variant="contained"
+                    color="inherit"
+                  >
                     Bekor qilish
                   </Button>
                   <Button
+                    onClick={handleFilterClick}
                     sx={{ bgcolor: "orange", "&:hover": { bgcolor: "orange" } }}
                     variant="contained"
                   >
@@ -241,10 +309,7 @@ export function Mahsulotlar() {
         </Grid>
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
-        <MahsulotTable
-          searchData={searchData}
-          filterData={filteredData}
-        ></MahsulotTable>
+        <MahsulotTable data={searchData}></MahsulotTable>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}>
           <MahsulotForm setOpenDrawer={setOpenDrawer}></MahsulotForm>
         </Drawer>

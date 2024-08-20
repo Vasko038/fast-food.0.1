@@ -55,6 +55,7 @@ export default function KategoriyaTable() {
       <Box sx={{ overflow: "auto", height: 600 }}>
         {kategoriyalar.map((item) => (
           <Box
+            key={item.id}
             sx={{
               marginBottom: "10px",
               marginInline: "40px",

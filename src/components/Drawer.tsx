@@ -34,13 +34,13 @@ export function Drawer({
         <>
           <Box
             sx={{
-              position: "absolute", 
+              position: "absolute",
               top: 0,
               left: 0,
               width: "100%",
               height: "100%",
               backgroundColor: "rgba(241, 245, 249, 0.7)",
-              zIndex: 1200, 
+              zIndex: 1200,
             }}
             onClick={handleOverlayClick} // Tashqariga bosish
           />
@@ -50,7 +50,7 @@ export function Drawer({
               right: 0,
               height: "100%",
               top: 0,
-              width: "820px",
+              width: "620px",
               backgroundColor: "white",
               borderTop: "8px solid #f1f1f1",
               transform: open ? "translateX(0)" : "translateX(100%)",
