@@ -316,5 +316,5 @@ export function Mahsulotlar() {
       </Box>
     </Box>
   );
-
+  
 }

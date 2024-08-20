@@ -23,13 +23,7 @@ import {
   MijozlarData,
 } from "../components/Data";
 import { DataContext } from "../components/Context";
-import {
-  BrowserRouter,
-  Navigate,
-  Outlet,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 const defaultTheme = createTheme();
 export function AdminPage() {
@@ -41,60 +35,47 @@ export function AdminPage() {
 
   const [mijozlar, setMijozlar] = useState<IMijoz[]>(MijozlarData);
   return (
-    <BrowserRouter>
-      <ThemeProvider theme={defaultTheme}>
-        <DataContext.Provider
-          value={{
-            filiallar,
-            setFiliallar,
-            mahsulotlar,
-            setMahsulotlar,
-            kategoriyalar,
-            setKategoriyalar,
-            mijozlar,
-            setMijozlar,
-            buyurtmalar,
-            setBuyurtmalar,
-          }}
-        >
-          <CssBaseline>
-            <Box className="flex">
-              <AdminDrawer></AdminDrawer>
-              <Box
-                sx={{
-                  flexGrow: 1,
-                  overflow: "auto",
-                }}
-              >
-                <Routes>
-                  <Route
-                    path="/"
-                    element={<Navigate to="/buyurtmalar" replace />}
-                  />
-                  <Route path="/" element={<Outlet />}>
-                    <Route
-                      path="/buyurtmalar"
-                      element={<Buyurtmalar />}
-                    ></Route>
-                    <Route
-                      path="/mahsulotlar"
-                      element={<Mahsulotlar />}
-                    ></Route>
-                    <Route
-                      path="/kategoriyalar"
-                      element={<Kategoriyalar />}
-                    ></Route>
-                    <Route path="/filiallar" element={<Filiallar />}></Route>
-                    <Route path="/mijozlar" element={<Mijozlar />}></Route>
-                    <Route path="/hisobotlar" element={<Hisobotlar />}></Route>
-                    <Route path="/hodimlar" element={<Hodimlar />}></Route>
-                  </Route>
-                </Routes>
-              </Box>
+    <ThemeProvider theme={defaultTheme}>
+      <DataContext.Provider
+        value={{
+          filiallar,
+          setFiliallar,
+          mahsulotlar,
+          setMahsulotlar,
+          kategoriyalar,
+          setKategoriyalar,
+          mijozlar,
+          setMijozlar,
+          buyurtmalar,
+          setBuyurtmalar,
+        }}
+      >
+        <CssBaseline>
+          <Box className="flex">
+            <AdminDrawer></AdminDrawer>
+            <Box
+              sx={{
+                flexGrow: 1,
+                overflow: "auto",
+              }}
+            >
+              <Routes>
+                <Route
+                  path="/"
+                  element={<Navigate to="/admin/buyurtmalar" replace />}
+                />
+                <Route path="buyurtmalar" element={<Buyurtmalar />} />
+                <Route path="mahsulotlar" element={<Mahsulotlar />} />
+                <Route path="kategoriyalar" element={<Kategoriyalar />} />
+                <Route path="filiallar" element={<Filiallar />} />
+                <Route path="mijozlar" element={<Mijozlar />} />
+                <Route path="hisobotlar" element={<Hisobotlar />} />
+                <Route path="hodimlar" element={<Hodimlar />} />
+              </Routes>
             </Box>
-          </CssBaseline>
-        </DataContext.Provider>
-      </ThemeProvider>
-    </BrowserRouter>
+          </Box>
+        </CssBaseline>
+      </DataContext.Provider>
+    </ThemeProvider>
   );
 }

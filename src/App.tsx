@@ -1,25 +1,25 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.css";
 import { LoginPage } from "./pages/Login";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme, CssBaseline } from "@mui/material";
 import { AdminPage } from "./pages/Admin";
-import { MainRoute } from "./components/Context";
-
-const pages: Record<string, React.ReactNode> = {
-  LoginPage: <LoginPage></LoginPage>,
-  AdminPage: <AdminPage></AdminPage>,
-};
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
 function App() {
-  const [activePage, setActivePage] = useState("LoginPage");
   return (
     <ThemeProvider theme={defaultTheme}>
-      <MainRoute.Provider value={{ activePage, setActivePage }}>
-        <CssBaseline>{pages["AdminPage"]}</CssBaseline>
-      </MainRoute.Provider>
+      <BrowserRouter>
+        <CssBaseline>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin/*" element={<AdminPage />} />
+          </Routes>
+        </CssBaseline>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

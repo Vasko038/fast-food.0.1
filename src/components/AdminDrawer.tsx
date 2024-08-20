@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import BasicModal from "./LogOutModal";
+import BasicModal from "./Modal";
 import React from "react";
 import Image from "../components/images/Bitmap.png";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -17,7 +17,7 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import CategoryIcon from "@mui/icons-material/Category";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 const items = [
   {
     key: "buyurtmalar",
@@ -64,8 +64,8 @@ const items = [
 ];
 
 export function AdminDrawer() {
+  const navigation = useNavigate();
   const location = useLocation();
-
   return (
     <Box
       sx={{ width: "280px", flexShrink: 0 }}
@@ -101,19 +101,24 @@ export function AdminDrawer() {
             <ListItem key={item.key} sx={{ padding: 0 }}>
               <Button
                 component={Link}
-                to={item.path}
+                to={`/admin${item.path}`}
                 fullWidth
                 sx={{
                   backgroundColor:
-                    location.pathname === item.path ? "orange" : "transparent",
+                    location.pathname === `/admin${item.path}`
+                      ? "orange"
+                      : "transparent",
                   padding: "10px 20px",
                   borderRadius: "0px 10px 10px 0px",
-                  color: location.pathname === item.path ? "white" : "black",
+                  color:
+                    location.pathname === `/admin${item.path}`
+                      ? "white"
+                      : "black",
                   textTransform: "none",
                   textAlign: "left",
                   "&:hover": {
                     backgroundColor:
-                      location.pathname === item.path
+                      location.pathname === `/admin${item.path}`
                         ? "orange"
                         : "transparent",
                   },
@@ -121,24 +126,31 @@ export function AdminDrawer() {
               >
                 <ListItemIcon
                   sx={{
-                    color: location.pathname === item.path ? "white" : "black",
+                    color:
+                      location.pathname === `/admin${item.path}`
+                        ? "white"
+                        : "black",
                   }}
                 >
                   {item.icon}
                 </ListItemIcon>
-                <ListItemText primary={item.label} />
+                <ListItemText>{item.label}</ListItemText>
               </Button>
             </ListItem>
           ))}
         </List>
       </Box>
-      <BasicModal buttonText="Chiqish" icon={<LogoutIcon></LogoutIcon>}>
-        <Box className="text-center">
-          <Typography className=" pb-10" variant="h6">
-            Rostan ham chiqishni hohlaysizmi
-          </Typography>
-        </Box>
-      </BasicModal>
+      <BasicModal
+        okFunction={() => {
+          navigation("/login");
+        }}
+        title="Rostan ham chiqishni hohlaysizmi"
+        button={
+          <Button fullWidth sx={{ textTransform: "none" }}>
+            <LogoutIcon></LogoutIcon>Chiqish
+          </Button>
+        }
+      ></BasicModal>
     </Box>
   );
 }

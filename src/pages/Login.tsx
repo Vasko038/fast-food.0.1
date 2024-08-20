@@ -1,10 +1,10 @@
 import { Alert, Box, Button, Grid, TextField, Typography } from "@mui/material";
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useState } from "react";
 import Image from "../components/images/3390.png";
-import { MainRoute } from "../components/Context";
 import { AdminData } from "../components/Data";
+import { useNavigate } from "react-router-dom";
 export function LoginPage() {
-  const { setActivePage } = useContext(MainRoute);
+  const navigation = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alertMessage, setAlertMessage] = useState<{
@@ -24,7 +24,7 @@ export function LoginPage() {
       AdminData[1].password === password
     ) {
       setAlertMessage({ message: "Xush kelibsiz!", severity: "success" });
-      setActivePage("AdminPage");
+      navigation("/admin");
     } else {
       setAlertMessage({
         message: "Malumotlar xato kiritildi.",

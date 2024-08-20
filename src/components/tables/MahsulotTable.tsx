@@ -13,6 +13,7 @@ import { LuTrash2 } from "react-icons/lu";
 import { MahsulotForm } from "../forms/MahsulotForm";
 import { Drawer } from "../Drawer";
 import { IMahsulot } from "../Interface";
+import BasicModal from "../Modal";
 export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState<number | string>("");
@@ -140,14 +141,21 @@ export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
                 >
                   <MdOutlineEdit />
                 </IconButton>
-                <IconButton
-                  onClick={() => handleDelete(item.id)}
-                  sx={{
-                    border: "4px solid #EDEFF3",
+                <BasicModal
+                  okFunction={() => {
+                    handleDelete(item.id);
                   }}
-                >
-                  <LuTrash2 />
-                </IconButton>
+                  title="Haqiqatdan mahsulot ochirilsinmi"
+                  button={
+                    <IconButton
+                      sx={{
+                        border: "4px solid #EDEFF3",
+                      }}
+                    >
+                      <LuTrash2 />
+                    </IconButton>
+                  }
+                ></BasicModal>
               </Grid>
             </Grid>
           </Box>
