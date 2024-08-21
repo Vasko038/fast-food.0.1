@@ -5,6 +5,7 @@ import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
 import { Drawer } from "../Drawer";
 import { KategoriyaForm } from "../forms/KategoriyaForm";
+import BasicModal from "../Modal";
 export default function KategoriyaTable() {
   const { kategoriyalar, setKategoriyalar, mahsulotlar } = useDataContext();
   const [editId, setEditId] = React.useState<number | string>("");
@@ -19,7 +20,7 @@ export default function KategoriyaTable() {
   }
   return (
     <React.Fragment>
-      <Box className="py-5 box-border">
+      <Box className="py-5">
         <Box className=" py-3 px-[50px]   shadow-xl  bg-white">
           <Grid container>
             <Grid item xs={3} sx={{ display: "flex", alignItems: "center" }}>
@@ -100,14 +101,19 @@ export default function KategoriyaTable() {
                 >
                   <MdOutlineEdit />
                 </IconButton>
-                <IconButton
-                  onClick={() => handleDelete(item.id)}
-                  sx={{
-                    border: "4px solid #EDEFF3",
-                  }}
-                >
-                  <LuTrash2 />
-                </IconButton>
+                <BasicModal
+                  okFunction={() => handleDelete(item.id)}
+                  title="Haqiqatdan kategoriya ochirilsinmi"
+                  button={
+                    <IconButton
+                      sx={{
+                        border: "4px solid #EDEFF3",
+                      }}
+                    >
+                      <LuTrash2 />
+                    </IconButton>
+                  }
+                ></BasicModal>
               </Grid>
             </Grid>
           </Box>

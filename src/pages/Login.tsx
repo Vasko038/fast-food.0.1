@@ -11,6 +11,10 @@ export function LoginPage() {
     message: string;
     severity: "error" | "success";
   } | null>(null);
+  const data: { email: string; password: string } = {
+    password: password,
+    email: email,
+  };
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     setAlertMessage(null);
@@ -19,10 +23,7 @@ export function LoginPage() {
         message: "Malumotlar to'liq kiritilmagan.",
         severity: "error",
       });
-    } else if (
-      AdminData[1].email === email &&
-      AdminData[1].password === password
-    ) {
+    } else if (AdminData.filter((item) => item === data)) {
       setAlertMessage({ message: "Xush kelibsiz!", severity: "success" });
       navigation("/admin");
     } else {

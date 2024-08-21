@@ -18,8 +18,13 @@ const VisuallyHiddenInput = styled("input")({
 export default function UploadButton() {
   return (
     <Button
-      className="flex aspect-square flex-col align-middle "
-      sx={{ textTransform: "none" }}
+      className="flex aspect-square flex-col align-middle rounded-full "
+      sx={{
+        textTransform: "none",
+        bgcolor: "orange",
+        borderRadius: "50% 50%",
+        "&:hover": { bgcolor: "orange" },
+      }}
       fullWidth
       component="label"
       role={undefined}

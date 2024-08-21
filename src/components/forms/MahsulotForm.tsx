@@ -145,13 +145,15 @@ export function MahsulotForm({
               label="Qoshimcha ma'lumot"
             ></TextField>
           </Grid>
+          <Grid item xs={3}></Grid>
           <Grid item xs={3}>
             <UploadButton></UploadButton>
           </Grid>
           <Grid item xs={3}>
-            <Paper className="h-full  w-full">
+            <Paper sx={{ borderRadius: "50% 50%" }} className="h-full  w-full">
               <img src="" alt="" />
             </Paper>
+            <Grid item xs={3}></Grid>
           </Grid>
         </Grid>
       </Box>
