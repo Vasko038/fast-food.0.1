@@ -42,3 +42,16 @@ export interface IBuyurtma {
 		count: number;
 	}[];
 }
+
+export interface IHodim {
+	id: number | string;
+	firstName: string;
+	lastName: string;
+	phone: string;
+	role: string;
+}
+
+export interface IRole {
+	id: number | string;
+	name: string;
+}

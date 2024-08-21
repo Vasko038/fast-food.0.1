@@ -1,9 +1,11 @@
 import {
 	IBuyurtma,
 	IFilial,
+	IHodim,
 	IKategoriya,
 	IMahsulot,
 	IMijoz,
+	IRole,
 } from "./Interface";
 export const AdminData = [
 	{
@@ -416,4 +418,56 @@ export const BuyurtmalarData: IBuyurtma[] = [
 			{ mahsulotId: 3, count: 3 },
 		]
 	),
+];
+
+function createHodimData(
+	id: number | string,
+	firstName: string,
+	lastName: string,
+	phone: string,
+	role: string
+): IHodim {
+	return {
+		id,
+		firstName,
+		lastName,
+		phone,
+		role,
+	};
+}
+
+export const HodimlarData: IHodim[] = [
+	createHodimData(
+		1,
+		"Malika",
+		"Komilova",
+		"+998991457486",
+		"Operator"
+	),
+	createHodimData(
+		2,
+		"Husnora",
+		"Jalolova",
+		"+998944865921",
+		"Operator"
+	),
+	createHodimData(
+		3,
+		"Durdona",
+		"Akmalova",
+		"+998334589657",
+		"Operator"
+	),
+];
+
+function createRoleData(id: number | string, name: string): IRole {
+	return {
+		id,
+		name,
+	};
+}
+
+export const RoleData: IRole[] = [
+	createRoleData(1, "Operator"),
+	createRoleData(2, "Admin"),
 ];
