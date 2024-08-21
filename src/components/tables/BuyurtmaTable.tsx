@@ -225,7 +225,7 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
                     </div>
                     <div className="flex gap-2">
                       <LuTruck />
-                      <p className="text-lg">5000 UZS</p>
+                      <p className="text-lg">{t.dostavka} UZS</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -242,7 +242,9 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
                 </div>
                 <p className="text-md text-gray-600 mt-3">Umumiy summa</p>
                 <p className="text-xl text-gray-800">
-                  <span className="text-2xl text-black">{price + 5000}</span>{" "}
+                  <span className="text-2xl text-black">
+                    {price + t.dostavka}
+                  </span>{" "}
                   UZS
                 </p>
               </Grid>
