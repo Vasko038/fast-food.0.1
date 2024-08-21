@@ -36,6 +36,7 @@ export interface IBuyurtma {
 	manzil: string;
 	status: IStatus;
 	saqlangan: boolean;
+	dostavka: number;
 	mahsulotlar: {
 		mahsulotId: number | string;
 		count: number;

@@ -279,6 +279,7 @@ function createBuyurtmaData(
 	manzil: string,
 	status: "yangi" | "qabul" | "jonatilgan" | "yopilgan",
 	saqlangan: boolean,
+	dostavka: number,
 	mahsulotlar: {
 		mahsulotId: number | string;
 		count: number;
@@ -292,6 +293,7 @@ function createBuyurtmaData(
 		manzil,
 		status,
 		saqlangan,
+		dostavka,
 	};
 }
 
@@ -303,6 +305,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"Toshkent, Chilonzor",
 		"jonatilgan",
 		true,
+		5000,
 		[
 			{ mahsulotId: 10, count: 3 },
 			{ mahsulotId: 15, count: 1 },
@@ -315,6 +318,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"Toshkent, Yunusobod",
 		"qabul",
 		true,
+		5000,
 		[{ mahsulotId: 20, count: 2 }]
 	),
 	createBuyurtmaData(
@@ -324,6 +328,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"Toshkent, Sergeli",
 		"jonatilgan",
 		false,
+		5000,
 		[
 			{ mahsulotId: 23, count: 5 },
 			{ mahsulotId: 25, count: 2 },
@@ -336,6 +341,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"Toshkent, Olmazor",
 		"yopilgan",
 		false,
+		5000,
 		[
 			{ mahsulotId: 1, count: 1 },
 			{ mahsulotId: 3, count: 3 },
@@ -348,6 +354,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"Toshkent, Mirzo Ulug'bek",
 		"yangi",
 		true,
+		5000,
 		[{ mahsulotId: 5, count: 4 }]
 	),
 	createBuyurtmaData(
@@ -357,6 +364,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"Toshkent, Shayxontohur",
 		"qabul",
 		false,
+		5000,
 		[
 			{ mahsulotId: 26, count: 2 },
 			{ mahsulotId: 12, count: 2 },
@@ -369,12 +377,22 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"Toshkent, Yakkasaroy",
 		"yangi",
 		false,
+		5000,
 		[{ mahsulotId: 7, count: 1 }]
 	),
-	createBuyurtmaData(8, 3, 1, "Toshkent, Uchtepa", "yangi", false, [
-		{ mahsulotId: 6, count: 3 },
-		{ mahsulotId: 29, count: 1 },
-	]),
+	createBuyurtmaData(
+		8,
+		3,
+		1,
+		"Toshkent, Uchtepa",
+		"yangi",
+		false,
+		5000,
+		[
+			{ mahsulotId: 6, count: 3 },
+			{ mahsulotId: 29, count: 1 },
+		]
+	),
 	createBuyurtmaData(
 		9,
 		4,
@@ -382,6 +400,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"Toshkent, Bektemir",
 		"jonatilgan",
 		true,
+		5000,
 		[{ mahsulotId: 30, count: 2 }]
 	),
 	createBuyurtmaData(
@@ -391,6 +410,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"Toshkent, Mirobod",
 		"yopilgan",
 		false,
+		5000,
 		[
 			{ mahsulotId: 17, count: 5 },
 			{ mahsulotId: 3, count: 3 },
