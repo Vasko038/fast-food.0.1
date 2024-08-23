@@ -14,6 +14,7 @@ import { Drawer } from "../../components/Drawer";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Popover from "@mui/material/Popover";
+import { Kanban } from "../../components/tables/buyurtmaTables/KanbanBoard";
 export function Hisobotlar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
@@ -126,6 +127,7 @@ export function Hisobotlar() {
         </Grid>
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
+        <Kanban></Kanban>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}>
           dsfdsfs
         </Drawer>

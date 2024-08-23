@@ -22,6 +22,7 @@ export function Buyurtmalar() {
   const [tabDisabled, setTabDisabled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  console.log(location);
   const tabValue = location.pathname.includes("yangi")
     ? 0
     : location.pathname.includes("qabul-qilingan")
@@ -34,7 +35,6 @@ export function Buyurtmalar() {
   const tabValue2 = location.pathname.includes("/korinish2") ? 1 : 0;
 
   const handleChange1 = (_event: React.SyntheticEvent, newValue: number) => {
-    setTabDisabled(false);
     switch (newValue) {
       case 0:
         navigate("/admin/buyurtmalar/korinish1/yangi");
@@ -56,11 +56,6 @@ export function Buyurtmalar() {
 
   const handleChange2 = (_event: React.SyntheticEvent, newValue: string) => {
     navigate(`/admin/buyurtmalar/korinish${newValue + 1}`);
-    if (location.pathname.includes("/korinish2")) {
-      setTabDisabled(false);
-    } else {
-      setTabDisabled(true);
-    }
   };
   return (
     <Box className="bg-slate-100 w-full h-full">
@@ -211,10 +206,7 @@ export function Buyurtmalar() {
         className="relative"
       >
         <Routes>
-          <Route
-            path="*"
-            element={<Navigate to="admin/buyurtmalar/korinish1/0" replace />}
-          />
+          <Route path="*" element={<Navigate to="korinish1/*" replace />} />
           <Route path="korinish1/*" element={<Outlet />}>
             <Route index element={<Navigate to="yangi" replace />} />
             <Route path="yangi" element={<BuyurtmaTable status="yangi" />} />
