@@ -48,6 +48,7 @@ export function AdminPage() {
 	const [mijozlar, setMijozlar] = useState<IMijoz[]>(MijozlarData);
 	const [rollar, setRollar] = useState<IRole[]>(RoleData);
 
+
 	return (
 		<ThemeProvider theme={defaultTheme}>
 			<DataContext.Provider

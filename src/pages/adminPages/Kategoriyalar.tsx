@@ -12,7 +12,7 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "../../components/Drawer";
 import KategoriyaTable from "../../components/tables/KategoriyaTable";
@@ -20,20 +20,75 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Popover from "@mui/material/Popover";
 import { KategoriyaForm } from "../../components/forms/KategoriyaForm";
+import CloseIcon from "@mui/icons-material/Close";
+import { DataContext } from "../../components/Context";
 export function Kategoriyalar() {
   const [openDrawer, setOpenDrawer] = useState(false);
+  const [search, setSearch] = React.useState<string>("");
+  const [iconSearch, setIconSearch] = useState(false);
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
   const [selectRadio, setSelectRadio] = useState("");
+  const [filterRadio, setFilterRadio] = useState("");
+  const { kategoriyalar } = useContext(DataContext);
   const openPopover = Boolean(popover);
   const PopoverId = openPopover ? "simple-popover" : undefined;
+  const [filterAdd, setFilterAdd] = useState(false);
+  const [filteredData, setFilteredData] = useState(kategoriyalar);
+  const [searchData, setSearchData] = useState(kategoriyalar);
   const handleClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     setPopover(event.currentTarget);
+    setSearch("");
   };
+  const handleFilterClick = () => {
+    setFilterAdd(!filterAdd);
+    handleClosePopover();
+  };
+
+  const handleCancelFilter = () => {
+    setFilterRadio("");
+    setFilteredData(kategoriyalar);
+    setSearchData(kategoriyalar);
+    handleClosePopover();
+  };
+
+  useEffect(() => {
+    let dataToFilter = [...kategoriyalar];
+    switch (filterRadio) {
+      case "nameAZ":
+        dataToFilter = dataToFilter.sort((a, b) =>
+          a.nameUz.localeCompare(b.nameUz)
+        );
+        break;
+      case "nameZA":
+        dataToFilter = dataToFilter.sort((a, b) =>
+          b.nameUz.localeCompare(a.nameUz)
+        );
+        break;
+      default:
+        break;
+    }
+
+    setFilteredData(dataToFilter);
+  }, [filterAdd, kategoriyalar]);
+
+  useEffect(() => {
+    const dataToSearch = filteredData.filter((item) =>
+      item.nameUz.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+    );
+
+    setSearchData(dataToSearch);
+  }, [search, filteredData]);
 
   const handleClosePopover = () => {
     setPopover(null);
   };
-
+  useEffect(() => {
+    if (search !== "") {
+      setIconSearch(true);
+    } else {
+      setIconSearch(false);
+    }
+  }, [search]);
   return (
     <Box className="bg-slate-100 w-full h-full">
       <Box className="h-[90px] bg-white ">
@@ -66,6 +121,8 @@ export function Kategoriyalar() {
           >
             <Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
               <OutlinedInput
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 className="border-0 outline-none flex-1"
                 id="search"
                 name="search"
@@ -86,8 +143,24 @@ export function Kategoriyalar() {
                 }}
               />
               <FormLabel htmlFor="search">
-                <IconButton>
-                  <SearchOutlinedIcon></SearchOutlinedIcon>
+                <IconButton
+                  onClick={() => {
+                    if (!iconSearch) {
+                      document.getElementById("search")?.blur();
+                    } else {
+                      setTimeout(() => {
+                        document.getElementById("search")?.blur();
+                      }, 0);
+                      setSearch("");
+                    }
+                    setIconSearch(!iconSearch);
+                  }}
+                >
+                  {iconSearch || search !== "" ? (
+                    <CloseIcon />
+                  ) : (
+                    <SearchOutlinedIcon />
+                  )}
                 </IconButton>
               </FormLabel>
             </Box>
@@ -145,16 +218,6 @@ export function Kategoriyalar() {
                     name="radio-buttons-group"
                   >
                     <FormControlLabel
-                      value="narxO"
-                      control={<Radio />}
-                      label="Narx bo'yicha (o'sish)"
-                    />
-                    <FormControlLabel
-                      value="narxK"
-                      control={<Radio />}
-                      label="Narx bo'yicha (kamayish)"
-                    />
-                    <FormControlLabel
                       value="nameAZ"
                       control={<Radio />}
                       label="nom bo'yicha (A-Z)"
@@ -170,10 +233,15 @@ export function Kategoriyalar() {
                   sx={{ "& .MuiButton-root": { textTransform: "none" } }}
                   className="flex gap-4 justify-end"
                 >
-                  <Button variant="contained" color="inherit">
+                  <Button
+                    variant="contained"
+                    onClick={handleCancelFilter}
+                    color="inherit"
+                  >
                     Bekor qilish
                   </Button>
                   <Button
+                    onClick={handleFilterClick}
                     sx={{ bgcolor: "orange", "&:hover": { bgcolor: "orange" } }}
                     variant="contained"
                   >
@@ -189,7 +257,7 @@ export function Kategoriyalar() {
         sx={{ height: "calc(100vh - 90px)", boxSizing: "border-box" }}
         className="relative"
       >
-        <KategoriyaTable></KategoriyaTable>
+        <KategoriyaTable data={searchData}></KategoriyaTable>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}>
           <KategoriyaForm></KategoriyaForm>
         </Drawer>

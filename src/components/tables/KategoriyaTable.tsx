@@ -1,17 +1,18 @@
 import * as React from "react";
 import { Box, Divider, Grid, IconButton } from "@mui/material";
-import { useDataContext } from "../Context";
 import { MdOutlineEdit } from "react-icons/md";
 import { LuTrash2 } from "react-icons/lu";
 import { Drawer } from "../Drawer";
 import { KategoriyaForm } from "../forms/KategoriyaForm";
 import BasicModal from "../Modal";
-export default function KategoriyaTable() {
-  const { kategoriyalar, setKategoriyalar, mahsulotlar } = useDataContext();
+import { IKategoriya } from "../Interface";
+import { useDataContext } from "../Context";
+export default function KategoriyaTable({ data }: { data: IKategoriya[] }) {
+  const { mahsulotlar, setKategoriyalar } = useDataContext();
   const [editId, setEditId] = React.useState<number | string>("");
   const [openDrawer, setOpenDrawer] = React.useState(false);
   function handleDelete(id: number | string) {
-    const updateData = kategoriyalar.filter((item) => item.id !== id);
+    const updateData = data.filter((item) => item.id !== id);
     setKategoriyalar(updateData);
   }
   function handleEdit(id: number | string) {
@@ -54,7 +55,7 @@ export default function KategoriyaTable() {
         </Box>
       </Box>
       <Box sx={{ overflow: "auto", height: 600 }}>
-        {kategoriyalar.map((item) => (
+        {data.map((item) => (
           <Box
             key={item.id}
             sx={{
