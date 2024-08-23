@@ -298,7 +298,20 @@ export function Kanban() {
                         </Stack>
                         <div className="flex items-center justify-start gap-2">
                           <GoClock />
-                          <Typography variant={"body2"}>{item.date}</Typography>
+                          <div>
+                            <Typography
+                              sx={{ display: "blok" }}
+                              variant={"body2"}
+                            >
+                              {item.date.split(" ")[0]}
+                            </Typography>
+                            <Typography
+                              sx={{ textAlign: "right" }}
+                              variant={"body2"}
+                            >
+                              {item.date.split(" ")[1]}
+                            </Typography>
+                          </div>
                         </div>
                       </Stack>
                       <Divider></Divider>

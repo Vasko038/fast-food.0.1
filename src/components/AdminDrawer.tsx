@@ -104,32 +104,32 @@ export function AdminDrawer() {
                 to={`/admin${item.path}`}
                 fullWidth
                 sx={{
-                  backgroundColor:
-                    location.pathname === `/admin${item.path}`
-                      ? "orange"
-                      : "transparent",
+                  backgroundColor: location.pathname.includes(
+                    `/admin${item.path}`
+                  )
+                    ? "orange"
+                    : "transparent",
                   padding: "10px 20px",
                   borderRadius: "0px 10px 10px 0px",
-                  color:
-                    location.pathname === `/admin${item.path}`
-                      ? "white"
-                      : "black",
+                  color: location.pathname.includes(`/admin${item.path}`)
+                    ? "white"
+                    : "black",
                   textTransform: "none",
                   textAlign: "left",
                   "&:hover": {
-                    backgroundColor:
-                      location.pathname === `/admin${item.path}`
-                        ? "orange"
-                        : "transparent",
+                    backgroundColor: location.pathname.includes(
+                      `/admin${item.path}`
+                    )
+                      ? "orange"
+                      : "transparent",
                   },
                 }}
               >
                 <ListItemIcon
                   sx={{
-                    color:
-                      location.pathname === `/admin${item.path}`
-                        ? "white"
-                        : "black",
+                    color: location.pathname.includes(`/admin${item.path}`)
+                      ? "white"
+                      : "black",
                   }}
                 >
                   {item.icon}

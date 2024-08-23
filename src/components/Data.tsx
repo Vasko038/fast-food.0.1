@@ -255,6 +255,7 @@ function createBuyurtmaData(
   userId: number | string,
   filialId: number | string,
   manzil: string,
+  date: string,
   status: "yangi" | "qabul" | "jonatilgan" | "yopilgan",
   saqlangan: boolean,
   dostavka: number,
@@ -262,8 +263,7 @@ function createBuyurtmaData(
   mahsulotlar: {
     mahsulotId: number | string;
     count: number;
-  }[],
-  date: string
+  }[]
 ): IBuyurtma {
   return {
     id,
@@ -285,6 +285,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
     1,
     1,
     "Toshkent, Chilonzor",
+    "2024/08/10 12:02",
     "jonatilgan",
     true,
     5000,
@@ -292,26 +293,26 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 10, count: 3 },
       { mahsulotId: 15, count: 1 },
-    ],
-    "2024/08/10 12:02"
+    ]
   ),
   createBuyurtmaData(
     2,
     2,
     2,
     "Toshkent, Yunusobod",
+    "2024/08/10 11:02",
     "qabul",
     true,
     5000,
     1,
-    [{ mahsulotId: 20, count: 2 }],
-    "2024/08/10 11:02"
+    [{ mahsulotId: 20, count: 2 }]
   ),
   createBuyurtmaData(
     3,
     3,
     3,
     "Toshkent, Sergeli",
+    "2024/08/10 11:02",
     "jonatilgan",
     false,
     5000,
@@ -319,14 +320,14 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 23, count: 5 },
       { mahsulotId: 25, count: 2 },
-    ],
-    "2024/08/10 12:41"
+    ]
   ),
   createBuyurtmaData(
     4,
     5,
     1,
     "Toshkent, Olmazor",
+    "2024/08/10 17:32",
     "yopilgan",
     false,
     5000,
@@ -334,26 +335,26 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 1, count: 1 },
       { mahsulotId: 3, count: 3 },
-    ],
-    "2024/08/10 17:32"
+    ]
   ),
   createBuyurtmaData(
     5,
     4,
     3,
     "Toshkent, Mirzo Ulug'bek",
+    "2024/08/10 12:59",
     "yangi",
     true,
     5000,
     2,
-    [{ mahsulotId: 5, count: 4 }],
-    "2024/08/10 12:59"
+    [{ mahsulotId: 5, count: 4 }]
   ),
   createBuyurtmaData(
     6,
     5,
     2,
     "Toshkent, Shayxontohur",
+    "2024/08/10 07:09",
     "qabul",
     false,
     5000,
@@ -361,26 +362,27 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 26, count: 2 },
       { mahsulotId: 12, count: 2 },
-    ],
-    "2024/08/10 07:09"
+    ]
   ),
   createBuyurtmaData(
     7,
     2,
     3,
     "Toshkent, Yakkasaroy",
+    "2024/08/10 05:02",
     "yangi",
     false,
+
     5000,
     3,
-    [{ mahsulotId: 7, count: 1 }],
-    "2024/08/10 05:02"
+    [{ mahsulotId: 7, count: 1 }]
   ),
   createBuyurtmaData(
     8,
     3,
     1,
     "Toshkent, Uchtepa",
+    "2024/08/10 15:44",
     "yangi",
     false,
     5000,
@@ -388,26 +390,26 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 6, count: 3 },
       { mahsulotId: 29, count: 1 },
-    ],
-    "2024/08/10 15:44"
+    ]
   ),
   createBuyurtmaData(
     9,
     4,
     2,
     "Toshkent, Bektemir",
+    "2024/08/10 13:45",
     "jonatilgan",
     true,
     5000,
     2,
-    [{ mahsulotId: 30, count: 2 }],
-    "2024/08/10 13:45"
+    [{ mahsulotId: 30, count: 2 }]
   ),
   createBuyurtmaData(
     10,
     4,
     2,
     "Toshkent, Mirobod",
+    "2024/08/10 13:07",
     "yopilgan",
     false,
     5000,
@@ -415,8 +417,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 17, count: 5 },
       { mahsulotId: 3, count: 3 },
-    ],
-    "2024/08/10 13:07"
+    ]
   ),
 ];
 

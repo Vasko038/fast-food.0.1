@@ -1,6 +1,6 @@
 import { Box, Fab, Grid, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Drawer } from "../../components/Drawer";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -10,7 +10,6 @@ import { BuyurtmaTable } from "../../components/tables/buyurtmaTables/Table";
 import { Kanban } from "../../components/tables/buyurtmaTables/KanbanBoard";
 import {
   Navigate,
-  Outlet,
   Route,
   Routes,
   useLocation,
@@ -20,43 +19,57 @@ import {
 export function Buyurtmalar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [tabDisabled, setTabDisabled] = useState(false);
+  const [active, setActive] = useState("yopilgan");
+  const [index, setIndex] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
-  const tabValue = location.pathname.includes("yangi")
-    ? 0
-    : location.pathname.includes("qabul-qilingan")
-    ? 1
-    : location.pathname.includes("jonatilgan")
-    ? 2
-    : location.pathname.includes("yopilgan")
-    ? 3
-    : 0;
-  const tabValue2 = location.pathname.includes("/korinish2") ? 1 : 0;
+  useEffect(() => {
+    location.pathname.includes("table/yangi")
+      ? setIndex(0)
+      : location.pathname.includes("table/qabul-qilingan")
+      ? setIndex(1)
+      : location.pathname.includes("table/jonatilgan")
+      ? setIndex(2)
+      : location.pathname.includes("table/yopilgan")
+      ? setIndex(3)
+      : setIndex(0);
+  }, [location.pathname]);
 
   const handleChange1 = (_event: React.SyntheticEvent, newValue: number) => {
     switch (newValue) {
       case 0:
-        navigate("/admin/buyurtmalar/korinish1/yangi");
+        navigate("/admin/buyurtmalar/table/yangi");
+        setActive("yangi");
         break;
       case 1:
-        navigate("/admin/buyurtmalar/korinish1/qabul-qilingan");
+        navigate("/admin/buyurtmalar/table/qabul-qilingan");
+        setActive("qabul-qilingan");
         break;
       case 2:
-        navigate("/admin/buyurtmalar/korinish1/jonatilgan");
+        navigate("/admin/buyurtmalar/table/jonatilgan");
+        setActive("jonatilgan");
         break;
       case 3:
-        navigate("/admin/buyurtmalar/korinish1/yopilgan");
+        navigate("/admin/buyurtmalar/table/yopilgan");
+        setActive("yopilgan");
         break;
       default:
-        navigate("/admin/buyurtmalar/korinish1/yangi");
+        navigate("/admin/buyurtmalar/table/yangi");
         break;
     }
   };
+  const tabValue2 = location.pathname.includes("board") ? 1 : 0;
 
-  const handleChange2 = (_event: React.SyntheticEvent, newValue: string) => {
-    navigate(`/admin/buyurtmalar/korinish${newValue + 1}`);
+  const handleChange2 = (_event: React.SyntheticEvent, newValue: number) => {
+    if (newValue === 1) {
+      navigate(`/admin/buyurtmalar/board`);
+      setTabDisabled(true);
+    } else if (newValue === 0) {
+      navigate(`/admin/buyurtmalar/table/yangi`);
+      setTabDisabled(false);
+    }
   };
+
   return (
     <Box className="bg-slate-100 w-full h-full">
       <Box className="h-[90px]  bg-white ">
@@ -88,7 +101,7 @@ export function Buyurtmalar() {
             className="border-l-8 border-solid border-slate-100 h-full  flex align-middle justify-center"
           >
             <Tabs
-              value={tabValue}
+              value={index}
               className="items-center bg-slate-100 my-3 mt-[14px] rounded-full py-1 px-2"
               onChange={handleChange1}
               aria-label="first tabs"
@@ -206,9 +219,12 @@ export function Buyurtmalar() {
         className="relative"
       >
         <Routes>
-          <Route path="*" element={<Navigate to="korinish1/*" replace />} />
-          <Route path="korinish1/*" element={<Outlet />}>
-            <Route index element={<Navigate to="yangi" replace />} />
+          <Route
+            path="/"
+            element={<Navigate to={`table/${active}`} replace />}
+          />
+          <Route path="table">
+            <Route index element={<Navigate to={active} replace />} />
             <Route path="yangi" element={<BuyurtmaTable status="yangi" />} />
             <Route
               path="qabul-qilingan"
@@ -223,7 +239,7 @@ export function Buyurtmalar() {
               element={<BuyurtmaTable status="yopilgan" />}
             />
           </Route>
-          <Route path="korinish2" element={<Kanban />} />
+          <Route path="board" element={<Kanban />} />
         </Routes>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
       </Box>
