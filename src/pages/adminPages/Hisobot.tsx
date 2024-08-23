@@ -142,7 +142,11 @@ export function Hisobotlar() {
 				className="relative"
 			>
 				<Kanban></Kanban>
-				<Drawer setOpen={setOpenDrawer} open={openDrawer}>
+				<Drawer
+					setOpen={setOpenDrawer}
+					open={openDrawer}
+					width="1000px"
+				>
 					<BuyurtmaForm />
 				</Drawer>
 			</Box>
