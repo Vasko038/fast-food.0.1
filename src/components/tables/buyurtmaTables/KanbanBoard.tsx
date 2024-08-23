@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { DataContext } from "../../Context";
-import { IStatus } from "../../Interface";
+import { IBuyurtma, IStatus } from "../../Interface";
 import { CiBookmark } from "react-icons/ci";
 import { GoClock } from "react-icons/go";
 import { RxPerson } from "react-icons/rx";
@@ -134,6 +134,70 @@ export function Kanban() {
     }
     return summa.toLocaleString("en-US");
   }
+  function handleNext(id: string | number) {
+    const updatedBuyurtmalar = buyurtmalar.map((item) => {
+      if (item.id === id) {
+        let newStatus = item.status;
+
+        switch (item.status) {
+          case "yangi":
+            newStatus = "qabul";
+            break;
+          case "qabul":
+            newStatus = "jonatilgan";
+            break;
+          case "jonatilgan":
+            newStatus = "yopilgan";
+            break;
+          case "yopilgan":
+            newStatus = "yopilgan";
+            break;
+          default:
+            break;
+        }
+
+        return { ...item, status: newStatus };
+      }
+      return item;
+    });
+
+    setBuyurtmalar(updatedBuyurtmalar);
+  }
+  type Status = "yangi" | "qabul" | "jonatilgan" | "yopilgan";
+
+  function handlePrev(id: string | number) {
+    const updatedBuyurtmalar = buyurtmalar
+      .map((item) => {
+        if (item.id === id) {
+          if (item.status === "yangi") {
+            return null; // "yangi" statusidagi mahsulotni o'chirib tashlash uchun null qaytaradi
+          } else {
+            let newStatus: Status = item.status;
+
+            switch (newStatus) {
+              case "qabul":
+                newStatus = "yangi";
+                break;
+              case "jonatilgan":
+                newStatus = "qabul";
+                break;
+              case "yopilgan":
+                newStatus = "jonatilgan";
+                break;
+              default:
+                break;
+            }
+
+            return { ...item, status: newStatus };
+          }
+        }
+        return item;
+      })
+      .filter((item): item is IBuyurtma => item !== null); // null qiymatlarni olib tashlaydi
+
+    setBuyurtmalar(updatedBuyurtmalar);
+  }
+
   const updateTaskStatus = (id: number | string, status: IStatus) => {
     const buyurtma = buyurtmalar.find((task) => task.id === id);
     if (buyurtma) {
@@ -299,6 +363,7 @@ export function Kanban() {
                         </div>
 
                         <Fab
+                          onClick={() => handlePrev(item.id)}
                           sx={{
                             boxShadow: "none",
                             border: "5px solid #EDEFF3",
@@ -328,6 +393,8 @@ export function Kanban() {
                           </Typography>
                         </div>
                         <Fab
+                          disabled={item.status === "yopilgan" ? true : false}
+                          onClick={() => handleNext(item.id)}
                           sx={{
                             boxShadow: "none",
                             border: "5px solid #EDEFF3",

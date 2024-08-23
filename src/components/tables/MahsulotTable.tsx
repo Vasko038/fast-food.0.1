@@ -69,7 +69,7 @@ export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
           </Grid>
         </Box>
       </Box>
-      <Box sx={{ overflow: "auto", height: 600 }}>
+      <Box sx={{ overflow: "auto", height: "calc(100vh - 180px)" }}>
         {data.map((item) => (
           <Box
             sx={{

@@ -15,7 +15,9 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Popover from "@mui/material/Popover";
 import { Kanban } from "../../components/tables/buyurtmaTables/KanbanBoard";
+
 import { BuyurtmaForm } from "../../components/forms/BuyurtmaForm";
+
 export function Hisobotlar() {
 	const [openDrawer, setOpenDrawer] = useState(false);
 	const [popover, setPopover] =
