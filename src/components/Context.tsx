@@ -8,6 +8,7 @@ import {
 	IBuyurtma,
 	IHodim,
 	IRole,
+	IBasket,
 } from "./Interface";
 
 export const MainRoute = createContext<{
@@ -33,6 +34,8 @@ export const DataContext = React.createContext<{
 	setHodimlar: (value: IHodim[]) => void;
 	rollar: IRole[];
 	setRollar: (value: IRole[]) => void;
+	basket: IBasket[];
+	setBasket: (value: IBasket[]) => void;
 }>({
 	filiallar: [],
 	setFiliallar: (value: IFilial[]) => {},
@@ -48,6 +51,8 @@ export const DataContext = React.createContext<{
 	setHodimlar: (value: IHodim[]) => {},
 	rollar: [],
 	setRollar: (value: IRole[]) => {},
+	basket: [],
+	setBasket: (value: IBasket[]) => {},
 });
 
 export const useDataContext = () => {

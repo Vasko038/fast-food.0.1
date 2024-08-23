@@ -9,30 +9,34 @@ import {
 	Tabs,
 	Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React from "react";
 import { LuTrash2 } from "react-icons/lu";
 import { useDataContext } from "../Context";
-import { Form, Input } from "antd";
+import { Form } from "antd";
+import { BuyurtmaFormTableCard } from "../tables/buyurtmaTables/BuyurtmaCard";
+import { v4 as uuidv4 } from "uuid";
+import { PresentDay } from "../tables/buyurtmaTables/Functions";
+import { IBuyurtma } from "../Interface";
 
 export const BuyurtmaForm = () => {
-	const { setBuyurtmalar, mahsulotlar, mijozlar, kategoriyalar } =
-		useDataContext();
+	const {
+		buyurtmalar,
+		setBuyurtmalar,
+		mahsulotlar,
+		mijozlar,
+		kategoriyalar,
+		filiallar,
+		hodimlar,
+		basket,
+		setBasket,
+	} = useDataContext();
 
 	const [form] = Form.useForm();
-
-	const [basket, setBasket] = useState<
-		{
-			mahsulotId: number | string;
-			count: number;
-		}[]
-	>([
-		{ mahsulotId: 1, count: 3 },
-		{ mahsulotId: 3, count: 1 },
-	]);
+	const [isSubmitting, setIsSubmitting] = React.useState(false); // Boolean flag to prevent double submission
 
 	const totalSum = basket.reduce((acc, item) => {
 		const mahsulot = mahsulotlar.find(
-			(m) => m.id === item.mahsulotId
+			(m) => m.id === item.productId
 		);
 		if (mahsulot) {
 			return acc + mahsulot.narx * item.count;
@@ -80,9 +84,39 @@ export const BuyurtmaForm = () => {
 		setTabValue(newValue);
 	};
 
+	const onFinish = () => {
+		if (isSubmitting) return; // Prevent multiple submissions
+		setIsSubmitting(true); // Set the flag to true to prevent further submissions
+
+		const values = form.getFieldsValue();
+
+		const newBuyurtma: IBuyurtma = {
+			id: uuidv4(),
+			...values,
+			manzil: "",
+			status: "yangi",
+			saqlangan: false,
+			dostavka: 5000,
+			mahsulotlar: [...basket],
+			date: PresentDay(),
+		};
+
+		setBuyurtmalar([...buyurtmalar, newBuyurtma]);
+		setBasket([]);
+
+		setTimeout(() => {
+			setIsSubmitting(false);
+		}, 500);
+	};
+
+	const deleteFormAndBasket = () => {
+		form.resetFields();
+		setBasket([]);
+	};
+
 	return (
-		<Box sx={{ width: "100%", padding: "40px" }}>
-			<Grid container>
+		<Box sx={{ width: "100%", padding: "40px 40px 20px 40px" }}>
+			<Grid container spacing={3}>
 				<Grid item xs={8}>
 					<Typography variant="h6" component="h4">
 						Yangi buyurtma qo'shish
@@ -104,42 +138,63 @@ export const BuyurtmaForm = () => {
 							},
 						}}
 					>
-						{kategoriyalar.map((k, index) => {
-							return (
-								<Tab
-									disableRipple
-									{...a11yProps(index)}
-									sx={{
-										textTransform: "none",
-										width: "140px",
-										paddingY: 1,
-										zIndex: 2,
-									}}
-									className="bg-white"
-									label={k.nameUz}
-								/>
-							);
-						})}
+						{kategoriyalar.map((k, index) => (
+							<Tab
+								key={k.id} // Added key prop
+								disableRipple
+								{...a11yProps(index)}
+								sx={{
+									textTransform: "none",
+									width: "140px",
+									paddingY: 1,
+									zIndex: 2,
+								}}
+								className="bg-white"
+								label={k.nameUz}
+							/>
+						))}
 					</Tabs>
 					<div>
 						{kategoriyalar.map((k, index) => {
+							const products = mahsulotlar.filter(
+								(m) => m.categoryId === k.id
+							);
 							return (
 								<CustomTabPanel
+									key={k.id} // Added key prop
 									value={tabValue}
 									index={index}
 								>
-									{k.nameUz}
+									<Box
+										sx={{
+											height: "420px",
+											overflowY: "auto",
+										}}
+									>
+										<Grid container spacing={2}>
+											{products.map((m) => (
+												<BuyurtmaFormTableCard
+													product={m}
+													key={m.id}
+												/>
+											))}
+										</Grid>
+									</Box>
 								</CustomTabPanel>
 							);
 						})}
 					</div>
 				</Grid>
 				<Grid item xs={4}>
-					<div className="flex items-center justify-between">
+					<div className="flex items-center justify-between mb-4">
 						<Typography variant="h6" component="h4">
 							Buyurtma ro'yxati
 						</Typography>
-						<IconButton>
+						<IconButton
+							onClick={() => {
+								deleteFormAndBasket();
+							}}
+						>
 							<LuTrash2 />
 						</IconButton>
 					</div>
@@ -153,13 +208,13 @@ export const BuyurtmaForm = () => {
 					>
 						{basket.map((b) => {
 							const mahsulot = mahsulotlar.find(
-								(m) => m.id === b.mahsulotId
+								(m) => m.id === b.productId
 							);
 
 							return (
 								<div
 									className="flex items-center justify-between mb-2"
-									key={b.mahsulotId}
+									key={b.productId}
 								>
 									<p>{mahsulot?.name}</p>
 									<p>
@@ -183,66 +238,104 @@ export const BuyurtmaForm = () => {
 								UZS
 							</p>
 						</div>
-						<Form
-							form={form}
-							layout="vertical"
-							className="mt-3"
-						>
-							<Form.Item
-								label="Mijoz"
-								name="userId"
-								required
-							>
-								<Select
-									id="demo-simple-select"
-									label=" "
-									style={{
-										width: "100%",
-										height: "40px",
-									}}
-									onChange={(event) => {
-										form.setFieldsValue({
-											userId: event.target
-												.value,
-										});
-										const user = mijozlar.find(
-											(m) =>
-												m.id ===
-												event.target.value
-										);
-										console.log({ user });
-
-										const inp =
-											document.getElementById(
-												"phone-input"
-											) as HTMLInputElement;
-
-										console.log({ inp });
-
-										if (user && inp)
-											inp.value = user.phone;
-									}}
-								>
-									{mijozlar.map((m) => {
-										return (
-											<MenuItem
-												key={m.id}
-												value={m.id}
-											>
-												{m.name}
-											</MenuItem>
-										);
-									})}
-								</Select>
-							</Form.Item>
-							<Form.Item label="Telefon raqam">
-								<Input
-									readOnly
-									id="phone-input"
-								></Input>
-							</Form.Item>
-						</Form>
 					</Box>
+					<Form
+						onFinish={onFinish}
+						form={form}
+						layout="vertical"
+						className="mt-3"
+					>
+						<Form.Item
+							label="Mijoz"
+							name="userId"
+							required
+						>
+							<Select
+								id="demo-simple-select"
+								label=" "
+								style={{
+									width: "100%",
+									height: "40px",
+								}}
+								onChange={(event) => {
+									form.setFieldsValue({
+										userId: event.target.value,
+									});
+								}}
+							>
+								{mijozlar.map((m) => (
+									<MenuItem key={m.id} value={m.id}>
+										{m.name}
+									</MenuItem>
+								))}
+							</Select>
+						</Form.Item>
+						<Form.Item
+							label="Filial"
+							name="filialId"
+							required
+						>
+							<Select
+								label=" "
+								style={{
+									width: "100%",
+									height: "40px",
+								}}
+								onChange={(event) => {
+									form.setFieldsValue({
+										filialId: event.target.value,
+									});
+								}}
+							>
+								{filiallar.map((m) => (
+									<MenuItem key={m.id} value={m.id}>
+										{m.nameUz}
+									</MenuItem>
+								))}
+							</Select>
+						</Form.Item>
+						<Form.Item
+							label="Operator"
+							name="hodimId"
+							required
+						>
+							<Select
+								label=" "
+								style={{
+									width: "100%",
+									height: "40px",
+								}}
+								onChange={(event) => {
+									form.setFieldsValue({
+										hodimId: event.target.value,
+									});
+								}}
+							>
+								{hodimlar.map((m) => (
+									<MenuItem key={m.id} value={m.id}>
+										{m.lastName}{" "}
+										{m.firstName.charAt(0)}
+									</MenuItem>
+								))}
+							</Select>
+						</Form.Item>
+						<button
+							onClick={() => {
+								form.submit();
+							}}
+							className="bg-[#20D472] hover:bg-[#36b16e]"
+							style={{
+								borderRadius: "10px",
+								padding: "10px",
+								width: "100%",
+								color: "white",
+								fontWeight: "bold",
+								fontSize: "14px",
+							}}
+						>
+							Buyurtma qilish
+						</button>
+					</Form>
 				</Grid>
 			</Grid>
 		</Box>
