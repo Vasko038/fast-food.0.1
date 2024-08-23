@@ -170,7 +170,7 @@ export function Kanban() {
       .map((item) => {
         if (item.id === id) {
           if (item.status === "yangi") {
-            return null; // "yangi" statusidagi mahsulotni o'chirib tashlash uchun null qaytaradi
+            return null;
           } else {
             let newStatus: Status = item.status;
 

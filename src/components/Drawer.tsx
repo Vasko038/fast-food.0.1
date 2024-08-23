@@ -6,10 +6,12 @@ export function Drawer({
   open,
   setOpen,
   children,
+  width,
 }: {
   open: boolean;
   setOpen: (value: boolean) => void;
   children?: React.ReactNode;
+  width?: string;
 }) {
   const toggleDrawer = () => {
     setOpen(!open);
@@ -50,7 +52,7 @@ export function Drawer({
               right: 0,
               height: "100%",
               top: 0,
-              width: "620px",
+              width: width ? width : "520px",
               backgroundColor: "white",
               borderTop: "8px solid #f1f1f1",
               transform: open ? "translateX(0)" : "translateX(100%)",
