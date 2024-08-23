@@ -6,7 +6,7 @@ export const BuyurtmaForm = () => {
 		<Box sx={{ width: "100%", padding: "40px" }}>
 			<Grid container>
 				<Grid item xs={8}>
-					<Typography variant="h3" component="h2">
+					<Typography variant="h5" component="h4">
 						Yangi buyurtma qo'shish
 					</Typography>
 				</Grid>
