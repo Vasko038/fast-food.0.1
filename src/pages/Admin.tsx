@@ -33,6 +33,7 @@ import {
 import { DataContext } from "../components/Context";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { Mijozlar } from "./adminPages/Mijozlar";
+import { Kanban } from "../components/tables/buyurtmaTables/KanbanBoard";
 
 const defaultTheme = createTheme();
 export function AdminPage() {
@@ -47,7 +48,6 @@ export function AdminPage() {
 	const [hodimlar, setHodimlar] = useState<IHodim[]>(HodimlarData);
 	const [mijozlar, setMijozlar] = useState<IMijoz[]>(MijozlarData);
 	const [rollar, setRollar] = useState<IRole[]>(RoleData);
-
 
 	return (
 		<ThemeProvider theme={defaultTheme}>
