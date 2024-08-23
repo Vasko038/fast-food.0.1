@@ -54,7 +54,7 @@ export default function KategoriyaTable({ data }: { data: IKategoriya[] }) {
           </Grid>
         </Box>
       </Box>
-      <Box sx={{ overflow: "auto", height: 600 }}>
+      <Box sx={{ overflow: "auto", height: "calc(100vh - 180px)" }}>
         {data.map((item) => (
           <Box
             key={item.id}

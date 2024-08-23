@@ -164,7 +164,7 @@ export function Kanban() {
     setBuyurtmalar(updatedBuyurtmalar);
   }
   type Status = "yangi" | "qabul" | "jonatilgan" | "yopilgan";
-
+  console.log(buyurtmalar, "dsfsdfsdf");
   function handlePrev(id: string | number) {
     const updatedBuyurtmalar = buyurtmalar
       .map((item) => {
@@ -298,7 +298,7 @@ export function Kanban() {
                         </Stack>
                         <div className="flex items-center justify-start gap-2">
                           <GoClock />
-                          <p className="text-xl">00:24</p>
+                          <Typography variant={"body2"}>{item.date}</Typography>
                         </div>
                       </Stack>
                       <Divider></Divider>

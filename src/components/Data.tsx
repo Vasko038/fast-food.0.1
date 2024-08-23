@@ -262,18 +262,20 @@ function createBuyurtmaData(
   mahsulotlar: {
     mahsulotId: number | string;
     count: number;
-  }[]
+  }[],
+  date: string
 ): IBuyurtma {
   return {
     id,
     userId,
     filialId,
-    mahsulotlar,
     manzil,
     status,
     saqlangan,
     dostavka,
     hodimId,
+    mahsulotlar,
+    date,
   };
 }
 
@@ -290,11 +292,21 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 10, count: 3 },
       { mahsulotId: 15, count: 1 },
-    ]
+    ],
+    "2024/08/10 12:02"
   ),
-  createBuyurtmaData(2, 2, 2, "Toshkent, Yunusobod", "qabul", true, 5000, 1, [
-    { mahsulotId: 20, count: 2 },
-  ]),
+  createBuyurtmaData(
+    2,
+    2,
+    2,
+    "Toshkent, Yunusobod",
+    "qabul",
+    true,
+    5000,
+    1,
+    [{ mahsulotId: 20, count: 2 }],
+    "2024/08/10 11:02"
+  ),
   createBuyurtmaData(
     3,
     3,
@@ -307,12 +319,24 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 23, count: 5 },
       { mahsulotId: 25, count: 2 },
-    ]
+    ],
+    "2024/08/10 12:41"
   ),
-  createBuyurtmaData(4, 5, 1, "Toshkent, Olmazor", "yopilgan", false, 5000, 2, [
-    { mahsulotId: 1, count: 1 },
-    { mahsulotId: 3, count: 3 },
-  ]),
+  createBuyurtmaData(
+    4,
+    5,
+    1,
+    "Toshkent, Olmazor",
+    "yopilgan",
+    false,
+    5000,
+    2,
+    [
+      { mahsulotId: 1, count: 1 },
+      { mahsulotId: 3, count: 3 },
+    ],
+    "2024/08/10 17:32"
+  ),
   createBuyurtmaData(
     5,
     4,
@@ -322,7 +346,8 @@ export const BuyurtmalarData: IBuyurtma[] = [
     true,
     5000,
     2,
-    [{ mahsulotId: 5, count: 4 }]
+    [{ mahsulotId: 5, count: 4 }],
+    "2024/08/10 12:59"
   ),
   createBuyurtmaData(
     6,
@@ -336,15 +361,36 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 26, count: 2 },
       { mahsulotId: 12, count: 2 },
-    ]
+    ],
+    "2024/08/10 07:09"
   ),
-  createBuyurtmaData(7, 2, 3, "Toshkent, Yakkasaroy", "yangi", false, 5000, 3, [
-    { mahsulotId: 7, count: 1 },
-  ]),
-  createBuyurtmaData(8, 3, 1, "Toshkent, Uchtepa", "yangi", false, 5000, 1, [
-    { mahsulotId: 6, count: 3 },
-    { mahsulotId: 29, count: 1 },
-  ]),
+  createBuyurtmaData(
+    7,
+    2,
+    3,
+    "Toshkent, Yakkasaroy",
+    "yangi",
+    false,
+    5000,
+    3,
+    [{ mahsulotId: 7, count: 1 }],
+    "2024/08/10 05:02"
+  ),
+  createBuyurtmaData(
+    8,
+    3,
+    1,
+    "Toshkent, Uchtepa",
+    "yangi",
+    false,
+    5000,
+    1,
+    [
+      { mahsulotId: 6, count: 3 },
+      { mahsulotId: 29, count: 1 },
+    ],
+    "2024/08/10 15:44"
+  ),
   createBuyurtmaData(
     9,
     4,
@@ -354,7 +400,8 @@ export const BuyurtmalarData: IBuyurtma[] = [
     true,
     5000,
     2,
-    [{ mahsulotId: 30, count: 2 }]
+    [{ mahsulotId: 30, count: 2 }],
+    "2024/08/10 13:45"
   ),
   createBuyurtmaData(
     10,
@@ -368,7 +415,8 @@ export const BuyurtmalarData: IBuyurtma[] = [
     [
       { mahsulotId: 17, count: 5 },
       { mahsulotId: 3, count: 3 },
-    ]
+    ],
+    "2024/08/10 13:07"
   ),
 ];
 
