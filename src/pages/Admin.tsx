@@ -8,6 +8,7 @@ import { Hisobotlar } from "./adminPages/Hisobot";
 import { Hodimlar } from "./adminPages/Hodimlar";
 import { AdminDrawer } from "../components/AdminDrawer";
 import {
+  IBasket,
   IBuyurtma,
   IFilial,
   IHodim,
@@ -17,6 +18,7 @@ import {
   IRole,
 } from "../components/Interface";
 import {
+  BasketData,
   BuyurtmalarData,
   FiliallarData,
   HodimlarData,
@@ -40,6 +42,7 @@ export function AdminPage() {
   const [hodimlar, setHodimlar] = useState<IHodim[]>(HodimlarData);
   const [mijozlar, setMijozlar] = useState<IMijoz[]>(MijozlarData);
   const [rollar, setRollar] = useState<IRole[]>(RoleData);
+  const [basket, setBasket] = useState<IBasket[]>(BasketData);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -59,6 +62,8 @@ export function AdminPage() {
           setHodimlar,
           rollar,
           setRollar,
+          basket,
+          setBasket,
         }}
       >
         <CssBaseline>

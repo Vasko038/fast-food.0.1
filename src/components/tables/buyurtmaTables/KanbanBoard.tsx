@@ -62,7 +62,9 @@ const KanbanItem: React.FC<KanbanItemProps> = ({ id, onDrop, children }) => {
       isDragging: monitor.isDragging(),
     }),
     end: (item, monitor) => {
-      const dropResult = monitor.getDropResult<{ name: IStatus }>();
+      const dropResult = monitor.getDropResult<{
+        name: IStatus;
+      }>();
       if (item && dropResult) {
         onDrop(item.id, dropResult.name);
       }
@@ -387,7 +389,9 @@ export function Kanban() {
                             aspectRatio: "1/1",
                             fontSize: "25px",
                             color: "gray",
-                            "&:hover": { boxShadow: "none" },
+                            "&:hover": {
+                              boxShadow: "none",
+                            },
                           }}
                         >
                           <HiOutlineX></HiOutlineX>
@@ -418,7 +422,9 @@ export function Kanban() {
                             aspectRatio: "1/1",
                             fontSize: "25px",
                             color: "gray",
-                            "&:hover": { boxShadow: "none" },
+                            "&:hover": {
+                              boxShadow: "none",
+                            },
                           }}
                         >
                           <IoMdCheckmark></IoMdCheckmark>
