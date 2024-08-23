@@ -282,6 +282,7 @@ function createBuyurtmaData(
 	status: "yangi" | "qabul" | "jonatilgan" | "yopilgan",
 	saqlangan: boolean,
 	dostavka: number,
+	hodimId: number,
 	mahsulotlar: {
 		mahsulotId: number | string;
 		count: number;
@@ -296,6 +297,7 @@ function createBuyurtmaData(
 		status,
 		saqlangan,
 		dostavka,
+		hodimId,
 	};
 }
 
@@ -308,6 +310,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"jonatilgan",
 		true,
 		5000,
+		1,
 		[
 			{ mahsulotId: 10, count: 3 },
 			{ mahsulotId: 15, count: 1 },
@@ -321,6 +324,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"qabul",
 		true,
 		5000,
+		1,
 		[{ mahsulotId: 20, count: 2 }]
 	),
 	createBuyurtmaData(
@@ -331,6 +335,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"jonatilgan",
 		false,
 		5000,
+		3,
 		[
 			{ mahsulotId: 23, count: 5 },
 			{ mahsulotId: 25, count: 2 },
@@ -344,6 +349,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"yopilgan",
 		false,
 		5000,
+		2,
 		[
 			{ mahsulotId: 1, count: 1 },
 			{ mahsulotId: 3, count: 3 },
@@ -357,6 +363,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"yangi",
 		true,
 		5000,
+		2,
 		[{ mahsulotId: 5, count: 4 }]
 	),
 	createBuyurtmaData(
@@ -367,6 +374,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"qabul",
 		false,
 		5000,
+		3,
 		[
 			{ mahsulotId: 26, count: 2 },
 			{ mahsulotId: 12, count: 2 },
@@ -380,6 +388,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"yangi",
 		false,
 		5000,
+		3,
 		[{ mahsulotId: 7, count: 1 }]
 	),
 	createBuyurtmaData(
@@ -390,6 +399,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"yangi",
 		false,
 		5000,
+		1,
 		[
 			{ mahsulotId: 6, count: 3 },
 			{ mahsulotId: 29, count: 1 },
@@ -403,6 +413,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"jonatilgan",
 		true,
 		5000,
+		2,
 		[{ mahsulotId: 30, count: 2 }]
 	),
 	createBuyurtmaData(
@@ -413,6 +424,7 @@ export const BuyurtmalarData: IBuyurtma[] = [
 		"yopilgan",
 		false,
 		5000,
+		1,
 		[
 			{ mahsulotId: 17, count: 5 },
 			{ mahsulotId: 3, count: 3 },
