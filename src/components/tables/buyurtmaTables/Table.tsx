@@ -3,16 +3,15 @@ import {
   Button,
   Dialog,
   DialogActions,
-  DialogContent,
   DialogTitle,
   Divider,
   Grid,
   IconButton,
 } from "@mui/material";
-import { IBuyurtma, IStatus } from "../Interface";
+import { IBuyurtma, IStatus } from "../../Interface";
 import { CiBookmark } from "react-icons/ci";
 import { GoClock } from "react-icons/go";
-import { DataContext } from "../Context";
+import { DataContext } from "../../Context";
 import { RxPerson } from "react-icons/rx";
 import { BsTelephone } from "react-icons/bs";
 import { LuClipboard } from "react-icons/lu";

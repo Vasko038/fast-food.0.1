@@ -64,7 +64,7 @@ export function AdminPage() {
                   path="/"
                   element={<Navigate to="/admin/buyurtmalar" replace />}
                 />
-                <Route path="buyurtmalar" element={<Buyurtmalar />} />
+                <Route path="buyurtmalar/*" element={<Buyurtmalar />} />
                 <Route path="mahsulotlar" element={<Mahsulotlar />} />
                 <Route path="kategoriyalar" element={<Kategoriyalar />} />
                 <Route path="filiallar" element={<Filiallar />} />

@@ -6,62 +6,62 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TableRowsIcon from "@mui/icons-material/TableRows";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn";
-import { useDataContext } from "../../components/Context";
-import { IBuyurtma } from "../../components/Interface";
-import { BuyurtmaTable } from "../../components/tables/BuyurtmaTable";
-import { BuyurtmaTable2 } from "../../components/tables/buyurtmaTables/buyurtmaTable2";
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
-
-function CustomTabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box>{children}</Box>}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+import { BuyurtmaTable } from "../../components/tables/buyurtmaTables/Table";
+import { Kanban } from "../../components/tables/buyurtmaTables/KanbanBoard";
+import {
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 export function Buyurtmalar() {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const [tabValue1, setTabValue1] = useState(0);
-  const [tabValue2, setTabValue2] = useState(0);
   const [tabDisabled, setTabDisabled] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const tabValue = location.pathname.includes("yangi")
+    ? 0
+    : location.pathname.includes("qabul-qilingan")
+    ? 1
+    : location.pathname.includes("jonatilgan")
+    ? 2
+    : location.pathname.includes("yopilgan")
+    ? 3
+    : 0;
+  const tabValue2 = location.pathname.includes("/korinish2") ? 1 : 0;
 
-  const { buyurtmalar, setBuyurtmalar } = useDataContext();
-
-  const handleChange1 = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue1(newValue);
-  };
-
-  const handleChange2 = (event: React.SyntheticEvent, newValue: number) => {
-    setTabValue2(newValue);
-
-    if (newValue === 1) {
-      setTabDisabled(true);
-    } else {
-      setTabDisabled(false);
+  const handleChange1 = (_event: React.SyntheticEvent, newValue: number) => {
+    setTabDisabled(false);
+    switch (newValue) {
+      case 0:
+        navigate("/admin/buyurtmalar/korinish1/yangi");
+        break;
+      case 1:
+        navigate("/admin/buyurtmalar/korinish1/qabul-qilingan");
+        break;
+      case 2:
+        navigate("/admin/buyurtmalar/korinish1/jonatilgan");
+        break;
+      case 3:
+        navigate("/admin/buyurtmalar/korinish1/yopilgan");
+        break;
+      default:
+        navigate("/admin/buyurtmalar/korinish1/yangi");
+        break;
     }
   };
 
+  const handleChange2 = (_event: React.SyntheticEvent, newValue: string) => {
+    navigate(`/admin/buyurtmalar/korinish${newValue + 1}`);
+    if (location.pathname.includes("/korinish2")) {
+      setTabDisabled(false);
+    } else {
+      setTabDisabled(true);
+    }
+  };
   return (
     <Box className="bg-slate-100 w-full h-full">
       <Box className="h-[90px]  bg-white ">
@@ -93,7 +93,7 @@ export function Buyurtmalar() {
             className="border-l-8 border-solid border-slate-100 h-full  flex align-middle justify-center"
           >
             <Tabs
-              value={tabValue1}
+              value={tabValue}
               className="items-center bg-slate-100 my-3 mt-[14px] rounded-full py-1 px-2"
               onChange={handleChange1}
               aria-label="first tabs"
@@ -118,7 +118,6 @@ export function Buyurtmalar() {
                 }}
                 className="bg-white"
                 label="Yangi"
-                {...a11yProps(0)}
               />
               <Tab
                 disableRipple
@@ -130,7 +129,6 @@ export function Buyurtmalar() {
                   zIndex: 2,
                 }}
                 label="Qabul qilingan"
-                {...a11yProps(1)}
               />
               <Tab
                 disableRipple
@@ -142,7 +140,6 @@ export function Buyurtmalar() {
                   zIndex: 2,
                 }}
                 label="Jonatilgan"
-                {...a11yProps(2)}
               />
               <Tab
                 disableRipple
@@ -154,7 +151,6 @@ export function Buyurtmalar() {
                   zIndex: 2,
                 }}
                 label="Yopilgan"
-                {...a11yProps(3)}
               />
             </Tabs>
           </Grid>
@@ -190,7 +186,6 @@ export function Buyurtmalar() {
                 }}
                 disableRipple
                 label={<TableRowsIcon></TableRowsIcon>}
-                {...a11yProps(0)}
               />
               <Tab
                 sx={{
@@ -203,7 +198,6 @@ export function Buyurtmalar() {
                 }}
                 disableRipple
                 label={<ViewColumnIcon></ViewColumnIcon>}
-                {...a11yProps(1)}
               />
             </Tabs>
           </Grid>
@@ -216,26 +210,29 @@ export function Buyurtmalar() {
         }}
         className="relative"
       >
-        <CustomTabPanel value={tabValue2} index={0}>
-          <CustomTabPanel value={tabValue1} index={0}>
-            <BuyurtmaTable status={"yangi"}></BuyurtmaTable>
-          </CustomTabPanel>
-          <CustomTabPanel value={tabValue1} index={1}>
-            <BuyurtmaTable status={"qabul"}></BuyurtmaTable>
-          </CustomTabPanel>
-          <CustomTabPanel value={tabValue1} index={2}>
-            <BuyurtmaTable status={"jonatilgan"}></BuyurtmaTable>
-          </CustomTabPanel>
-          <CustomTabPanel value={tabValue1} index={3}>
-            <BuyurtmaTable status={"yopilgan"}></BuyurtmaTable>
-          </CustomTabPanel>
-        </CustomTabPanel>
-        <CustomTabPanel value={tabValue2} index={1}>
-          <>
-            <BuyurtmaTable2></BuyurtmaTable2>
-          </>
-        </CustomTabPanel>
-
+        <Routes>
+          <Route
+            path="*"
+            element={<Navigate to="admin/buyurtmalar/korinish1/0" replace />}
+          />
+          <Route path="korinish1/*" element={<Outlet />}>
+            <Route index element={<Navigate to="yangi" replace />} />
+            <Route path="yangi" element={<BuyurtmaTable status="yangi" />} />
+            <Route
+              path="qabul-qilingan"
+              element={<BuyurtmaTable status="qabul" />}
+            />
+            <Route
+              path="jonatilgan"
+              element={<BuyurtmaTable status="jonatilgan" />}
+            />
+            <Route
+              path="yopilgan"
+              element={<BuyurtmaTable status="yopilgan" />}
+            />
+          </Route>
+          <Route path="korinish2" element={<Kanban />} />
+        </Routes>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
       </Box>
     </Box>

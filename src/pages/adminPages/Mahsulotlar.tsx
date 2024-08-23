@@ -1,18 +1,18 @@
 import {
-	Box,
-	Button,
-	Fab,
-	FormControl,
-	FormControlLabel,
-	FormLabel,
-	Grid,
-	IconButton,
-	MenuItem,
-	OutlinedInput,
-	Radio,
-	RadioGroup,
-	Select,
-	Typography,
+  Box,
+  Button,
+  Fab,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  IconButton,
+  MenuItem,
+  OutlinedInput,
+  Radio,
+  RadioGroup,
+  Select,
+  Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -112,7 +112,7 @@ export function Mahsulotlar() {
     } else {
       setIconSearch(false);
     }
-  }, [search, filterRadio]);
+  }, [search]);
   return (
     <Box className="bg-slate-100 w-full h-full ">
       <Box className="h-[90px] bg-white ">
@@ -316,5 +316,4 @@ export function Mahsulotlar() {
       </Box>
     </Box>
   );
-  
 }
