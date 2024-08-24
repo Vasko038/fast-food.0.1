@@ -59,6 +59,6 @@ export interface IRole {
 }
 
 export type IBasket = {
-	productId: number | string;
+	mahsulotId: number | string;
 	count: number;
 };
