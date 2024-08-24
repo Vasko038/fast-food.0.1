@@ -6,6 +6,7 @@ import {
   Grid,
   IconButton,
   OutlinedInput,
+  Popover,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -13,11 +14,6 @@ import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "../../components/Drawer";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
-import Popover from "@mui/material/Popover";
-import { Kanban } from "../../components/tables/buyurtmaTables/KanbanBoard";
-
-import { BuyurtmaForm } from "../../components/forms/BuyurtmaForm";
-
 export function Hisobotlar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);

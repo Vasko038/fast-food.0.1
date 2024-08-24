@@ -6,7 +6,11 @@ import { Kategoriyalar } from "./adminPages/Kategoriyalar";
 import { Mahsulotlar } from "./adminPages/Mahsulotlar";
 import { Hisobotlar } from "./adminPages/Hisobot";
 import { Hodimlar } from "./adminPages/Hodimlar";
+import { Mijozlar } from "./adminPages/Mijozlar";
+import { YetkazishNarxi } from "./adminPages/YetkazishNarxi";
+import { Xarita } from "./adminPages/Xaritalar";
 import { AdminDrawer } from "../components/AdminDrawer";
+import { TizimSozlamalari } from "./adminPages/TizimSozlamalari";
 import {
   IBasket,
   IBuyurtma,
@@ -29,8 +33,6 @@ import {
 } from "../components/Data";
 import { DataContext } from "../components/Context";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { Mijozlar } from "./adminPages/Mijozlar";
-import { Kanban } from "../components/tables/buyurtmaTables/KanbanBoard";
 
 const defaultTheme = createTheme();
 export function AdminPage() {
@@ -87,6 +89,12 @@ export function AdminPage() {
                 <Route path="mijozlar" element={<Mijozlar />}></Route>
                 <Route path="hisobotlar" element={<Hisobotlar />} />
                 <Route path="hodimlar" element={<Hodimlar />} />
+                <Route path="yetkazish-narxi" element={<YetkazishNarxi />} />
+                <Route path="xarita" element={<Xarita />} />
+                <Route
+                  path="tizim-sozlamalari"
+                  element={<TizimSozlamalari />}
+                />
               </Routes>
             </Box>
           </Box>

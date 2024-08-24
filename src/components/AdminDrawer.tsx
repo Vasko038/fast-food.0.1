@@ -17,6 +17,10 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import CategoryIcon from "@mui/icons-material/Category";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import SettingsIcon from "@mui/icons-material/Settings";
+import BadgeIcon from "@mui/icons-material/Badge";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 const items = [
   {
@@ -53,13 +57,31 @@ const items = [
     key: "hisobotlar",
     icon: <BarChartOutlinedIcon />,
     path: "/hisobotlar",
-    label: "Hisobotlar",
+    label: "Xisobot",
   },
   {
     key: "Hodimlar",
-    icon: <BarChartOutlinedIcon />,
+    icon: <BadgeIcon />,
     path: "/hodimlar",
     label: "Hodimlar",
+  },
+  {
+    key: "yetkazishNarxi",
+    icon: <LocalOfferIcon />,
+    path: "/yetkazish-narxi",
+    label: "Yetkazish narxi",
+  },
+  {
+    key: "xarita",
+    icon: <LocationOnIcon />,
+    path: "/xarita",
+    label: "Xarita",
+  },
+  {
+    key: "sozlamalar",
+    icon: <SettingsIcon />,
+    path: "/tizim-sozlamalari",
+    label: "Tizim Sozlamalari",
   },
 ];
 
