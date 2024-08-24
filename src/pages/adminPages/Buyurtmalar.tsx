@@ -20,7 +20,7 @@ import { BuyurtmaForm } from "../../components/forms/BuyurtmaForm";
 export function Buyurtmalar() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [tabDisabled, setTabDisabled] = useState(false);
-  const [active, setActive] = useState("yopilgan");
+  const [active, setActive] = useState("yangi");
   const [index, setIndex] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
@@ -41,21 +41,26 @@ export function Buyurtmalar() {
       case 0:
         navigate("/admin/buyurtmalar/table/yangi");
         setActive("yangi");
+        console.log(active);
         break;
       case 1:
         navigate("/admin/buyurtmalar/table/qabul-qilingan");
         setActive("qabul-qilingan");
+        console.log(active);
         break;
       case 2:
         navigate("/admin/buyurtmalar/table/jonatilgan");
         setActive("jonatilgan");
+        console.log(active);
         break;
       case 3:
         navigate("/admin/buyurtmalar/table/yopilgan");
         setActive("yopilgan");
+        console.log(active);
         break;
       default:
         navigate("/admin/buyurtmalar/table/yangi");
+        console.log(active);
         break;
     }
   };

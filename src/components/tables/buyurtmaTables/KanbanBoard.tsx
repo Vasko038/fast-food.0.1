@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useMemo } from "react";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
@@ -166,7 +166,6 @@ export function Kanban() {
     setBuyurtmalar(updatedBuyurtmalar);
   }
   type Status = "yangi" | "qabul" | "jonatilgan" | "yopilgan";
-  console.log(buyurtmalar, "dsfsdfsdf");
   function handlePrev(id: string | number) {
     const updatedBuyurtmalar = buyurtmalar
       .map((item) => {
