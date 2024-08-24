@@ -15,6 +15,7 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
+import { BuyurtmaForm } from "../../components/forms/BuyurtmaForm";
 
 export function Buyurtmalar() {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -241,7 +242,9 @@ export function Buyurtmalar() {
           </Route>
           <Route path="board" element={<Kanban />} />
         </Routes>
-        <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
+        <Drawer width="1000px" setOpen={setOpenDrawer} open={openDrawer}>
+          <BuyurtmaForm />
+        </Drawer>
       </Box>
     </Box>
   );

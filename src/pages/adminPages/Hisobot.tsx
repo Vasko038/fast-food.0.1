@@ -130,10 +130,7 @@ export function Hisobotlar() {
         </Grid>
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
-        <Kanban></Kanban>
-        <Drawer setOpen={setOpenDrawer} open={openDrawer} width="1000px">
-          <BuyurtmaForm />
-        </Drawer>
+        <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
       </Box>
     </Box>
   );
