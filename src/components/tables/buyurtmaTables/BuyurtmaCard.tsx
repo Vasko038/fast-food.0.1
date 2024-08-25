@@ -9,14 +9,14 @@ import { IMahsulot } from "../../Interface";
 export const BuyurtmaFormTableCard = ({ product }: { product: IMahsulot }) => {
   const { basket, setBasket } = useDataContext();
 
-  const existingItem = basket.find((item) => item.productId === product.id);
+  const existingItem = basket.find((item) => item.mahsulotId === product.id);
   const count = existingItem ? existingItem.count : 0;
 
   const handleIncrement = () => {
     if (existingItem) {
       setBasket(
         basket.map((item) =>
-          item.productId === product.id
+          item.mahsulotId === product.id
             ? { ...item, count: item.count + 1 }
             : item
         )
@@ -25,7 +25,7 @@ export const BuyurtmaFormTableCard = ({ product }: { product: IMahsulot }) => {
       setBasket([
         ...basket,
         {
-          productId: product.id,
+          mahsulotId: product.id,
           count: 1,
         },
       ]);
@@ -36,13 +36,13 @@ export const BuyurtmaFormTableCard = ({ product }: { product: IMahsulot }) => {
     if (existingItem && existingItem.count > 1) {
       setBasket(
         basket.map((item) =>
-          item.productId === product.id
+          item.mahsulotId === product.id
             ? { ...item, count: item.count - 1 }
             : item
         )
       );
     } else if (existingItem && existingItem.count === 1) {
-      setBasket(basket.filter((item) => item.productId !== product.id));
+      setBasket(basket.filter((item) => item.mahsulotId !== product.id));
     }
   };
 
@@ -92,10 +92,10 @@ export const BuyurtmaFormTableCard = ({ product }: { product: IMahsulot }) => {
             <Typography component="div" variant="h5">
               {product.narx} UZS
             </Typography>
-            <div className="btn-container mt-2">
+            <div className="mt-2 btn-container">
               {count !== 0 ? (
                 <div
-                  className="flex items-center justify-center gap-5 mx-auto px-3"
+                  className="flex items-center justify-center gap-5 px-3 mx-auto"
                   style={{
                     border: "2px solid #EDEFF3",
                     borderRadius: "10px",
