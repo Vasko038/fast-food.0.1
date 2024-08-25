@@ -271,11 +271,16 @@ export const BuyurtmaForm = () => {
 									});
 								}}
 							>
-								{mijozlar.map((m) => (
-									<MenuItem key={m.id} value={m.id}>
-										{m.name}
-									</MenuItem>
-								))}
+								{mijozlar
+									.filter((f) => f.active)
+									.map((m) => (
+										<MenuItem
+											key={m.id}
+											value={m.id}
+										>
+											{m.name}
+										</MenuItem>
+									))}
 							</Select>
 						</Form.Item>
 						<Form.Item
