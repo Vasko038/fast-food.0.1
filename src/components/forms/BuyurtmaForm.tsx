@@ -2,7 +2,6 @@ import {
 	Box,
 	Grid,
 	IconButton,
-	InputLabel,
 	MenuItem,
 	Select,
 	Tab,

@@ -28,7 +28,7 @@ export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
   }
   return (
     <React.Fragment>
-      <Box className="py-5 flex">
+      <Box className="flex py-5">
         <Box className="py-3 pl-[50px] pr-[65px]   flex-1 shadow-xl  bg-white">
           <Grid container>
             <Grid item xs={3} sx={{ display: "flex", alignItems: "center" }}>

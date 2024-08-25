@@ -143,7 +143,7 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 	};
 
 	return (
-		<Box className=" pt-7 ">
+		<Box className=" pt-7">
 			<Box
 				sx={{ height: "calc(100vh - 90px - 28px)" }}
 				className="overflow-y-auto ps-9 pe-11"
@@ -203,7 +203,7 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 								>
 									<div className="flex">
 										<div
-											className="bg-green-400 text-white text-xl flex items-center justify-center"
+											className="flex items-center justify-center text-xl text-white bg-green-400"
 											style={{
 												width: "90px",
 												height: "36px",
@@ -310,7 +310,7 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 											</p>
 										</div>
 									</div>
-									<p className="text-md text-gray-600 mt-3">
+									<p className="mt-3 text-gray-600 text-md">
 										Umumiy summa
 									</p>
 									<p className="text-xl text-gray-800">
