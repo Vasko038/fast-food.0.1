@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import {
+	MapContainer,
+	TileLayer,
+	Marker,
+	Popup,
+} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Box } from "@mui/material";
@@ -11,63 +16,71 @@ const getIcon = (color: string) => `
 `;
 
 const customIcon = new L.Icon({
-  iconUrl: `data:image/svg+xml;base64,${btoa(getIcon("#FF0000"))}`,
-  iconSize: [54, 54],
-  iconAnchor: [12, 24],
-  popupAnchor: [0, -24],
+	iconUrl: `data:image/svg+xml;base64,${btoa(getIcon("#FF0000"))}`,
+	iconSize: [54, 54],
+	iconAnchor: [12, 24],
+	popupAnchor: [0, -24],
 });
 
 interface DraggableMarkerProps {
-  position: [number, number];
+	position: [number, number];
 }
 
 function DraggableMarker({ position }: DraggableMarkerProps) {
-  return (
-    <Marker
-      position={position}
-      icon={customIcon}
-      draggable={false} // Markerni tahrir qilish mumkin emas
-    >
-      <Popup>
-        Marker <br /> O'zbekiston
-      </Popup>
-    </Marker>
-  );
+	return (
+		<Marker
+			position={position}
+			icon={customIcon}
+			draggable={false} // Markerni tahrir qilish mumkin emas
+		>
+			<Popup>
+				Marker <br /> O'zbekiston
+			</Popup>
+		</Marker>
+	);
 }
 
 export function Xarita() {
-  const [position1] = useState<[number, number]>([41.31115, 69.27951]);
-  const [position2] = useState<[number, number]>([41.32115, 69.28951]);
-  const [position3] = useState<[number, number]>([41.33115, 69.29951]);
-  const [position4] = useState<[number, number]>([41.34115, 69.30951]);
+	const [position1] = useState<[number, number]>([
+		41.31115, 69.27951,
+	]);
+	const [position2] = useState<[number, number]>([
+		41.32115, 69.28951,
+	]);
+	const [position3] = useState<[number, number]>([
+		41.33115, 69.29951,
+	]);
+	const [position4] = useState<[number, number]>([
+		41.34115, 69.30951,
+	]);
 
-  return (
-    <Box className="bg-slate-100 w-full h-full ">
-      <Box className="h-[90px] bg-white shadow-lg "></Box>
-      <Box
-        sx={{ height: "calc(100vh - 90px)" }}
-        className="relative flex justify-center"
-      >
-        <Box
-          sx={{ height: "calc(100vh - 90px - 16px)" }}
-          className="bg-white p-4 aspect-square my-2 shadow-lg"
-        >
-          <MapContainer
-            center={[41.32515, 69.29151]}
-            zoom={14}
-            style={{ height: "100%", width: "100%" }}
-          >
-            <TileLayer
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            />
-            <DraggableMarker position={position1} />
-            <DraggableMarker position={position2} />
-            <DraggableMarker position={position3} />
-            <DraggableMarker position={position4} />
-          </MapContainer>
-        </Box>
-      </Box>
-    </Box>
-  );
+	return (
+		<Box className="bg-slate-100 w-full h-full ">
+			<Box className="h-[90px] bg-white shadow-lg "></Box>
+			<Box
+				sx={{ height: "calc(100vh - 90px)" }}
+				className="relative flex justify-center"
+			>
+				<Box
+					sx={{ height: "calc(100vh - 90px - 16px)" }}
+					className="bg-white p-4 aspect-square my-2 shadow-lg"
+				>
+					<MapContainer
+						center={[41.32515, 69.29151]}
+						zoom={14}
+						style={{ height: "100%", width: "100%" }}
+					>
+						<TileLayer
+							url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+							attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+						/>
+						<DraggableMarker position={position1} />
+						<DraggableMarker position={position2} />
+						<DraggableMarker position={position3} />
+						<DraggableMarker position={position4} />
+					</MapContainer>
+				</Box>
+			</Box>
+		</Box>
+	);
 }
