@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from "react";
+import React, { useContext, useState } from "react";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import update from "immutability-helper";
@@ -6,7 +6,6 @@ import {
   Box,
   Chip,
   Divider,
-  IconButton,
   Paper,
   Stack,
   Fab,
@@ -14,12 +13,12 @@ import {
 } from "@mui/material";
 import { DataContext } from "../../Context";
 import { IBuyurtma, IStatus } from "../../Interface";
-import { CiBookmark } from "react-icons/ci";
 import { GoClock } from "react-icons/go";
 import { RxPerson } from "react-icons/rx";
 import { HiOutlineX } from "react-icons/hi";
 import { IoMdCheckmark } from "react-icons/io";
-
+import { KanbanDescription } from "./KanbanDescription";
+import { Drawer } from "../../Drawer";
 type KanbanColumnProps = {
   status: IStatus;
   children: React.ReactNode;
@@ -106,8 +105,16 @@ const colorMap: Record<IStatus, string> = {
 };
 
 export function Kanban() {
-  const { buyurtmalar, setBuyurtmalar, mahsulotlar, filiallar, mijozlar } =
-    useContext(DataContext);
+  const {
+    buyurtmalar,
+    setBuyurtmalar,
+    mahsulotlar,
+    filiallar,
+    mijozlar,
+    hodimlar,
+  } = useContext(DataContext);
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [buyurtmaId, setBuyurtmaId] = useState<number | string>("");
   function canculateAllPrice(status: string) {
     const statusData = buyurtmalar.filter((item) => item.status === status);
     let allAmount = 0;
@@ -120,6 +127,10 @@ export function Kanban() {
       });
     });
     return allAmount.toLocaleString("en-US");
+  }
+  function handleDesc(id: string | number) {
+    setBuyurtmaId(id);
+    setOpenDrawer(true);
   }
   function canculatePrice(id: number | string) {
     const buyurtma = buyurtmalar.find((item) => item.id === id);
@@ -136,7 +147,11 @@ export function Kanban() {
     }
     return summa.toLocaleString("en-US");
   }
-  function handleNext(id: string | number) {
+  function handleNext(
+    event: React.MouseEvent<HTMLButtonElement>,
+    id: string | number
+  ) {
+    event.stopPropagation();
     const updatedBuyurtmalar = buyurtmalar.map((item) => {
       if (item.id === id) {
         let newStatus = item.status;
@@ -166,7 +181,11 @@ export function Kanban() {
     setBuyurtmalar(updatedBuyurtmalar);
   }
   type Status = "yangi" | "qabul" | "jonatilgan" | "yopilgan";
-  function handlePrev(id: string | number) {
+  function handlePrev(
+    event: React.MouseEvent<HTMLButtonElement>,
+    id: string | number
+  ) {
+    event.stopPropagation();
     const updatedBuyurtmalar = buyurtmalar
       .map((item) => {
         if (item.id === id) {
@@ -270,7 +289,11 @@ export function Kanban() {
                     id={item.id}
                     onDrop={updateTaskStatus}
                   >
-                    <>
+                    <Box
+                      onClick={() => {
+                        handleDesc(item.id);
+                      }}
+                    >
                       <Stack
                         direction={"row"}
                         alignContent={"center"}
@@ -278,25 +301,16 @@ export function Kanban() {
                         justifyContent={"space-between"}
                         className="mb-3"
                       >
-                        <Stack
-                          spacing={2}
-                          direction={"row"}
-                          alignItems={"center"}
+                        <Box
+                          sx={{
+                            bgcolor: " #22c55e ",
+                            color: "white",
+                            height: "40px",
+                          }}
+                          className="w-[70px] bg-green-500 rounded-full flex justify-center items-center"
                         >
-                          <Box
-                            sx={{
-                              bgcolor: " #22c55e ",
-                              color: "white",
-                              height: "40px",
-                            }}
-                            className="w-[70px] bg-green-500 rounded-full flex justify-center items-center"
-                          >
-                            7777
-                          </Box>
-                          <IconButton sx={{ bgcolor: "gainsboro" }}>
-                            <CiBookmark />
-                          </IconButton>
-                        </Stack>
+                          7777
+                        </Box>
                         <div className="flex items-center justify-start gap-2">
                           <GoClock />
                           <div>
@@ -373,11 +387,20 @@ export function Kanban() {
                       >
                         <div className="mb-4">
                           <p className="text-gray-600">Operator:</p>
-                          <p className="text-xl">Komilova M</p>
+                          <p className="text-xl">
+                            {(() => {
+                              const operator = hodimlar.find(
+                                (jtem) => jtem.id === item.hodimId
+                              );
+                              if (operator) {
+                                return `${operator.lastName} ${operator.firstName[0]}`;
+                              } else return "-";
+                            })()}
+                          </p>
                         </div>
 
                         <Fab
-                          onClick={() => handlePrev(item.id)}
+                          onClick={(e) => handlePrev(e, item.id)}
                           sx={{
                             boxShadow: "none",
                             border: "5px solid #EDEFF3",
@@ -410,7 +433,7 @@ export function Kanban() {
                         </div>
                         <Fab
                           disabled={item.status === "yopilgan" ? true : false}
-                          onClick={() => handleNext(item.id)}
+                          onClick={(e) => handleNext(e, item.id)}
                           sx={{
                             boxShadow: "none",
                             border: "5px solid #EDEFF3",
@@ -429,13 +452,19 @@ export function Kanban() {
                           <IoMdCheckmark></IoMdCheckmark>
                         </Fab>
                       </Stack>
-                    </>
+                    </Box>
                   </KanbanItem>
                 ))}
             </Box>
           </KanbanColumn>
         ))}
       </Box>
+      <Drawer setOpen={setOpenDrawer} open={openDrawer}>
+        <KanbanDescription
+          id={buyurtmaId}
+          closeDrawer={setOpenDrawer}
+        ></KanbanDescription>
+      </Drawer>
     </DndProvider>
   );
 }

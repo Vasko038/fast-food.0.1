@@ -52,7 +52,7 @@ export function Drawer({
               right: 0,
               height: "100%",
               top: 0,
-              width: width ? width : "520px",
+              width: width ? width : "420px",
               backgroundColor: "white",
               borderTop: "8px solid #f1f1f1",
               transform: open ? "translateX(0)" : "translateX(100%)",
@@ -60,7 +60,7 @@ export function Drawer({
               zIndex: 1300,
             }}
           >
-            <Box className="relative h-full w-full">
+            <Box className="relative w-full h-full">
               <Box className="absolute">
                 <IconButton
                   sx={{
