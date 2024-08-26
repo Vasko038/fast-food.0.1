@@ -19,6 +19,7 @@ import { LuClipboard } from "react-icons/lu";
 import { LuTruck } from "react-icons/lu";
 import { HiOutlineX } from "react-icons/hi";
 import { IoMdCheckmark } from "react-icons/io";
+import axios from "axios";
 
 export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 	const {
@@ -117,11 +118,15 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 		}
 	};
 
-	const confirmDelete = () => {
+	const confirmDelete = async () => {
 		if (itemToDelete !== null) {
 			const buyurtmaIndex = buyurtmalar.findIndex(
 				(b) => b.id === itemToDelete
 			);
+
+			// await axios.delete(
+			// 	`https://1df7137a16f23f61.mokky.dev/${itemToDelete}`
+			// );
 
 			if (buyurtmaIndex !== -1) {
 				const updatedBuyurtmalar = [

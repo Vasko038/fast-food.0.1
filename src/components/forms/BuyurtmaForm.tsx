@@ -115,7 +115,6 @@ export const BuyurtmaForm = () => {
 			);
 
 			const newBuyurtma: IBuyurtma = {
-				id: uuidv4(),
 				...values,
 				manzil: "",
 				status: "yangi",
@@ -127,6 +126,12 @@ export const BuyurtmaForm = () => {
 			};
 
 			setBuyurtmalar([...buyurtmalar, newBuyurtma]);
+
+			await axios.post(
+				"https://1df7137a16f23f61.mokky.dev/buyurtmalar",
+				newBuyurtma
+			);
+
 			message.success("Buyurtma muvaffaqiyatli qo'shildi!");
 
 			// Resetting the form and state
