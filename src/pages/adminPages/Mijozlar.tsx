@@ -28,7 +28,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
 
 export function Mijozlar() {
-	const { mijozlar, setMijozlar } = useDataContext();
+	const { mijozlar, setMijozlar, buyurtmalar } = useDataContext();
 
 	const [form] = Form.useForm();
 
@@ -320,7 +320,13 @@ export function Mijozlar() {
 											xs={2}
 											className="flex items-center"
 										>
-											{m.id}
+											{
+												buyurtmalar.filter(
+													(f) =>
+														f.userId ==
+														m.id
+												).length
+											}
 										</Grid>
 										<Divider
 											orientation="vertical"

@@ -211,7 +211,7 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 												marginRight: "16px",
 											}}
 										>
-											{index + 1}
+											{t.buyurtmaSoni}
 										</div>
 										<IconButton>
 											<CiBookmark />

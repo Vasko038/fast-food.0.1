@@ -8,7 +8,7 @@ import {
 	Tabs,
 	Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { LuTrash2 } from "react-icons/lu";
 import { useDataContext } from "../Context";
 import { Form, message } from "antd";
@@ -16,6 +16,9 @@ import { BuyurtmaFormTableCard } from "../tables/buyurtmaTables/BuyurtmaCard";
 import { v4 as uuidv4 } from "uuid";
 import { PresentDay } from "../tables/buyurtmaTables/Functions";
 import { IBuyurtma } from "../Interface";
+import { useNavigate } from "react-router-dom";
+import queryString from "query-string";
+import axios from "axios";
 
 export const BuyurtmaForm = () => {
 	const {
@@ -32,6 +35,7 @@ export const BuyurtmaForm = () => {
 
 	const [form] = Form.useForm();
 	const [isSubmitting, setIsSubmitting] = React.useState(false);
+	const navigate = useNavigate();
 
 	const totalSum = basket.reduce((acc, item) => {
 		const mahsulot = mahsulotlar.find(
@@ -83,32 +87,58 @@ export const BuyurtmaForm = () => {
 		setTabValue(newValue);
 	};
 
-	const onFinish = () => {
+	const onFinish = async () => {
 		if (isSubmitting) return;
+		if (!basket.length) {
+			message.error("Iltimos mahsulot tanlang");
+			return;
+		}
+
 		setIsSubmitting(true);
-		if (!basket.length)
-			return message.error("Ilitom mahsulot tanlang");
 
 		const values = form.getFieldsValue();
 
-		const newBuyurtma: IBuyurtma = {
-			id: uuidv4(),
-			...values,
-			manzil: "",
-			status: "yangi",
-			saqlangan: false,
-			dostavka: 5000,
-			mahsulotlar: [...basket],
-			date: PresentDay(),
-		};
+		try {
+			const response = await axios.get(
+				"https://1df7137a16f23f61.mokky.dev/buyurtmaSoni"
+			);
 
-		setBuyurtmalar([...buyurtmalar, newBuyurtma]);
-		setBasket([]);
-		form.resetFields();
+			console.log({ response });
 
-		setTimeout(() => {
+			const buyurtmaSoni = response.data[0].number as number;
+
+			console.log({ buyurtmaSoni });
+
+			await axios.patch(
+				"https://1df7137a16f23f61.mokky.dev/buyurtmaSoni/1",
+				{ number: buyurtmaSoni + 1 }
+			);
+
+			const newBuyurtma: IBuyurtma = {
+				id: uuidv4(),
+				...values,
+				manzil: "",
+				status: "yangi",
+				saqlangan: false,
+				dostavka: 5000,
+				mahsulotlar: [...basket],
+				date: PresentDay(),
+				buyurtmaSoni: buyurtmaSoni + 1,
+			};
+
+			setBuyurtmalar([...buyurtmalar, newBuyurtma]);
+			message.success("Buyurtma muvaffaqiyatli qo'shildi!");
+
+			// Resetting the form and state
+			setBasket([]);
+			form.resetFields();
+			navigate("?" + queryString.stringify({}));
+		} catch (error) {
+			message.error("Buyurtma yaratishda xatolik yuz berdi!");
+			console.error("Error fetching data:", error);
+		} finally {
 			setIsSubmitting(false);
-		}, 500);
+		}
 	};
 
 	const deleteFormAndBasket = () => {
@@ -342,6 +372,40 @@ export const BuyurtmaForm = () => {
 										{m.firstName.charAt(0)}
 									</MenuItem>
 								))}
+							</Select>
+						</Form.Item>
+						<Form.Item
+							label="Tolov turi"
+							name="tolovTuri"
+							rules={[
+								{
+									required: true,
+									message:
+										"Iltimos tolov turini tanlang",
+								},
+							]}
+						>
+							<Select
+								label=" "
+								style={{
+									width: "100%",
+									height: "40px",
+								}}
+								onChange={(event) => {
+									form.setFieldsValue({
+										tolovTuri: event.target.value,
+									});
+								}}
+							>
+								<MenuItem value={"payme"}>
+									Payme
+								</MenuItem>
+								<MenuItem value={"naxt"}>
+									Naxt tolov
+								</MenuItem>
+								<MenuItem value={"terminal"}>
+									Terminal
+								</MenuItem>
 							</Select>
 						</Form.Item>
 						<button
