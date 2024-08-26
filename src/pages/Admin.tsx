@@ -24,6 +24,7 @@ import { BasketData, RoleData } from "../components/Data";
 import { DataContext } from "../components/Context";
 import { Navigate, Route, Routes } from "react-router-dom";
 import axios from "axios";
+import { Spin } from "antd";
 const Mahsulotlar = lazy(() => import("./adminPages/Mahsulotlar"));
 const defaultTheme = createTheme();
 export function AdminPage() {
@@ -78,7 +79,20 @@ export function AdminPage() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense
+        fallback={
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
+            <Spin size="large" />
+          </div>
+        }
+      >
         <DataContext.Provider
           value={{
             filiallar,
