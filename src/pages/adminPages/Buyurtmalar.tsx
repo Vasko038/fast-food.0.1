@@ -77,13 +77,13 @@ export function Buyurtmalar() {
   };
 
   return (
-    <Box className="bg-slate-100 w-full h-full">
+    <Box className="w-full h-full bg-slate-100">
       <Box className="h-[90px]  bg-white ">
         <Grid container className="h-full">
           <Grid
             item
             xs={2}
-            className="border-l-8 border-solid border-slate-100 h-full px-4 flex gap-3 items-center justify-center"
+            className="flex items-center justify-center h-full gap-3 px-4 border-l-8 border-solid border-slate-100"
           >
             <Fab
               onClick={() => setOpenDrawer(true)}
@@ -104,7 +104,7 @@ export function Buyurtmalar() {
           <Grid
             item
             xs={8}
-            className="border-l-8 border-solid border-slate-100 h-full  flex align-middle justify-center"
+            className="flex justify-center h-full align-middle border-l-8 border-solid border-slate-100"
           >
             <Tabs
               value={index}
@@ -171,7 +171,7 @@ export function Buyurtmalar() {
           <Grid
             item
             xs={2}
-            className="border-l-8 border-solid border-slate-100 h-full  flex align-middle justify-center"
+            className="flex justify-center h-full align-middle border-l-8 border-solid border-slate-100"
           >
             <Tabs
               value={tabValue2}
@@ -230,7 +230,7 @@ export function Buyurtmalar() {
             element={<Navigate to={`table/${active}`} replace />}
           />
           <Route path="table">
-            <Route index element={<Navigate to={active} replace />} />
+            <Route index />
             <Route path="yangi" element={<BuyurtmaTable status="yangi" />} />
             <Route
               path="qabul-qilingan"

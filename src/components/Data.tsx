@@ -1,26 +1,26 @@
 import {
-	IBasket,
-	IBuyurtma,
-	IFilial,
-	IHodim,
-	IKategoriya,
-	IMahsulot,
-	IMijoz,
-	IRole,
+  IBasket,
+  IBuyurtma,
+  IFilial,
+  IHodim,
+  IKategoriya,
+  IMahsulot,
+  IMijoz,
+  IRole,
 } from "./Interface";
 export const AdminData = [
-	{
-		email: "husan@gmail.com",
-		password: "12345678",
-	},
-	{
-		email: "1",
-		password: "1",
-	},
-	{
-		email: "hakimov",
-		password: "1234",
-	},
+  {
+    email: "husan@gmail.com",
+    password: "12345678",
+  },
+  {
+    email: "1",
+    password: "1",
+  },
+  {
+    email: "hakimov",
+    password: "1234",
+  },
 ];
 // export const KategoriyaData: IKategoriya[] = [
 // 	{ id: 1, nameUz: "Fast Food ", nameRu: "Fast Food" },
@@ -535,15 +535,15 @@ export const AdminData = [
 // ];
 
 function createRoleData(id: number | string, name: string): IRole {
-	return {
-		id,
-		name,
-	};
+  return {
+    id,
+    name,
+  };
 }
 
 export const RoleData: IRole[] = [
-	createRoleData(1, "Operator"),
-	createRoleData(2, "Admin"),
+  createRoleData(1, "Operator"),
+  createRoleData(2, "Admin"),
 ];
 
 export const BasketData: IBasket[] = [];

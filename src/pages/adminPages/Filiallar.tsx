@@ -9,8 +9,10 @@ import {
   OutlinedInput,
   FormLabel,
   Popover,
+  Stack,
 } from "@mui/material";
 import React, { useState } from "react";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import AddIcon from "@mui/icons-material/Add";
 import { useDataContext } from "../../components/Context";
 import { Drawer } from "../../components/Drawer";
@@ -144,13 +146,13 @@ export function Filiallar() {
   }
 
   return (
-    <Box className="bg-slate-100 w-full h-full">
+    <Box className="w-full h-full bg-slate-100">
       <Box className="h-[90px] bg-white ">
         <Grid container className="h-full ">
           <Grid
             item
             xs={2}
-            className="border-l-8 border-solid border-slate-100 h-full px-4 flex gap-3 items-center justify-center"
+            className="flex items-center justify-center h-full gap-3 px-4 border-l-8 border-solid border-slate-100"
           >
             <Fab
               onClick={() => {
@@ -175,11 +177,11 @@ export function Filiallar() {
           <Grid
             item
             xs={10}
-            className="border-l-8 border-solid border-slate-100 h-full  flex align-middle  px-5"
+            className="flex h-full px-5 align-middle border-l-8 border-solid border-slate-100"
           >
             <Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
               <OutlinedInput
-                className="border-0 outline-none flex-1"
+                className="flex-1 border-0 outline-none"
                 id="search"
                 name="search"
                 type="name"
@@ -306,7 +308,7 @@ export function Filiallar() {
                     }}
                   >
                     <Grid container>
-                      <Grid item xs={2} className="ps-4 flex items-center">
+                      <Grid item xs={2} className="flex items-center ps-4">
                         {f.nameUz}
                       </Grid>
                       <Divider
@@ -348,6 +350,14 @@ export function Filiallar() {
                             border: "4px solid #EDEFF3",
                             marginRight: "12px",
                           }}
+                        >
+                          <LocationOnIcon />
+                        </IconButton>
+                        <IconButton
+                          sx={{
+                            border: "4px solid #EDEFF3",
+                            marginRight: "12px",
+                          }}
                           onClick={() => {
                             onEdit(f);
                           }}
@@ -373,62 +383,60 @@ export function Filiallar() {
           </Box>
         </Box>
         <Drawer setOpen={setOpenDrawer} open={openDrawer}>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "start",
-              justifyContent: "between",
-              flexDirection: "column",
-              padding: "24px",
-            }}
+          <Stack
+            direction="column"
+            justifyContent={"space-between"}
+            sx={{ height: "100%", padding: "24px" }}
           >
-            <Typography variant="h5" className="font-bold">
-              Filial
-            </Typography>
-            <Form
-              layout={"vertical"}
-              form={form}
-              className="mt-5 w-[100%]"
-              onFinish={onFinish}
-            >
-              <Form.Item label="Filial nomi uz" name={"nameUz"} required>
-                <Input />
-              </Form.Item>
-              <Form.Item label="Filial nomi ru" name={"nameRu"}>
-                <Input />
-              </Form.Item>
-              <Form.Item label="Ish vaqti" name={"ishVaqt"} required>
-                <Input />
-              </Form.Item>
-              <Form.Item label="Mo'ljal" name={"moljal"}>
-                <Input />
-              </Form.Item>
-            </Form>
-            <MapContainer
-              center={[41.31115, 69.27951]}
-              zoom={30}
-              style={{ height: "200px" }}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              <DraggableMarker
-                position={position1}
-                setPosition={setPosition1}
-              ></DraggableMarker>
-            </MapContainer>
+            <Box>
+              <Typography variant="h5" className="font-bold">
+                Filial
+              </Typography>
+              <Form
+                layout={"vertical"}
+                form={form}
+                className="mt-5 w-[100%]"
+                onFinish={onFinish}
+              >
+                <Form.Item label="Filial nomi uz" name={"nameUz"} required>
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Filial nomi ru" name={"nameRu"}>
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Ish vaqti" name={"ishVaqt"} required>
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Mo'ljal" name={"moljal"}>
+                  <Input />
+                </Form.Item>
+              </Form>
+              <MapContainer
+                center={[41.31115, 69.27951]}
+                zoom={30}
+                style={{ height: "180px", width: "100%" }}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <DraggableMarker
+                  position={position1}
+                  setPosition={setPosition1}
+                ></DraggableMarker>
+              </MapContainer>
+            </Box>
             <Button
               color="success"
               variant="contained"
-              style={{ backgroundColor: "#20D472" }}
+              style={{ backgroundColor: "#20D472", width: "50%" }}
               onClick={() => {
                 form.submit();
               }}
             >
               Saqlash
             </Button>
-          </Box>
+          </Stack>
         </Drawer>
       </Box>
     </Box>
