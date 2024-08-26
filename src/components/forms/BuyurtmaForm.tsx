@@ -111,7 +111,9 @@ export const BuyurtmaForm = () => {
 
 			await axios.patch(
 				"https://1df7137a16f23f61.mokky.dev/buyurtmaSoni/1",
-				{ number: buyurtmaSoni + 1 }
+				{
+					number: buyurtmaSoni + 1,
+				}
 			);
 
 			const newBuyurtma: IBuyurtma = {
@@ -160,7 +162,7 @@ export const BuyurtmaForm = () => {
 					</Typography>
 					<Tabs
 						value={tabValue}
-						className="items-center bg-slate-100 my-3 mt-[14px] rounded-full py-1 px-2"
+						className="items-center bg-slate-100 my-3 mt-[14px] rounded-full p-2"
 						onChange={handleChange}
 						variant="scrollable"
 						scrollButtons="auto"
@@ -223,11 +225,12 @@ export const BuyurtmaForm = () => {
 					</div>
 				</Grid>
 				<Grid item xs={4}>
-					<div className="flex items-center justify-between mb-4">
+					<div className="flex items-center justify-between">
 						<Typography variant="h6" component="h4">
 							Buyurtma ro'yxati
 						</Typography>
 						<IconButton
+							sx={{ bgcolor: "grey.200" }}
 							onClick={() => {
 								deleteFormAndBasket();
 							}}
@@ -255,13 +258,17 @@ export const BuyurtmaForm = () => {
 								>
 									<p>{mahsulot?.name}</p>
 									<p>
-										{b.count}*{mahsulot?.narx} UZS
+										{b.count}*
+										{mahsulot?.narx.toLocaleString(
+											"en-US"
+										)}{" "}
+										UZS
 									</p>
 								</div>
 							);
 						})}
 						<div
-							className="bg-[#EDEFF3] w-[90%] mx-auto mt-4"
+							className="bg-[#EDEFF3] w-[90%] mx-auto"
 							style={{
 								borderRadius: "10px",
 								padding: "10px",
@@ -270,7 +277,7 @@ export const BuyurtmaForm = () => {
 							<p>Umumiy summa</p>
 							<p className="text-xl">
 								<span className="font-bold">
-									{totalSum}
+									{totalSum.toLocaleString("en-US")}
 								</span>{" "}
 								UZS
 							</p>

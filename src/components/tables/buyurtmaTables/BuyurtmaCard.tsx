@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Grid } from "@mui/material";
+import { Button, Grid, IconButton, Stack } from "@mui/material";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { useDataContext } from "../../Context";
 import { IMahsulot } from "../../Interface";
@@ -64,7 +64,7 @@ export const BuyurtmaFormTableCard = ({
 					display: "flex",
 					flexDirection: "column",
 					border: "1px solid gainsboro",
-					borderRadius: "20px",
+					borderRadius: "10px",
 					overflow: "hidden",
 				}}
 			>
@@ -73,7 +73,7 @@ export const BuyurtmaFormTableCard = ({
 						src={product.image}
 						alt=""
 						style={{
-							height: "180px",
+							height: "140px",
 							width: "100%",
 							objectFit: "cover",
 						}}
@@ -81,48 +81,52 @@ export const BuyurtmaFormTableCard = ({
 				</Box>
 				<Box
 					sx={{
-						textAlign: "center",
 						padding: "10px",
 						display: "flex",
 						flexDirection: "column",
 						justifyContent: "space-between",
-						height: "100%", // Kartaning balandligi bir xil bo'lishi uchun
+						height: "100%",
 					}}
 				>
-					<Typography
-						sx={{ flexGrow: 1 }}
-						variant="subtitle1"
-						component="h2"
-					>
+					<Typography sx={{ fontWeight: "700" }}>
 						{product.name}
 					</Typography>
+					<Typography noWrap variant="body2">
+						{product.malumot}
+					</Typography>
 
-					<Box
+					<Stack
+						direction={"row"}
+						justifyContent={"space-between"}
+						alignItems={"flex-end"}
 						sx={{
-							marginTop: "auto",
-							textAlign: "center",
+							marginTop: "10px",
 						}}
 					>
-						<Typography component="div" variant="h5">
-							{product.narx} UZS
+						<Typography>
+							{product.narx.toLocaleString("en-Us")} UZS
 						</Typography>
 						<div className="mt-2 btn-container">
 							{count !== 0 ? (
 								<div
-									className="flex items-center justify-center gap-5 px-3 mx-auto"
+									className="flex items-center justify-between px-3 mx-auto"
 									style={{
-										border: "2px solid #EDEFF3",
-										borderRadius: "10px",
-										width: "120px",
-										height: "40px",
+										border: "1px solid #EDEFF3",
+										borderRadius: "5px",
+										height: "35px",
+										width: "110px",
+										padding: "10px 5px",
 									}}
 								>
-									<button onClick={handleDecrement}>
+									<IconButton
+										sx={{ fontSize: "15px" }}
+										onClick={handleDecrement}
+									>
 										<FaMinus />
-									</button>
+									</IconButton>
 									<span
 										style={{
-											fontSize: "22px",
+											fontSize: "15px",
 											fontWeight: "bold",
 										}}
 										className={`${
@@ -133,26 +137,31 @@ export const BuyurtmaFormTableCard = ({
 									>
 										{count}
 									</span>
-									<button onClick={handleIncrement}>
+									<IconButton
+										sx={{ fontSize: "15px" }}
+										onClick={handleIncrement}
+									>
 										<FaPlus />
-									</button>
+									</IconButton>
 								</div>
 							) : (
 								<button
 									className="bg-[#20D472] hover:bg-[#36b16e]"
 									style={{
-										borderRadius: "10px",
+										borderRadius: "5px",
 										color: "white",
-										width: "120px",
-										height: "40px",
+										width: "110px",
+										height: "35px",
 									}}
 									onClick={handleIncrement}
 								>
-									Qo'shish
+									<Typography variant="body2">
+										Qo'shish
+									</Typography>
 								</button>
 							)}
 						</div>
-					</Box>
+					</Stack>
 				</Box>
 			</Box>
 		</Grid>
