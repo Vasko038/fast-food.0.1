@@ -38,7 +38,7 @@ export default function BasicModal({ ...props }: IProps) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography className=" pb-10" variant="h6">
+          <Typography className="pb-10 " variant="h6">
             {title}
           </Typography>
           <Grid container spacing={3}>

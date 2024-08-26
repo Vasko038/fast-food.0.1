@@ -25,7 +25,7 @@ import { useDataContext } from "../../components/Context";
 import { MahsulotForm } from "../../components/forms/MahsulotForm";
 import CloseIcon from "@mui/icons-material/Close";
 
-export function Mahsulotlar() {
+function Mahsulotlar() {
   const { mahsulotlar, kategoriyalar } = useDataContext();
   const [iconSearch, setIconSearch] = useState(false);
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -114,13 +114,13 @@ export function Mahsulotlar() {
     }
   }, [search]);
   return (
-    <Box className="bg-slate-100 w-full h-full ">
+    <Box className="w-full h-full bg-slate-100 ">
       <Box className="h-[90px] bg-white ">
         <Grid container className="h-full ">
           <Grid
             item
             xs={2}
-            className="border-l-8 border-solid border-slate-100 h-full px-4 flex gap-3 items-center justify-center"
+            className="flex items-center justify-center h-full gap-3 px-4 border-l-8 border-solid border-slate-100"
           >
             <Fab
               onClick={() => setOpenDrawer(true)}
@@ -141,13 +141,13 @@ export function Mahsulotlar() {
           <Grid
             item
             xs={10}
-            className="border-l-8 border-solid border-slate-100 h-full  flex align-middle  px-5"
+            className="flex h-full px-5 align-middle border-l-8 border-solid border-slate-100"
           >
             <Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
               <OutlinedInput
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="border-0 outline-none flex-1"
+                className="flex-1 border-0 outline-none"
                 id="search"
                 name="search"
                 type="name"
@@ -286,7 +286,7 @@ export function Mahsulotlar() {
                 </FormControl>
                 <Box
                   sx={{ "& .MuiButton-root": { textTransform: "none" } }}
-                  className="flex gap-4 justify-end"
+                  className="flex justify-end gap-4"
                 >
                   <Button
                     onClick={handleCancelFilter}
@@ -317,3 +317,4 @@ export function Mahsulotlar() {
     </Box>
   );
 }
+export default Mahsulotlar;

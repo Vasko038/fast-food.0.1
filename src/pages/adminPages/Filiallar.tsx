@@ -1,14 +1,14 @@
 import {
-	Box,
-	Button,
-	Fab,
-	Grid,
-	Typography,
-	IconButton,
-	Divider,
-	OutlinedInput,
-	FormLabel,
-	Popover,
+  Box,
+  Button,
+  Fab,
+  Grid,
+  Typography,
+  IconButton,
+  Divider,
+  OutlinedInput,
+  FormLabel,
+  Popover,
 } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -22,11 +22,11 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { v4 as uuidv4 } from "uuid";
 import {
-	MapContainer,
-	TileLayer,
-	Marker,
-	Popup,
-	useMapEvents,
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMapEvents,
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -43,484 +43,410 @@ const encodedIcon = btoa(svgString);
 
 // Yangi ikonkani yaratish
 const customIcon = new L.Icon({
-	iconUrl: `data:image/svg+xml;base64,${encodedIcon}`,
-	iconSize: [54, 54],
-	iconAnchor: [12, 24],
-	popupAnchor: [0, -24],
+  iconUrl: `data:image/svg+xml;base64,${encodedIcon}`,
+  iconSize: [54, 54],
+  iconAnchor: [12, 24],
+  popupAnchor: [0, -24],
 });
 
 interface DraggableMarkerProps {
-	position: [number, number];
-	setPosition: (value: [number, number]) => void;
+  position: [number, number];
+  setPosition: (value: [number, number]) => void;
 }
 
-function DraggableMarker({
-	position,
-	setPosition,
-}: DraggableMarkerProps) {
-	useMapEvents({
-		click(e) {
-			setPosition([e.latlng.lat, e.latlng.lng]);
-		},
-	});
+function DraggableMarker({ position, setPosition }: DraggableMarkerProps) {
+  useMapEvents({
+    click(e) {
+      setPosition([e.latlng.lat, e.latlng.lng]);
+    },
+  });
 
-	return (
-		<Marker
-			position={position}
-			icon={customIcon}
-			draggable={true}
-			eventHandlers={{
-				dragend: (event) => {
-					const latlng = (
-						event.target as L.Marker
-					).getLatLng();
-					setPosition([latlng.lat, latlng.lng]);
-				},
-			}}
-		>
-			<Popup>
-				Marker <br /> O'zbekiston
-			</Popup>
-		</Marker>
-	);
+  return (
+    <Marker
+      position={position}
+      icon={customIcon}
+      draggable={true}
+      eventHandlers={{
+        dragend: (event) => {
+          const latlng = (event.target as L.Marker).getLatLng();
+          setPosition([latlng.lat, latlng.lng]);
+        },
+      }}
+    >
+      <Popup>
+        Marker <br /> O'zbekiston
+      </Popup>
+    </Marker>
+  );
 }
 
 export function Filiallar() {
-	const { filiallar, setFiliallar } = useDataContext();
-	const [position1, setPosition1] = useState<[number, number]>([
-		41.31115, 69.27951,
-	]);
+  const { filiallar, setFiliallar } = useDataContext();
+  const [position1, setPosition1] = useState<[number, number]>([
+    41.31115, 69.27951,
+  ]);
 
-	const location = useLocation();
+  const location = useLocation();
 
-	const params = queryString.parse(location.search, {
-		parseNumbers: true,
-		parseBooleans: true,
-	});
+  const params = queryString.parse(location.search, {
+    parseNumbers: true,
+    parseBooleans: true,
+  });
 
-	const editingFilial = useMemo(
-		() => filiallar.find((item) => item.id == params.id),
-		[filiallar, params.id]
-	);
+  const editingFilial = useMemo(
+    () => filiallar.find((item) => item.id === params.id),
+    [filiallar, params.id]
+  );
 
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
-	const [form] = Form.useForm();
+  const [form] = Form.useForm();
 
-	const [search, setSearch] = useState<string | null>(null);
+  const [search, setSearch] = useState<string | null>(null);
 
-	const [popover, setPopover] =
-		React.useState<HTMLButtonElement | null>(null);
+  const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
 
-	const handleClickPopover = (
-		event: React.MouseEvent<HTMLButtonElement>
-	) => {
-		setPopover(event.currentTarget);
-	};
+  const handleClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setPopover(event.currentTarget);
+  };
 
-	const handleClosePopover = () => {
-		setPopover(null);
-	};
+  const handleClosePopover = () => {
+    setPopover(null);
+  };
 
-	const openPopover = Boolean(popover);
-	const PopoverId = openPopover ? "simple-popover" : undefined;
+  const openPopover = Boolean(popover);
+  const PopoverId = openPopover ? "simple-popover" : undefined;
 
-	const onFinish = (values: Omit<IFilial, "id">) => {
-		if (editingFilial) {
-			const updatedFiliallar = filiallar.map((f) =>
-				f.id === editingFilial.id ? { ...f, ...values } : f
-			);
-			setFiliallar(updatedFiliallar);
-			message.success("Updated successfully");
-		} else {
-			setFiliallar([...filiallar, { ...values, id: uuidv4() }]);
-			message.success("Created successfully");
-		}
-		form.resetFields();
-		navigate("?" + queryString.stringify({}));
-	};
+  const onFinish = (values: Omit<IFilial, "id">) => {
+    if (editingFilial) {
+      const updatedFiliallar = filiallar.map((f) =>
+        f.id === editingFilial.id ? { ...f, ...values } : f
+      );
+      setFiliallar(updatedFiliallar);
+      message.success("Updated successfully");
+    } else {
+      setFiliallar([...filiallar, { ...values, id: uuidv4() }]);
+      message.success("Created successfully");
+    }
+    form.resetFields();
+    navigate("?" + queryString.stringify({}));
+  };
 
-	useEffect(() => {
-		if (editingFilial) form.setFieldsValue(editingFilial);
-	}, [editingFilial]);
+  useEffect(() => {
+    if (editingFilial) form.setFieldsValue(editingFilial);
+  }, [editingFilial]);
 
-	const onDelete = (id: number | string) => {
-		const filteredFilial = filiallar.filter((f) => f.id !== id);
-		setFiliallar(filteredFilial);
-	};
+  const onDelete = (id: number | string) => {
+    const filteredFilial = filiallar.filter((f) => f.id !== id);
+    setFiliallar(filteredFilial);
+  };
 
-	let filteredFiliallar: IFilial[] = filiallar;
+  let filteredFiliallar: IFilial[] = filiallar;
 
-	if (search) {
-		filteredFiliallar = filiallar.filter((f) =>
-			f.nameUz
-				.toLocaleLowerCase()
-				.includes(search.toLocaleLowerCase())
-		);
-	}
+  if (search) {
+    filteredFiliallar = filiallar.filter((f) =>
+      f.nameUz.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+    );
+  }
 
-	return (
-		<Box className="bg-slate-100 w-full h-full">
-			<Box className="h-[90px] bg-white ">
-				<Grid container className="h-full ">
-					<Grid
-						item
-						xs={2}
-						className="border-l-8 border-solid border-slate-100 h-full px-4 flex gap-3 items-center justify-center"
-					>
-						<Fab
-							onClick={() => {
-								navigate(
-									"?" +
-										queryString.stringify({
-											add: true,
-										})
-								);
-								form.resetFields();
-							}}
-							sx={{
-								width: "40px",
-								height: "40px",
-								minWidth: "40px",
-								minHeight: "40px",
-							}}
-							size="small"
-							color="success"
-							aria-label="add"
-						>
-							<AddIcon />
-						</Fab>
-						<Typography variant="body2">
-							Yangi Mahsulot Qoshish
-						</Typography>
-					</Grid>
-					<Grid
-						item
-						xs={10}
-						className="border-l-8 border-solid border-slate-100 h-full  flex align-middle  px-5"
-					>
-						<Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
-							<OutlinedInput
-								className="border-0 outline-none flex-1"
-								id="search"
-								name="search"
-								type="name"
-								placeholder="Search"
-								onChange={(event) => {
-									setSearch(event.target.value);
-								}}
-								sx={{
-									border: "none",
-									outline: "none",
-									"& fieldset": {
-										border: "none",
-									},
-									"&:focus-visible": {
-										outline: "none",
-									},
-									"&.Mui-focused": {
-										boxShadow: "none",
-									},
-								}}
-							/>
-							<FormLabel htmlFor="search">
-								<IconButton>
-									<SearchOutlinedIcon></SearchOutlinedIcon>
-								</IconButton>
-							</FormLabel>
-						</Box>
-						<Button
-							sx={{
-								minWidth: "50px",
-								maxWidth: "50px",
-								minHeight: "50px",
-								maxHeight: "50px",
-								bgcolor: "white",
-								color: "gray",
-								borderRadius: "50% 50%",
-								border: "4px solid  rgb(241 245 249)",
-								boxShadow: "0 0 0 0",
-								marginY: "auto",
-								marginX: 2,
-								"&:hover": {
-									bgcolor: "white",
-									boxShadow: "0 0 0 0",
-								},
-							}}
-							aria-describedby={PopoverId}
-							variant="contained"
-							onClick={handleClickPopover}
-						>
-							<FilterAltIcon></FilterAltIcon>
-						</Button>
-						<Popover
-							id={PopoverId}
-							open={openPopover}
-							anchorEl={popover}
-							onClose={handleClosePopover}
-							anchorOrigin={{
-								vertical: "bottom",
-								horizontal: "left",
-							}}
-						>
-							<Typography sx={{ p: 2 }}>
-								The content of the Popover.
-							</Typography>
-						</Popover>
-					</Grid>
-				</Grid>
-			</Box>
-			<Box
-				sx={{
-					height: "calc(100vh - 90px)",
-					boxSizing: "border-box",
-				}}
-				className="relative"
-			>
-				<Box className="pt-5">
-					<Box className="px-[38px] bg-white shadow-xl py-3">
-						<Grid container>
-							<Grid item xs={2} className="ps-6">
-								Filial nomi (uz)
-							</Grid>
-							<Divider
-								orientation="vertical"
-								flexItem
-								sx={{ marginX: 2 }}
-							/>
-							<Grid item xs={2}>
-								Filial nomi (ru)
-							</Grid>
-							<Divider
-								orientation="vertical"
-								flexItem
-								sx={{ marginX: 2 }}
-							/>
+  return (
+    <Box className="w-full h-full bg-slate-100">
+      <Box className="h-[90px] bg-white ">
+        <Grid container className="h-full ">
+          <Grid
+            item
+            xs={2}
+            className="flex items-center justify-center h-full gap-3 px-4 border-l-8 border-solid border-slate-100"
+          >
+            <Fab
+              onClick={() => {
+                navigate(
+                  "?" +
+                    queryString.stringify({
+                      add: true,
+                    })
+                );
+                form.resetFields();
+              }}
+              sx={{
+                width: "40px",
+                height: "40px",
+                minWidth: "40px",
+                minHeight: "40px",
+              }}
+              size="small"
+              color="success"
+              aria-label="add"
+            >
+              <AddIcon />
+            </Fab>
+            <Typography variant="body2">Yangi Mahsulot Qoshish</Typography>
+          </Grid>
+          <Grid
+            item
+            xs={10}
+            className="flex h-full px-5 align-middle border-l-8 border-solid border-slate-100"
+          >
+            <Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
+              <OutlinedInput
+                className="flex-1 border-0 outline-none"
+                id="search"
+                name="search"
+                type="name"
+                placeholder="Search"
+                onChange={(event) => {
+                  setSearch(event.target.value);
+                }}
+                sx={{
+                  border: "none",
+                  outline: "none",
+                  "& fieldset": {
+                    border: "none",
+                  },
+                  "&:focus-visible": {
+                    outline: "none",
+                  },
+                  "&.Mui-focused": {
+                    boxShadow: "none",
+                  },
+                }}
+              />
+              <FormLabel htmlFor="search">
+                <IconButton>
+                  <SearchOutlinedIcon></SearchOutlinedIcon>
+                </IconButton>
+              </FormLabel>
+            </Box>
+            <Button
+              sx={{
+                minWidth: "50px",
+                maxWidth: "50px",
+                minHeight: "50px",
+                maxHeight: "50px",
+                bgcolor: "white",
+                color: "gray",
+                borderRadius: "50% 50%",
+                border: "4px solid  rgb(241 245 249)",
+                boxShadow: "0 0 0 0",
+                marginY: "auto",
+                marginX: 2,
+                "&:hover": {
+                  bgcolor: "white",
+                  boxShadow: "0 0 0 0",
+                },
+              }}
+              aria-describedby={PopoverId}
+              variant="contained"
+              onClick={handleClickPopover}
+            >
+              <FilterAltIcon></FilterAltIcon>
+            </Button>
+            <Popover
+              id={PopoverId}
+              open={openPopover}
+              anchorEl={popover}
+              onClose={handleClosePopover}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+            >
+              <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+            </Popover>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box
+        sx={{
+          height: "calc(100vh - 90px)",
+          boxSizing: "border-box",
+        }}
+        className="relative"
+      >
+        <Box className="pt-5">
+          <Box className="px-[38px] bg-white shadow-xl py-3">
+            <Grid container>
+              <Grid item xs={2} className="ps-6">
+                Filial nomi (uz)
+              </Grid>
+              <Divider orientation="vertical" flexItem sx={{ marginX: 2 }} />
+              <Grid item xs={2}>
+                Filial nomi (ru)
+              </Grid>
+              <Divider orientation="vertical" flexItem sx={{ marginX: 2 }} />
 
-							<Grid item xs={2}>
-								Mo'ljal
-							</Grid>
+              <Grid item xs={2}>
+                Mo'ljal
+              </Grid>
 
-							<Divider
-								orientation="vertical"
-								flexItem
-								sx={{ marginX: 2 }}
-							/>
+              <Divider orientation="vertical" flexItem sx={{ marginX: 2 }} />
 
-							<Grid item xs={2}>
-								Ish vaqti
-							</Grid>
-							<Divider
-								orientation="vertical"
-								flexItem
-								sx={{ marginX: 2 }}
-							/>
+              <Grid item xs={2}>
+                Ish vaqti
+              </Grid>
+              <Divider orientation="vertical" flexItem sx={{ marginX: 2 }} />
 
-							<Grid item xs={2}>
-								Actions
-							</Grid>
-						</Grid>
-					</Box>
-					<Box
-						sx={{
-							paddingInline: "38px",
-							height: "525px",
-							marginTop: "15px",
-							overflowY: "auto",
-						}}
-					>
-						<Box
-							sx={{
-								width: "100%",
-							}}
-						>
-							{filteredFiliallar.map((f) => {
-								return (
-									<Box
-										sx={{
-											marginBlock: "10px",
-											backgroundColor: "white",
-											borderRadius: "10px",
-											boxShadow:
-												"0px 2px 2px 0px #AEB0B550",
-											padding: "10px",
-										}}
-									>
-										<Grid container>
-											<Grid
-												item
-												xs={2}
-												className="ps-4 flex items-center"
-											>
-												{f.nameUz}
-											</Grid>
-											<Divider
-												orientation="vertical"
-												flexItem
-												sx={{ marginX: 2 }}
-											/>
-											<Grid
-												item
-												xs={2}
-												className="flex items-center"
-											>
-												{f.nameRu}
-											</Grid>
-											<Divider
-												orientation="vertical"
-												flexItem
-												sx={{ marginX: 2 }}
-											/>
+              <Grid item xs={2}>
+                Actions
+              </Grid>
+            </Grid>
+          </Box>
+          <Box
+            sx={{
+              paddingInline: "38px",
+              height: "525px",
+              marginTop: "15px",
+              overflowY: "auto",
+            }}
+          >
+            <Box
+              sx={{
+                width: "100%",
+              }}
+            >
+              {filteredFiliallar.map((f) => {
+                return (
+                  <Box
+                    sx={{
+                      marginBlock: "10px",
+                      backgroundColor: "white",
+                      borderRadius: "10px",
+                      boxShadow: "0px 2px 2px 0px #AEB0B550",
+                      padding: "10px",
+                    }}
+                  >
+                    <Grid container>
+                      <Grid item xs={2} className="flex items-center ps-4">
+                        {f.nameUz}
+                      </Grid>
+                      <Divider
+                        orientation="vertical"
+                        flexItem
+                        sx={{ marginX: 2 }}
+                      />
+                      <Grid item xs={2} className="flex items-center">
+                        {f.nameRu}
+                      </Grid>
+                      <Divider
+                        orientation="vertical"
+                        flexItem
+                        sx={{ marginX: 2 }}
+                      />
 
-											<Grid
-												item
-												xs={2}
-												className="flex items-center"
-											>
-												{f.moljal}
-											</Grid>
+                      <Grid item xs={2} className="flex items-center">
+                        {f.moljal}
+                      </Grid>
 
-											<Divider
-												orientation="vertical"
-												flexItem
-												sx={{ marginX: 2 }}
-											/>
+                      <Divider
+                        orientation="vertical"
+                        flexItem
+                        sx={{ marginX: 2 }}
+                      />
 
-											<Grid
-												item
-												xs={2}
-												className="flex items-center"
-											>
-												{f.ishVaqt}
-											</Grid>
-											<Divider
-												orientation="vertical"
-												flexItem
-												sx={{ marginX: 2 }}
-											/>
+                      <Grid item xs={2} className="flex items-center">
+                        {f.ishVaqt}
+                      </Grid>
+                      <Divider
+                        orientation="vertical"
+                        flexItem
+                        sx={{ marginX: 2 }}
+                      />
 
-											<Grid item xs={2}>
-												<IconButton
-													sx={{
-														border: "4px solid #EDEFF3",
-														marginRight:
-															"12px",
-													}}
-													onClick={() => {
-														navigate(
-															"?" +
-																queryString.stringify(
-																	{
-																		edit: true,
-																		id: f.id,
-																	}
-																)
-														);
-													}}
-												>
-													<MdOutlineEdit />
-												</IconButton>
-												<IconButton
-													sx={{
-														border: "4px solid #EDEFF3",
-													}}
-													onClick={() => {
-														onDelete(
-															f.id
-														);
-													}}
-												>
-													<LuTrash2 />
-												</IconButton>
-											</Grid>
-										</Grid>
-									</Box>
-								);
-							})}
-						</Box>
-					</Box>
-				</Box>
-				<Drawer
-					open={
-						(params.add as boolean) ||
-						(params.edit as boolean)
-					}
-				>
-					<Box
-						sx={{
-							display: "flex",
-							alignItems: "start",
-							justifyContent: "between",
-							flexDirection: "column",
-							padding: "24px",
-						}}
-					>
-						<Typography
-							variant="h5"
-							className="font-bold"
-						>
-							Filial
-						</Typography>
-						<Form
-							layout={"vertical"}
-							form={form}
-							className="mt-5 w-[100%]"
-							onFinish={onFinish}
-						>
-							<Form.Item
-								label="Filial nomi uz"
-								name={"nameUz"}
-								required
-							>
-								<Input />
-							</Form.Item>
-							<Form.Item
-								label="Filial nomi ru"
-								name={"nameRu"}
-							>
-								<Input />
-							</Form.Item>
-							<Form.Item
-								label="Ish vaqti"
-								name={"ishVaqt"}
-								required
-							>
-								<Input />
-							</Form.Item>
-							<Form.Item
-								label="Mo'ljal"
-								name={"moljal"}
-							>
-								<Input />
-							</Form.Item>
-						</Form>
-						<MapContainer
-							center={[41.31115, 69.27951]}
-							zoom={30}
-							style={{ height: "200px" }}
-						>
-							<TileLayer
-								url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-								attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-							/>
-							<DraggableMarker
-								position={position1}
-								setPosition={setPosition1}
-							></DraggableMarker>
-						</MapContainer>
-						<Button
-							color="success"
-							variant="contained"
-							style={{ backgroundColor: "#20D472" }}
-							onClick={() => {
-								form.submit();
-							}}
-						>
-							Saqlash
-						</Button>
-					</Box>
-				</Drawer>
-			</Box>
-		</Box>
-	);
+                      <Grid item xs={2}>
+                        <IconButton
+                          sx={{
+                            border: "4px solid #EDEFF3",
+                            marginRight: "12px",
+                          }}
+                          onClick={() => {
+                            navigate(
+                              "?" +
+                                queryString.stringify({
+                                  edit: true,
+                                  id: f.id,
+                                })
+                            );
+                          }}
+                        >
+                          <MdOutlineEdit />
+                        </IconButton>
+                        <IconButton
+                          sx={{
+                            border: "4px solid #EDEFF3",
+                          }}
+                          onClick={() => {
+                            onDelete(f.id);
+                          }}
+                        >
+                          <LuTrash2 />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                  </Box>
+                );
+              })}
+            </Box>
+          </Box>
+        </Box>
+        <Drawer open={(params.add as boolean) || (params.edit as boolean)}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "start",
+              justifyContent: "between",
+              flexDirection: "column",
+              padding: "24px",
+            }}
+          >
+            <Typography variant="h5" className="font-bold">
+              Filial
+            </Typography>
+            <Form
+              layout={"vertical"}
+              form={form}
+              className="mt-5 w-[100%]"
+              onFinish={onFinish}
+            >
+              <Form.Item label="Filial nomi uz" name={"nameUz"} required>
+                <Input />
+              </Form.Item>
+              <Form.Item label="Filial nomi ru" name={"nameRu"}>
+                <Input />
+              </Form.Item>
+              <Form.Item label="Ish vaqti" name={"ishVaqt"} required>
+                <Input />
+              </Form.Item>
+              <Form.Item label="Mo'ljal" name={"moljal"}>
+                <Input />
+              </Form.Item>
+            </Form>
+            <MapContainer
+              center={[41.31115, 69.27951]}
+              zoom={30}
+              style={{ height: "200px" }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <DraggableMarker
+                position={position1}
+                setPosition={setPosition1}
+              ></DraggableMarker>
+            </MapContainer>
+            <Button
+              color="success"
+              variant="contained"
+              style={{ backgroundColor: "#20D472" }}
+              onClick={() => {
+                form.submit();
+              }}
+            >
+              Saqlash
+            </Button>
+          </Box>
+        </Drawer>
+      </Box>
+    </Box>
+  );
 }

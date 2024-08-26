@@ -1,19 +1,11 @@
-import {
-  Box,
-  Button,
-  FormLabel,
-  Grid,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useDataContext } from "../Context";
 import { IMahsulot } from "../Interface";
 import { v4 as uuidv4 } from "uuid";
-import UploadButton from "../UploadButton";
+import { Form, Input, Select } from "antd";
+import { useForm } from "antd/es/form/Form";
+const { Option } = Select;
 export function MahsulotForm({
   id,
   setOpenDrawer,
@@ -22,51 +14,13 @@ export function MahsulotForm({
   setOpenDrawer: Function;
 }) {
   const { kategoriyalar, mahsulotlar, setMahsulotlar } = useDataContext();
+  const [form] = useForm();
   const mahsulot: IMahsulot | undefined = mahsulotlar.find(
     (item) => item.id === id
   );
-  const [name, setName] = useState(mahsulot ? mahsulot.name : "");
-  const [categoryId, setCategoryId] = useState(
-    mahsulot ? mahsulot.categoryId : ""
-  );
-  const [price, setPrice] = useState(mahsulot ? mahsulot.narx : "");
-  const [desc, setDesc] = useState(mahsulot ? mahsulot.malumot : "");
-
-  function handleSave() {
-    if (id) {
-      // Mavjud mahsulotni yangilash
-      const updatedData: IMahsulot = {
-        id: id, // Yangilanayotgan mahsulotning ID sini saqlash
-        name: name,
-        categoryId: categoryId,
-        narx: Number(price),
-        malumot: desc,
-      };
-
-      const updatedMahsulotlar = mahsulotlar.map((item) =>
-        item.id === id ? updatedData : item
-      );
-
-      setMahsulotlar(updatedMahsulotlar);
-    } else {
-      // Yangi mahsulot qo'shish
-      const newData: IMahsulot = {
-        id: uuidv4(), // Yangi ID yaratish
-        name: name,
-        categoryId: categoryId,
-        narx: Number(price),
-        malumot: desc,
-      };
-
-      if (name !== "" && price !== "" && categoryId !== "") {
-        setMahsulotlar([newData, ...mahsulotlar]);
-      }
-    }
-    setOpenDrawer(false);
-  }
 
   return (
-    <Box className="px-4 py-5 flex flex-col h-full justify-between">
+    <Box className="flex flex-col justify-between h-full p-6">
       <Box
         sx={{
           "& .MuiTextField-root": {
@@ -93,73 +47,35 @@ export function MahsulotForm({
             ? "mahsulot malumotlarini ozgartirish"
             : "yangi mahsulot qo'shish"}
         </Typography>
-        <Grid container className="flex align-middle" spacing={3}>
-          <Grid item xs={12}>
-            <TextField
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              fullWidth
-              label="Mahsulot nomi"
-            ></TextField>
-          </Grid>
-          <Grid item xs={12}>
-            <FormLabel
-              required
-              onClick={() => document.getElementById("select")?.focus()}
-              htmlFor="select"
-            >
-              Kategoriya
-            </FormLabel>
+        <Form layout={"vertical"} form={form} className="mt-5 w-[100%]">
+          <Form.Item label="Maxsulot nomi" name={"name"} required>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Kategoriya"
+            name="kategoryId"
+            rules={[{ required: true, message: "Kategoriya tanlang!" }]}
+          >
             <Select
-              id="select"
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-              fullWidth
-            >
-              {kategoriyalar.map((item) => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.nameUz}
-                </MenuItem>
-              ))}
-            </Select>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              type="number"
-              fullWidth
-              label="Mahsulot narxi"
-              InputProps={{
-                inputProps: { min: 0, max: 5 }, // 'inputProps' orqali min va max atributlarini qo'shish
-              }}
-            ></TextField>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              value={desc}
-              onChange={(e) => setDesc(e.target.value)}
-              fullWidth
-              label="Qoshimcha ma'lumot"
-            ></TextField>
-          </Grid>
-          <Grid item xs={3}></Grid>
-          <Grid item xs={3}>
-            <UploadButton></UploadButton>
-          </Grid>
-          <Grid item xs={3}>
-            <Paper sx={{ borderRadius: "50% 50%" }} className="h-full  w-full">
-              <img src="" alt="" />
-            </Paper>
-            <Grid item xs={3}></Grid>
-          </Grid>
-        </Grid>
+              style={{ width: "100%" }}
+              options={[
+                { value: "jack", label: "Jack" },
+                { value: "lucy", label: "Lucy" },
+                { value: "Yiminghe", label: "yiminghe" },
+                { value: "disabled", label: "Disabled", disabled: true },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item label="Maxsulot narxi" name={"narx"} required>
+            <Input />
+          </Form.Item>
+          <Form.Item label="Qoshimcha ma'lumot" name={"qoshimcha"} required>
+            <Input />
+          </Form.Item>
+        </Form>
       </Box>
       <Grid item xs={6}>
         <Button
-          onClick={handleSave}
           sx={{ bgcolor: "orange", "&:hover": { bgcolor: "orange" }, mb: 3 }}
           variant="contained"
         >

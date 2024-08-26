@@ -4,11 +4,10 @@ import {
 	CssBaseline,
 	ThemeProvider,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import { Buyurtmalar } from "./adminPages/Buyurtmalar";
 import { Filiallar } from "./adminPages/Filiallar";
 import { Kategoriyalar } from "./adminPages/Kategoriyalar";
-import { Mahsulotlar } from "./adminPages/Mahsulotlar";
 import { Hisobotlar } from "./adminPages/Hisobot";
 import { Hodimlar } from "./adminPages/Hodimlar";
 import { Mijozlar } from "./adminPages/Mijozlar";
@@ -25,12 +24,13 @@ import {
 	IMahsulot,
 	IMijoz,
 	IRole,
+	IYetkazish,
 } from "../components/Interface";
 import { BasketData, RoleData } from "../components/Data";
 import { DataContext } from "../components/Context";
 import { Navigate, Route, Routes } from "react-router-dom";
 import axios from "axios";
-
+const Mahsulotlar = lazy(() => import("./adminPages/Mahsulotlar"));
 const defaultTheme = createTheme();
 export function AdminPage() {
 	const [filiallar, setFiliallar] = useState<IFilial[]>([]);
@@ -41,6 +41,7 @@ export function AdminPage() {
 	const [buyurtmalar, setBuyurtmalar] = useState<IBuyurtma[]>([]);
 	const [hodimlar, setHodimlar] = useState<IHodim[]>([]);
 	const [mijozlar, setMijozlar] = useState<IMijoz[]>([]);
+	const [yetkazish, setYetkazish] = useState<IYetkazish[]>([]);
 	const [rollar, setRollar] = useState<IRole[]>(RoleData);
 	const [basket, setBasket] = useState<IBasket[]>(BasketData);
 
@@ -76,6 +77,11 @@ export function AdminPage() {
 					"https://1df7137a16f23f61.mokky.dev/mijozlar"
 				);
 				setMijozlar(mijozlarRes.data);
+
+				const yetkazishRes = await axios.get(
+					"https://1df7137a16f23f61.mokky.dev/yetkazish"
+				);
+				setYetkazish(yetkazishRes.data);
 			} catch (error) {
 				console.error("Error fetching data", error);
 			}
@@ -86,90 +92,94 @@ export function AdminPage() {
 
 	return (
 		<ThemeProvider theme={defaultTheme}>
-			<DataContext.Provider
-				value={{
-					filiallar,
-					setFiliallar,
-					mahsulotlar,
-					setMahsulotlar,
-					kategoriyalar,
-					setKategoriyalar,
-					mijozlar,
-					setMijozlar,
-					buyurtmalar,
-					setBuyurtmalar,
-					hodimlar,
-					setHodimlar,
-					rollar,
-					setRollar,
-					basket,
-					setBasket,
-				}}
-			>
-				<CssBaseline>
-					<Box className="flex">
-						<AdminDrawer></AdminDrawer>
-						<Box
-							sx={{
-								flexGrow: 1,
-								overflow: "auto",
-							}}
-						>
-							<Routes>
-								<Route
-									path="/"
-									element={
-										<Navigate
-											to="/admin/buyurtmalar"
-											replace
-										/>
-									}
-								/>
-								<Route
-									path="buyurtmalar/*"
-									element={<Buyurtmalar />}
-								/>
-								<Route
-									path="mahsulotlar"
-									element={<Mahsulotlar />}
-								/>
-								<Route
-									path="kategoriyalar"
-									element={<Kategoriyalar />}
-								/>
-								<Route
-									path="filiallar"
-									element={<Filiallar />}
-								/>
-								<Route
-									path="mijozlar"
-									element={<Mijozlar />}
-								></Route>
-								<Route
-									path="hisobotlar"
-									element={<Hisobotlar />}
-								/>
-								<Route
-									path="hodimlar"
-									element={<Hodimlar />}
-								/>
-								<Route
-									path="yetkazish-narxi"
-									element={<YetkazishNarxi />}
-								/>
-								<Route
-									path="xarita"
-									element={<Xarita />}
-								/>
-								<Route
-									path="tizim-sozlamalari"
-									element={<TizimSozlamalari />}
-								/>
-							</Routes>
+			<Suspense fallback={<div>Loading...</div>}>
+				<DataContext.Provider
+					value={{
+						filiallar,
+						setFiliallar,
+						mahsulotlar,
+						setMahsulotlar,
+						kategoriyalar,
+						setKategoriyalar,
+						mijozlar,
+						setMijozlar,
+						buyurtmalar,
+						setBuyurtmalar,
+						hodimlar,
+						setHodimlar,
+						rollar,
+						setRollar,
+						basket,
+						setBasket,
+						yetkazish,
+						setYetkazish,
+					}}
+				>
+					<CssBaseline>
+						<Box className="flex">
+							<AdminDrawer></AdminDrawer>
+							<Box
+								sx={{
+									flexGrow: 1,
+									overflow: "auto",
+								}}
+							>
+								<Routes>
+									<Route
+										path="/"
+										element={
+											<Navigate
+												to="/admin/buyurtmalar"
+												replace
+											/>
+										}
+									/>
+									<Route
+										path="buyurtmalar/*"
+										element={<Buyurtmalar />}
+									/>
+									<Route
+										path="mahsulotlar"
+										element={<Mahsulotlar />}
+									/>
+									<Route
+										path="kategoriyalar"
+										element={<Kategoriyalar />}
+									/>
+									<Route
+										path="filiallar"
+										element={<Filiallar />}
+									/>
+									<Route
+										path="mijozlar"
+										element={<Mijozlar />}
+									></Route>
+									<Route
+										path="hisobotlar"
+										element={<Hisobotlar />}
+									/>
+									<Route
+										path="hodimlar"
+										element={<Hodimlar />}
+									/>
+									<Route
+										path="yetkazish-narxi"
+										element={<YetkazishNarxi />}
+									/>
+									<Route
+										path="xarita"
+										element={<Xarita />}
+									/>
+									<Route
+										path="tizim-sozlamalari"
+										element={<TizimSozlamalari />}
+									/>
+								</Routes>
+							</Box>
 						</Box>
-					</Box>
-				</CssBaseline>
-			</DataContext.Provider>
+					</CssBaseline>
+				</DataContext.Provider>
+			</Suspense>
 		</ThemeProvider>
 	);
 }

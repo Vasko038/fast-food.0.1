@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { createContext } from "react";
 import {
 	IFilial,
@@ -9,17 +9,10 @@ import {
 	IHodim,
 	IRole,
 	IBasket,
+	IYetkazish,
 } from "./Interface";
 
-export const MainRoute = createContext<{
-	activePage: string;
-	setActivePage: (value: string) => void;
-}>({
-	activePage: "LoginPage",
-	setActivePage: (value: string) => {},
-});
-
-export const DataContext = React.createContext<{
+export const DataContext = createContext<{
 	filiallar: IFilial[];
 	setFiliallar: (value: IFilial[]) => void;
 	mahsulotlar: IMahsulot[];
@@ -36,6 +29,8 @@ export const DataContext = React.createContext<{
 	setRollar: (value: IRole[]) => void;
 	basket: IBasket[];
 	setBasket: (value: IBasket[]) => void;
+	yetkazish: IYetkazish[];
+	setYetkazish: (value: IYetkazish[]) => void;
 }>({
 	filiallar: [],
 	setFiliallar: (value: IFilial[]) => {},
@@ -53,6 +48,8 @@ export const DataContext = React.createContext<{
 	setRollar: (value: IRole[]) => {},
 	basket: [],
 	setBasket: (value: IBasket[]) => {},
+	yetkazish: [],
+	setYetkazish: (value: IYetkazish[]) => {},
 });
 
 export const useDataContext = () => {
