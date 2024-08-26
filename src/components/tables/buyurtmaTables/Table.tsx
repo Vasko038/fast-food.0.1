@@ -135,9 +135,11 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 				(b) => b.id === itemToDelete
 			);
 
-			// await axios.delete(
-			// 	`https://1df7137a16f23f61.mokky.dev/${itemToDelete}`
-			// );
+			console.log({ itemToDelete });
+
+			await axios.delete(
+				`https://1df7137a16f23f61.mokky.dev/buyurtmalar/${itemToDelete}`
+			);
 
 			if (buyurtmaIndex !== -1) {
 				const updatedBuyurtmalar = [
