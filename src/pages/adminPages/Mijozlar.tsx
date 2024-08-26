@@ -10,7 +10,7 @@ import {
 	FormLabel,
 	Popover,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useDataContext } from "../../components/Context";
 import { Drawer } from "../../components/Drawer";
@@ -24,16 +24,28 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { FiSlash } from "react-icons/fi";
 
 import { v4 as uuidv4 } from "uuid";
+import { useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
 
 export function Mijozlar() {
-	const { mijozlar, setMijozlar } = useDataContext();
-	const [openDrawer, setOpenDrawer] = useState(false);
-	const [editingMijoz, setEditingMijoz] = useState<IMijoz | null>(
-		null
-	);
+	const { mijozlar, setMijozlar, buyurtmalar } = useDataContext();
+
 	const [form] = Form.useForm();
 
 	const [search, setSearch] = useState<string | null>(null);
+
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	const params = queryString.parse(location.search, {
+		parseNumbers: true,
+		parseBooleans: true,
+	});
+
+	const editingMijoz = useMemo(
+		() => mijozlar.find((item) => item.id == params.id),
+		[mijozlar, params.id]
+	);
 
 	const [popover, setPopover] =
 		React.useState<HTMLButtonElement | null>(null);
@@ -66,18 +78,12 @@ export function Mijozlar() {
 			message.success("Created successfully");
 		}
 		form.resetFields();
-		setEditingMijoz(null);
-		setOpenDrawer(false);
+		navigate("?" + queryString.stringify({}));
 	};
 
-	const onEdit = (mijoz: IMijoz) => {
-		setEditingMijoz(mijoz);
-		form.setFieldsValue({
-			name: mijoz.name,
-			phone: mijoz.phone,
-		});
-		setOpenDrawer(true);
-	};
+	useEffect(() => {
+		if (editingMijoz) form.setFieldsValue(editingMijoz);
+	}, [editingMijoz]);
 
 	const onDelete = (id: number | string) => {
 		const filteredMijoz = mijozlar.filter((m) => m.id !== id);
@@ -116,9 +122,13 @@ export function Mijozlar() {
 					>
 						<Fab
 							onClick={() => {
-								setEditingMijoz(null);
+								navigate(
+									"?" +
+										queryString.stringify({
+											add: true,
+										})
+								);
 								form.resetFields();
-								setOpenDrawer(true);
 							}}
 							sx={{
 								width: "40px",
@@ -310,7 +320,13 @@ export function Mijozlar() {
 											xs={2}
 											className="flex items-center"
 										>
-											{m.id}
+											{
+												buyurtmalar.filter(
+													(f) =>
+														f.userId ==
+														m.id
+												).length
+											}
 										</Grid>
 										<Divider
 											orientation="vertical"
@@ -361,7 +377,15 @@ export function Mijozlar() {
 														"12px",
 												}}
 												onClick={() => {
-													onEdit(m);
+													navigate(
+														"?" +
+															queryString.stringify(
+																{
+																	edit: true,
+																	id: m.id,
+																}
+															)
+													);
 												}}
 											>
 												<MdOutlineEdit />
@@ -383,7 +407,12 @@ export function Mijozlar() {
 						</Box>
 					</Box>
 				</Box>
-				<Drawer setOpen={setOpenDrawer} open={openDrawer}>
+				<Drawer
+					open={
+						(params.add as boolean) ||
+						(params.edit as boolean)
+					}
+				>
 					<Box
 						sx={{
 							display: "flex",

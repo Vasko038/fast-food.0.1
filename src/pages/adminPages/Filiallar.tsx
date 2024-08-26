@@ -9,10 +9,8 @@ import {
   OutlinedInput,
   FormLabel,
   Popover,
-  Stack,
 } from "@mui/material";
-import React, { useState } from "react";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import React, { useEffect, useMemo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useDataContext } from "../../components/Context";
 import { Drawer } from "../../components/Drawer";
@@ -32,6 +30,8 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import queryString from "query-string";
+import { useLocation, useNavigate } from "react-router-dom";
 const getIcon = (color: string) => `
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
   <path d="M12 2C8.13 2 5 5.13 5 9c0 4.15 6.5 11 7 11s7-6.85 7-11c0-3.87-3.13-7-7-7zm0 13c-1.93 0-3.5-2.07-3.5-3.5S10.07 8 12 8s3.5 2.07 3.5 3.5S13.93 15 12 15zm0-5.5c-1.03 0-1.88.85-1.88 1.88S10.97 13 12 13s1.88-.85 1.88-1.88S13.03 8.5 12 8.5z" fill="${color}"/>
@@ -82,11 +82,23 @@ function DraggableMarker({ position, setPosition }: DraggableMarkerProps) {
 
 export function Filiallar() {
   const { filiallar, setFiliallar } = useDataContext();
-  const [openDrawer, setOpenDrawer] = useState(false);
   const [position1, setPosition1] = useState<[number, number]>([
     41.31115, 69.27951,
   ]);
-  const [editingFilial, setEditingFilial] = useState<IFilial | null>(null);
+
+  const location = useLocation();
+
+  const params = queryString.parse(location.search, {
+    parseNumbers: true,
+    parseBooleans: true,
+  });
+
+  const editingFilial = useMemo(
+    () => filiallar.find((item) => item.id === params.id),
+    [filiallar, params.id]
+  );
+
+  const navigate = useNavigate();
 
   const [form] = Form.useForm();
 
@@ -117,20 +129,12 @@ export function Filiallar() {
       message.success("Created successfully");
     }
     form.resetFields();
-    setEditingFilial(null);
-    setOpenDrawer(false);
+    navigate("?" + queryString.stringify({}));
   };
 
-  const onEdit = (filial: IFilial) => {
-    setEditingFilial(filial);
-    form.setFieldsValue({
-      nameUz: filial.nameUz,
-      nameRu: filial.nameRu,
-      ishVaqt: filial.ishVaqt,
-      moljal: filial.moljal,
-    });
-    setOpenDrawer(true);
-  };
+  useEffect(() => {
+    if (editingFilial) form.setFieldsValue(editingFilial);
+  }, [editingFilial]);
 
   const onDelete = (id: number | string) => {
     const filteredFilial = filiallar.filter((f) => f.id !== id);
@@ -156,9 +160,13 @@ export function Filiallar() {
           >
             <Fab
               onClick={() => {
-                setEditingFilial(null);
+                navigate(
+                  "?" +
+                    queryString.stringify({
+                      add: true,
+                    })
+                );
                 form.resetFields();
-                setOpenDrawer(true);
               }}
               sx={{
                 width: "40px",
@@ -350,16 +358,14 @@ export function Filiallar() {
                             border: "4px solid #EDEFF3",
                             marginRight: "12px",
                           }}
-                        >
-                          <LocationOnIcon />
-                        </IconButton>
-                        <IconButton
-                          sx={{
-                            border: "4px solid #EDEFF3",
-                            marginRight: "12px",
-                          }}
                           onClick={() => {
-                            onEdit(f);
+                            navigate(
+                              "?" +
+                                queryString.stringify({
+                                  edit: true,
+                                  id: f.id,
+                                })
+                            );
                           }}
                         >
                           <MdOutlineEdit />
@@ -382,61 +388,63 @@ export function Filiallar() {
             </Box>
           </Box>
         </Box>
-        <Drawer setOpen={setOpenDrawer} open={openDrawer}>
-          <Stack
-            direction="column"
-            justifyContent={"space-between"}
-            sx={{ height: "100%", padding: "24px" }}
+        <Drawer open={(params.add as boolean) || (params.edit as boolean)}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "start",
+              justifyContent: "between",
+              flexDirection: "column",
+              padding: "24px",
+            }}
           >
-            <Box>
-              <Typography variant="h5" className="font-bold">
-                Filial
-              </Typography>
-              <Form
-                layout={"vertical"}
-                form={form}
-                className="mt-5 w-[100%]"
-                onFinish={onFinish}
-              >
-                <Form.Item label="Filial nomi uz" name={"nameUz"} required>
-                  <Input />
-                </Form.Item>
-                <Form.Item label="Filial nomi ru" name={"nameRu"}>
-                  <Input />
-                </Form.Item>
-                <Form.Item label="Ish vaqti" name={"ishVaqt"} required>
-                  <Input />
-                </Form.Item>
-                <Form.Item label="Mo'ljal" name={"moljal"}>
-                  <Input />
-                </Form.Item>
-              </Form>
-              <MapContainer
-                center={[41.31115, 69.27951]}
-                zoom={30}
-                style={{ height: "180px", width: "100%" }}
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                />
-                <DraggableMarker
-                  position={position1}
-                  setPosition={setPosition1}
-                ></DraggableMarker>
-              </MapContainer>
-            </Box>
+            <Typography variant="h5" className="font-bold">
+              Filial
+            </Typography>
+            <Form
+              layout={"vertical"}
+              form={form}
+              className="mt-5 w-[100%]"
+              onFinish={onFinish}
+            >
+              <Form.Item label="Filial nomi uz" name={"nameUz"} required>
+                <Input />
+              </Form.Item>
+              <Form.Item label="Filial nomi ru" name={"nameRu"}>
+                <Input />
+              </Form.Item>
+              <Form.Item label="Ish vaqti" name={"ishVaqt"} required>
+                <Input />
+              </Form.Item>
+              <Form.Item label="Mo'ljal" name={"moljal"}>
+                <Input />
+              </Form.Item>
+            </Form>
+            <MapContainer
+              center={[41.31115, 69.27951]}
+              zoom={30}
+              style={{ height: "200px" }}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              />
+              <DraggableMarker
+                position={position1}
+                setPosition={setPosition1}
+              ></DraggableMarker>
+            </MapContainer>
             <Button
               color="success"
               variant="contained"
-              style={{ backgroundColor: "#20D472", width: "50%" }}
+              style={{ backgroundColor: "#20D472" }}
               onClick={() => {
                 form.submit();
               }}
             >
               Saqlash
             </Button>
-          </Stack>
+          </Box>
         </Drawer>
       </Box>
     </Box>

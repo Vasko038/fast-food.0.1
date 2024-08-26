@@ -13,7 +13,7 @@ import {
 	MenuItem,
 	SelectChangeEvent,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useDataContext } from "../../components/Context";
 import { Drawer } from "../../components/Drawer";
@@ -25,14 +25,26 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 import { v4 as uuidv4 } from "uuid";
+import { useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
 
 export function Hodimlar() {
 	const { hodimlar, setHodimlar, rollar } = useDataContext();
-	const [openDrawer, setOpenDrawer] = useState(false);
-	const [editingHodim, setEditingHodim] = useState<IHodim | null>(
-		null
-	);
+
 	const [form] = Form.useForm();
+
+	const location = useLocation();
+	const navigate = useNavigate();
+
+	const params = queryString.parse(location.search, {
+		parseNumbers: true,
+		parseBooleans: true,
+	});
+
+	const editingHodim = useMemo(
+		() => hodimlar.find((item) => item.id == params.id),
+		[hodimlar, params.id]
+	);
 
 	const [search, setSearch] = useState<string | null>(null);
 
@@ -64,20 +76,12 @@ export function Hodimlar() {
 			message.success("Created successfully");
 		}
 		form.resetFields();
-		setEditingHodim(null);
-		setOpenDrawer(false);
+		navigate("?" + queryString.stringify({}));
 	};
 
-	const onEdit = (hodim: IHodim) => {
-		setEditingHodim(hodim);
-		form.setFieldsValue({
-			firstName: hodim.firstName,
-			lastName: hodim.lastName,
-			phone: hodim.phone,
-			role: hodim.role,
-		});
-		setOpenDrawer(true);
-	};
+	useEffect(() => {
+		if (editingHodim) form.setFieldsValue(editingHodim);
+	}, [editingHodim]);
 
 	const onDelete = (id: number | string) => {
 		const filteredHodimlar = hodimlar.filter((m) => m.id !== id);
@@ -110,9 +114,13 @@ export function Hodimlar() {
 					>
 						<Fab
 							onClick={() => {
-								setEditingHodim(null);
+								navigate(
+									"?" +
+										queryString.stringify({
+											add: true,
+										})
+								);
 								form.resetFields();
-								setOpenDrawer(true);
 							}}
 							sx={{
 								width: "40px",
@@ -311,7 +319,15 @@ export function Hodimlar() {
 														"12px",
 												}}
 												onClick={() => {
-													onEdit(m);
+													navigate(
+														"?" +
+															queryString.stringify(
+																{
+																	edit: true,
+																	id: m.id,
+																}
+															)
+													);
 												}}
 											>
 												<MdOutlineEdit />
@@ -333,7 +349,12 @@ export function Hodimlar() {
 						</Box>
 					</Box>
 				</Box>
-				<Drawer setOpen={setOpenDrawer} open={openDrawer}>
+				<Drawer
+					open={
+						(params.add as boolean) ||
+						(params.edit as boolean)
+					}
+				>
 					<Box
 						sx={{
 							display: "flex",

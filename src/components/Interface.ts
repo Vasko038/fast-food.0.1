@@ -37,6 +37,8 @@ export interface IBuyurtma {
 	status: IStatus;
 	saqlangan: boolean;
 	dostavka: number;
+	tolovTuri: "terminal" | "payme" | "naxt";
+	buyurtmaSoni: number;
 	hodimId: number;
 	mahsulotlar: {
 		mahsulotId: number | string;
