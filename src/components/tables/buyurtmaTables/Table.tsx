@@ -19,6 +19,7 @@ import { LuClipboard } from "react-icons/lu";
 import { LuTruck } from "react-icons/lu";
 import { HiOutlineX } from "react-icons/hi";
 import { IoMdCheckmark } from "react-icons/io";
+import axios from "axios";
 
 export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 	const {
@@ -28,6 +29,7 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 		buyurtmalar,
 		setBuyurtmalar,
 		hodimlar,
+		yetkazish,
 	} = React.useContext(DataContext);
 
 	const table: IBuyurtma[] = buyurtmalar.filter(
@@ -39,7 +41,7 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 		number | string | null
 	>(null);
 
-	const handleIncrement = (id: number | string) => {
+	const handleIncrement = async (id: number | string) => {
 		const buyurtmaIndex = buyurtmalar.findIndex(
 			(b) => b.id === id
 		);
@@ -71,11 +73,16 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 				...buyurtmalar.slice(buyurtmaIndex + 1),
 			];
 
+			await axios.patch(
+				`https://1df7137a16f23f61.mokky.dev/buyurtmalar/${updatedBuyurtma.id}`,
+				updatedBuyurtma
+			);
+
 			setBuyurtmalar(updatedBuyurtmalar);
 		}
 	};
 
-	const handleDecrement = (id: number | string) => {
+	const handleDecrement = async (id: number | string) => {
 		const buyurtmaIndex = buyurtmalar.findIndex(
 			(b) => b.id === id
 		);
@@ -112,16 +119,25 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 					...buyurtmalar.slice(buyurtmaIndex + 1),
 				];
 
+				await axios.patch(
+					`https://1df7137a16f23f61.mokky.dev/buyurtmalar/${updatedBuyurtma.id}`,
+					updatedBuyurtma
+				);
+
 				setBuyurtmalar(updatedBuyurtmalar);
 			}
 		}
 	};
 
-	const confirmDelete = () => {
+	const confirmDelete = async () => {
 		if (itemToDelete !== null) {
 			const buyurtmaIndex = buyurtmalar.findIndex(
 				(b) => b.id === itemToDelete
 			);
+
+			// await axios.delete(
+			// 	`https://1df7137a16f23f61.mokky.dev/${itemToDelete}`
+			// );
 
 			if (buyurtmaIndex !== -1) {
 				const updatedBuyurtmalar = [
@@ -148,13 +164,17 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 				sx={{ height: "calc(100vh - 90px - 28px)" }}
 				className="overflow-y-auto ps-9 pe-11"
 			>
-				{table.map((t, index) => {
+				{table.map((t) => {
 					const user = mijozlar.find(
 						(m) => m.id === t.userId
 					);
 
 					let firstName = "";
 					let lastName = "";
+
+					const yetkazishNarx = yetkazish.find(
+						(f) => f.id === t.yetkazishId
+					)?.price;
 
 					if (user) {
 						[firstName = "", lastName = ""] =
@@ -201,7 +221,7 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 									lg={3}
 									sx={{ padding: "20px 35px" }}
 								>
-									<div className="flex">
+									<div className="flex justify-between">
 										<div
 											className="flex items-center justify-center text-xl text-white bg-green-400"
 											style={{
@@ -284,13 +304,23 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 											<div className="flex gap-2">
 												<LuClipboard />{" "}
 												<p className="text-lg">
-													{price} UZS
+													{price.toLocaleString(
+														"en-Us"
+													)}{" "}
+													UZS
 												</p>
 											</div>
 											<div className="flex gap-2">
 												<LuTruck />
 												<p className="text-lg">
-													{t.dostavka} UZS
+													{(yetkazishNarx
+														? yetkazishNarx *
+														  5
+														: 5000
+													).toLocaleString(
+														"en-Us"
+													)}{" "}
+													UZS
 												</p>
 											</div>
 										</div>
@@ -300,13 +330,24 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 													width: "10px",
 													height: "10px",
 													backgroundColor:
-														"#14E5E4",
+														t.tolovTuri ==
+														"payme"
+															? "#14E5E4"
+															: t.tolovTuri ==
+															  "naqd"
+															? "#4ADE80"
+															: "orange",
 													borderRadius:
 														"50%",
 												}}
 											></div>
 											<p className="text-lg">
-												Payme
+												{t.tolovTuri
+													.charAt(0)
+													.toUpperCase() +
+													t.tolovTuri.slice(
+														1
+													)}
 											</p>
 										</div>
 									</div>
@@ -315,7 +356,13 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 									</p>
 									<p className="text-xl text-gray-800">
 										<span className="text-2xl text-black">
-											{price + t.dostavka}
+											{(
+												price +
+												(yetkazishNarx
+													? yetkazishNarx *
+													  5
+													: 5000)
+											).toLocaleString("en-Us")}
 										</span>{" "}
 										UZS
 									</p>
