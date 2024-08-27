@@ -284,7 +284,6 @@ export function Hodimlar() {
 									className="mb-3"
 									size="small"
 									fullWidth
-									id="kategoriyda"
 								>
 									<MenuItem value="all">
 										Hammasi

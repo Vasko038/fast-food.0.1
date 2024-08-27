@@ -3,7 +3,9 @@ import {
 	Grid,
 	IconButton,
 	MenuItem,
+	Paper,
 	Select,
+	Stack,
 	Tab,
 	Tabs,
 	Typography,
@@ -154,15 +156,20 @@ export const BuyurtmaForm = () => {
 	};
 
 	return (
-		<Box sx={{ width: "100%", height: "100%", padding: "30px" }}>
+		<Box sx={{ width: "100%", height: "100%", padding: "24px" }}>
 			<Grid container spacing={3}>
 				<Grid item xs={8}>
-					<Typography variant="h6" component="h4">
+					<Typography
+						variant="h6"
+						component="h4"
+						sx={{ marginBottom: "18px" }}
+					>
 						Yangi buyurtma qo'shish
 					</Typography>
 					<Tabs
 						value={tabValue}
-						className="items-center bg-slate-100 my-3 mt-[14px] rounded-full p-2"
+						sx={{ height: "30px" }}
+						className="items-center p-2 mb-3 mt-[8px] rounded-full bg-slate-100 box-content"
 						onChange={handleChange}
 						variant="scrollable"
 						scrollButtons="auto"
@@ -171,7 +178,9 @@ export const BuyurtmaForm = () => {
 							style: {
 								backgroundColor: "white",
 								height: "100%",
+								marginBlock: "auto",
 								color: "black",
+
 								borderRadius: "250px",
 								zIndex: 1,
 							},
@@ -185,7 +194,6 @@ export const BuyurtmaForm = () => {
 								sx={{
 									textTransform: "none",
 									width: "140px",
-									paddingY: 1,
 									zIndex: 2,
 								}}
 								className="bg-white"
@@ -206,7 +214,7 @@ export const BuyurtmaForm = () => {
 								>
 									<Box
 										sx={{
-											height: "calc(100vh - 90px - 200px)",
+											height: "calc(100vh - 90px - 198px)",
 											overflowY: "auto",
 										}}
 									>
@@ -225,247 +233,323 @@ export const BuyurtmaForm = () => {
 					</div>
 				</Grid>
 				<Grid item xs={4}>
-					<div className="flex items-center justify-between">
-						<Typography variant="h6" component="h4">
-							Buyurtma ro'yxati
-						</Typography>
-						<IconButton
-							sx={{ bgcolor: "grey.200" }}
-							onClick={() => {
-								deleteFormAndBasket();
-							}}
-						>
-							<LuTrash2 />
-						</IconButton>
-					</div>
 					<Box
 						sx={{
-							border: "1px solid #EDEFF3",
-							borderRadius: "15px",
-							width: "100%",
-							padding: "15px",
+							height: "calc(100vh - 90px - 55px)",
+							overflowY: "auto",
+							display: "flex",
+							flexDirection: "column",
+							justifyContent: "space-between",
 						}}
 					>
-						{basket.map((b) => {
-							const mahsulot = mahsulotlar.find(
-								(m) => m.id === b.mahsulotId
-							);
-
-							return (
-								<div
-									className="flex items-center justify-between mb-2"
-									key={b.mahsulotId}
+						<Box>
+							<Stack
+								direction="row"
+								justifyContent={"space-between"}
+								alignItems={"flex-start"}
+								className="mb-3"
+							>
+								<Typography
+									variant="h6"
+									component="h4"
 								>
-									<p>{mahsulot?.name}</p>
-									<p>
-										{b.count}*
-										{mahsulot?.narx.toLocaleString(
-											"en-US"
-										)}{" "}
+									Buyurtma ro'yxati
+								</Typography>
+								<IconButton
+									sx={{ bgcolor: "grey.200" }}
+									onClick={() => {
+										deleteFormAndBasket();
+									}}
+								>
+									<LuTrash2 />
+								</IconButton>
+							</Stack>
+
+							<Paper
+								square={false}
+								elevation={0}
+								variant="outlined"
+								sx={{
+									p: 2,
+								}}
+							>
+								<Box
+									sx={{
+										overflowY: "auto",
+										height: "calc(100vh - 90px - 610px)",
+										marginBottom: "10px",
+									}}
+								>
+									<Box sx={{ marginRight: "10px" }}>
+										{basket.length === 0
+											? "Royxat bo'sh"
+											: ""}
+										{basket.map((b) => {
+											const mahsulot =
+												mahsulotlar.find(
+													(m) =>
+														m.id ===
+														b.mahsulotId
+												);
+
+											return (
+												<Grid
+													container
+													key={b.mahsulotId}
+												>
+													<Grid item xs={6}>
+														<Typography
+															noWrap
+															variant="body2"
+														>
+															{
+																mahsulot?.name
+															}
+														</Typography>
+													</Grid>
+													<Grid item xs={6}>
+														<Typography
+															noWrap
+															align="right"
+															variant="body2"
+														>
+															{b.count}{" "}
+															*{" "}
+															{mahsulot?.narx.toLocaleString(
+																"en-US"
+															)}{" "}
+															UZS
+														</Typography>
+													</Grid>
+												</Grid>
+											);
+										})}
+									</Box>
+								</Box>
+
+								<Paper
+									square={false}
+									sx={{ bgcolor: "grey.200", p: 1 }}
+									elevation={0}
+								>
+									<Typography
+										variant="body2"
+										color="inherit"
+									>
+										Umumiy summa
+									</Typography>
+									<Typography variant="h6">
+										<span className="font-bold">
+											{totalSum.toLocaleString(
+												"en-US"
+											)}
+										</span>{" "}
 										UZS
-									</p>
-								</div>
-							);
-						})}
-						<div
-							className="bg-[#EDEFF3] w-[90%] mx-auto"
-							style={{
-								borderRadius: "10px",
-								padding: "10px",
-							}}
-						>
-							<p>Umumiy summa</p>
-							<p className="text-xl">
-								<span className="font-bold">
-									{totalSum.toLocaleString("en-US")}
-								</span>{" "}
-								UZS
-							</p>
-						</div>
-					</Box>
-					<Form
-						onFinish={onFinish}
-						form={form}
-						layout="vertical"
-						className="mt-3"
-					>
-						<Form.Item
-							label="Mijoz"
-							name="userId"
-							rules={[
-								{
-									required: true,
-									message:
-										"Iltimos mijozni tanlang",
-								},
-							]}
-						>
-							<Select
-								id="demo-simple-select"
-								label=" "
-								style={{
-									width: "100%",
-									height: "40px",
-								}}
-								onChange={(event) => {
-									form.setFieldsValue({
-										userId: event.target.value,
-									});
-								}}
+									</Typography>
+								</Paper>
+							</Paper>
+							<Form
+								onFinish={onFinish}
+								form={form}
+								layout="vertical"
+								className="mt-3"
 							>
-								{mijozlar
-									.filter((f) => f.active)
-									.map((m) => (
-										<MenuItem
-											key={m.id}
-											value={m.id}
-										>
-											{m.name}
+								<Form.Item
+									label="Mijoz"
+									name="userId"
+									style={{ marginBottom: "10px" }}
+									rules={[
+										{
+											required: true,
+											message:
+												"Iltimos mijozni tanlang",
+										},
+									]}
+								>
+									<Select
+										fullWidth
+										label=" "
+										size="small"
+										onChange={(event) => {
+											form.setFieldsValue({
+												userId: event.target
+													.value,
+											});
+										}}
+									>
+										{mijozlar
+											.filter((f) => f.active)
+											.map((m) => (
+												<MenuItem
+													key={m.id}
+													value={m.id}
+												>
+													{m.name}
+												</MenuItem>
+											))}
+									</Select>
+								</Form.Item>
+								<Form.Item
+									label="Filial"
+									name="filialId"
+									style={{ marginBottom: "10px" }}
+									rules={[
+										{
+											required: true,
+											message:
+												"Iltimos filialni tanlang",
+										},
+									]}
+								>
+									<Select
+										label=" "
+										size="small"
+										fullWidth
+										onChange={(event) => {
+											form.setFieldsValue({
+												filialId:
+													event.target
+														.value,
+											});
+										}}
+									>
+										{filiallar.map((m) => (
+											<MenuItem
+												key={m.id}
+												value={m.id}
+											>
+												{m.nameUz}
+											</MenuItem>
+										))}
+									</Select>
+								</Form.Item>
+								<Form.Item
+									label="Operator"
+									name="hodimId"
+									style={{ marginBottom: "10px" }}
+									rules={[
+										{
+											required: true,
+											message:
+												"Iltimos operatorni tanlang",
+										},
+									]}
+								>
+									<Select
+										label=" "
+										size="small"
+										fullWidth
+										onChange={(event) => {
+											form.setFieldsValue({
+												hodimId:
+													event.target
+														.value,
+											});
+										}}
+									>
+										{hodimlar.map((m) => (
+											<MenuItem
+												key={m.id}
+												value={m.id}
+											>
+												{m.lastName}{" "}
+												{m.firstName.charAt(
+													0
+												)}
+											</MenuItem>
+										))}
+									</Select>
+								</Form.Item>
+								<Form.Item
+									label="Tolov turi"
+									name="tolovTuri"
+									style={{ marginBottom: "10px" }}
+									rules={[
+										{
+											required: true,
+											message:
+												"Iltimos tolov turini tanlang",
+										},
+									]}
+								>
+									<Select
+										label=" "
+										size="small"
+										fullWidth
+										onChange={(event) => {
+											form.setFieldsValue({
+												tolovTuri:
+													event.target
+														.value,
+											});
+										}}
+									>
+										<MenuItem value={"payme"}>
+											Payme
 										</MenuItem>
-									))}
-							</Select>
-						</Form.Item>
-						<Form.Item
-							label="Filial"
-							name="filialId"
-							rules={[
-								{
-									required: true,
-									message:
-										"Iltimos filialni tanlang",
-								},
-							]}
-						>
-							<Select
-								label=" "
-								style={{
-									width: "100%",
-									height: "40px",
-								}}
-								onChange={(event) => {
-									form.setFieldsValue({
-										filialId: event.target.value,
-									});
-								}}
-							>
-								{filiallar.map((m) => (
-									<MenuItem key={m.id} value={m.id}>
-										{m.nameUz}
-									</MenuItem>
-								))}
-							</Select>
-						</Form.Item>
-						<Form.Item
-							label="Operator"
-							name="hodimId"
-							rules={[
-								{
-									required: true,
-									message:
-										"Iltimos operatorni tanlang",
-								},
-							]}
-						>
-							<Select
-								label=" "
-								style={{
-									width: "100%",
-									height: "40px",
-								}}
-								onChange={(event) => {
-									form.setFieldsValue({
-										hodimId: event.target.value,
-									});
-								}}
-							>
-								{hodimlar.map((m) => (
-									<MenuItem key={m.id} value={m.id}>
-										{m.lastName}{" "}
-										{m.firstName.charAt(0)}
-									</MenuItem>
-								))}
-							</Select>
-						</Form.Item>
-						<Form.Item
-							label="Tolov turi"
-							name="tolovTuri"
-							rules={[
-								{
-									required: true,
-									message:
-										"Iltimos tolov turini tanlang",
-								},
-							]}
-						>
-							<Select
-								label=" "
-								style={{
-									width: "100%",
-									height: "40px",
-								}}
-								onChange={(event) => {
-									form.setFieldsValue({
-										tolovTuri: event.target.value,
-									});
-								}}
-							>
-								<MenuItem value={"payme"}>
-									Payme
-								</MenuItem>
-								<MenuItem value={"naqd"}>
-									Naqd tolov
-								</MenuItem>
-								<MenuItem value={"terminal"}>
-									Terminal
-								</MenuItem>
-							</Select>
-						</Form.Item>
-						<Form.Item
-							label="Yetkazish"
-							name="yetkazishId"
-							rules={[
-								{
-									required: true,
-									message:
-										"Iltimos yetkazishni tanlang",
-								},
-							]}
-						>
-							<Select
-								label=" "
-								style={{
-									width: "100%",
-									height: "40px",
-								}}
-								onChange={(event) => {
-									form.setFieldsValue({
-										yetkazishId:
-											event.target.value,
-									});
-								}}
-							>
-								{yetkazish.map((y) => {
-									const filial = filiallar.find(
-										(f) => f.id === y.filialId
-									);
-									return (
-										<MenuItem
-											key={y.id}
-											value={y.id}
-										>
-											<div className="flex items-center justify-start">
-												<p>
-													{filial?.nameUz}
-												</p>
-												<p className="ms-3">
-													{y.price} UZS
-												</p>
-											</div>
+										<MenuItem value={"naxt"}>
+											Naxt tolov
 										</MenuItem>
-									);
-								})}
-							</Select>
-						</Form.Item>
+										<MenuItem value={"terminal"}>
+											Terminal
+										</MenuItem>
+									</Select>
+								</Form.Item>
+								<Form.Item
+									label="Yetkazish"
+									name="yetkazishId"
+									style={{ marginBottom: "10px" }}
+									rules={[
+										{
+											required: true,
+											message:
+												"Iltimos yetkazishni tanlang",
+										},
+									]}
+								>
+									<Select
+										label=" "
+										size="small"
+										fullWidth
+										onChange={(event) => {
+											form.setFieldsValue({
+												yetkazishId:
+													event.target
+														.value,
+											});
+										}}
+									>
+										{yetkazish.map((y) => {
+											const filial =
+												filiallar.find(
+													(f) =>
+														f.id ===
+														y.filialId
+												);
+											return (
+												<MenuItem
+													key={y.id}
+													value={y.id}
+												>
+													<div className="flex items-center justify-start">
+														<p>
+															{
+																filial?.nameUz
+															}
+														</p>
+														<p className="ms-3">
+															{y.price}{" "}
+															UZS
+														</p>
+													</div>
+												</MenuItem>
+											);
+										})}
+									</Select>
+								</Form.Item>
+							</Form>
+						</Box>
+
 						<button
 							onClick={() => {
 								form.submit();
@@ -482,7 +566,7 @@ export const BuyurtmaForm = () => {
 						>
 							Buyurtma qilish
 						</button>
-					</Form>
+					</Box>
 				</Grid>
 			</Grid>
 		</Box>
