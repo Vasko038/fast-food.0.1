@@ -392,52 +392,54 @@ export function Filiallar() {
           <Box
             sx={{
               display: "flex",
-              alignItems: "start",
-              justifyContent: "between",
               flexDirection: "column",
+              justifyContent: "space-between",
               padding: "24px",
+              height: "100%",
             }}
           >
-            <Typography variant="h5" className="font-bold">
-              Filial
-            </Typography>
-            <Form
-              layout={"vertical"}
-              form={form}
-              className="mt-5 w-[100%]"
-              onFinish={onFinish}
-            >
-              <Form.Item label="Filial nomi uz" name={"nameUz"} required>
-                <Input />
-              </Form.Item>
-              <Form.Item label="Filial nomi ru" name={"nameRu"}>
-                <Input />
-              </Form.Item>
-              <Form.Item label="Ish vaqti" name={"ishVaqt"} required>
-                <Input />
-              </Form.Item>
-              <Form.Item label="Mo'ljal" name={"moljal"}>
-                <Input />
-              </Form.Item>
-            </Form>
-            <MapContainer
-              center={[41.31115, 69.27951]}
-              zoom={30}
-              style={{ height: "200px" }}
-            >
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              <DraggableMarker
-                position={position1}
-                setPosition={setPosition1}
-              ></DraggableMarker>
-            </MapContainer>
+            <Box>
+              <Typography variant="h5" className="font-bold">
+                Filial
+              </Typography>
+              <Form
+                layout={"vertical"}
+                form={form}
+                className="mt-5 w-[100%]"
+                onFinish={onFinish}
+              >
+                <Form.Item label="Filial nomi uz" name={"nameUz"} required>
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Filial nomi ru" name={"nameRu"}>
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Ish vaqti" name={"ishVaqt"} required>
+                  <Input />
+                </Form.Item>
+                <Form.Item label="Mo'ljal" name={"moljal"}>
+                  <Input />
+                </Form.Item>
+              </Form>
+              <MapContainer
+                center={[41.31115, 69.27951]}
+                zoom={30}
+                style={{ height: "170px", width: "100%" }}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <DraggableMarker
+                  position={position1}
+                  setPosition={setPosition1}
+                ></DraggableMarker>
+              </MapContainer>
+            </Box>
             <Button
               color="success"
               variant="contained"
-              style={{ backgroundColor: "#20D472" }}
+              style={{ backgroundColor: "#20D472", width: "50%" }}
               onClick={() => {
                 form.submit();
               }}

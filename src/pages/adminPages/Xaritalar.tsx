@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { Box } from "@mui/material";
+import { useDataContext } from "../../components/Context";
 
 const getIcon = (color: string) => `
 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -36,10 +36,7 @@ function DraggableMarker({ position }: DraggableMarkerProps) {
 }
 
 export function Xarita() {
-  const [position1] = useState<[number, number]>([41.31115, 69.27951]);
-  const [position2] = useState<[number, number]>([41.32115, 69.28951]);
-  const [position3] = useState<[number, number]>([41.33115, 69.29951]);
-  const [position4] = useState<[number, number]>([41.34115, 69.30951]);
+  const { filiallar } = useDataContext();
 
   return (
     <Box className="w-full h-full bg-slate-100 ">
@@ -61,10 +58,6 @@ export function Xarita() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
-            <DraggableMarker position={position1} />
-            <DraggableMarker position={position2} />
-            <DraggableMarker position={position3} />
-            <DraggableMarker position={position4} />
           </MapContainer>
         </Box>
       </Box>

@@ -28,7 +28,6 @@ import CloseIcon from "@mui/icons-material/Close";
 function Mahsulotlar() {
   const { mahsulotlar, kategoriyalar } = useDataContext();
   const [iconSearch, setIconSearch] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
   const [search, setSearch] = React.useState<string>("");
   const [filterRadio, setFilterRadio] = useState("");
@@ -123,7 +122,6 @@ function Mahsulotlar() {
             className="flex items-center justify-center h-full gap-3 px-4 border-l-8 border-solid border-slate-100"
           >
             <Fab
-              onClick={() => setOpenDrawer(true)}
               sx={{
                 width: "40px",
                 height: "40px",
@@ -310,8 +308,8 @@ function Mahsulotlar() {
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
         <MahsulotTable data={searchData}></MahsulotTable>
-        <Drawer setOpen={setOpenDrawer} open={openDrawer}>
-          <MahsulotForm setOpenDrawer={setOpenDrawer}></MahsulotForm>
+        <Drawer open={false}>
+          <MahsulotForm></MahsulotForm>
         </Drawer>
       </Box>
     </Box>

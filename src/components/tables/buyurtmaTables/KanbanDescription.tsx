@@ -135,7 +135,7 @@ export function KanbanDescription({
               }}
               className="w-[70px] bg-green-500 rounded-full flex justify-center items-center"
             >
-              7777
+              {buyurtma ? buyurtma.buyurtmaSoni : "-"}
             </Box>
             <div className="flex items-center justify-start gap-2">
               <GoClock />
@@ -247,14 +247,26 @@ export function KanbanDescription({
             </div>
             <div className="flex items-center gap-2">
               <LuTruck />
-              <p className="text-lg">
-                {buyurtma ? buyurtma.dostavka : "-"} UZS
-              </p>
+              <p className="text-lg"> - UZS</p>
             </div>
           </div>
-          <div className="flex items-center justify-end gap-2 me-4">
-            <p className="text-lg">Payme</p>
-          </div>
+          <Stack
+            direction="row"
+            alignItems={"center"}
+            justifyContent={"flex-end"}
+            letterSpacing={2}
+          >
+            <Box
+              className={`${
+                buyurtma?.tolovTuri === "payme"
+                  ? "bg-blue-400"
+                  : buyurtma?.tolovTuri === "naqd"
+                  ? "bg-green-400"
+                  : "bg-orange-400"
+              } aspect-square rounded-full me-1 h-[13px]`}
+            ></Box>
+            <Typography>{buyurtma?.tolovTuri}</Typography>
+          </Stack>
         </Paper>
         <Stack direction={"row"} spacing={3}>
           <Fab

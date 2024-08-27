@@ -4,16 +4,14 @@ import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "../../components/Drawer";
 
 export function YetkazishNarxi() {
-  const [openDrawer, setOpenDrawer] = useState(false);
-
   return (
-    <Box className="bg-slate-100 w-full h-full ">
+    <Box className="w-full h-full bg-slate-100 ">
       <Box className="h-[90px] bg-white ">
         <Grid container className="h-full ">
           <Grid
             item
             xs={2}
-            className="border-x-8 border-solid border-slate-100 h-full px-4 flex gap-3 items-center justify-center"
+            className="flex items-center justify-center h-full gap-3 px-4 border-solid border-x-8 border-slate-100"
           >
             <Fab
               onClick={() => setOpenDrawer(true)}
@@ -34,7 +32,7 @@ export function YetkazishNarxi() {
         </Grid>
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
-        <Drawer setOpen={setOpenDrawer} open={openDrawer}></Drawer>
+        <Drawer></Drawer>
       </Box>
     </Box>
   );

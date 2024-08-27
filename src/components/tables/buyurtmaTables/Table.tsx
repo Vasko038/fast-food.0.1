@@ -330,10 +330,10 @@ export const BuyurtmaTable = ({ status }: { status: IStatus }) => {
 													width: "10px",
 													height: "10px",
 													backgroundColor:
-														t.tolovTuri ==
+														t.tolovTuri ===
 														"payme"
 															? "#14E5E4"
-															: t.tolovTuri ==
+															: t.tolovTuri ===
 															  "naqd"
 															? "#4ADE80"
 															: "orange",
