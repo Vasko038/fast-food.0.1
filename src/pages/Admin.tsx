@@ -141,7 +141,7 @@ export function AdminPage() {
                   <Route path="kategoriyalar" element={<Kategoriyalar />} />
                   <Route path="filiallar" element={<Filiallar />} />
                   <Route path="mijozlar" element={<Mijozlar />}></Route>
-                  <Route path="hisobotlar" element={<Hisobotlar />} />
+                  <Route path="hisobotlar/*" element={<Hisobotlar />} />
                   <Route path="hodimlar" element={<Hodimlar />} />
                   <Route path="yetkazish-narxi" element={<YetkazishNarxi />} />
                   <Route path="xarita" element={<Xarita />} />

@@ -309,7 +309,7 @@ export function Kanban() {
                           }}
                           className="w-[70px] bg-green-500 rounded-full flex justify-center items-center"
                         >
-                          7777
+                          {item.buyurtmaSoni}
                         </Box>
                         <div className="flex items-center justify-start gap-2">
                           <GoClock />
@@ -375,8 +375,16 @@ export function Kanban() {
                           alignItems={"center"}
                           letterSpacing={2}
                         >
-                          <Box className="bg-blue-400 aspect-square rounded-full me-1 h-[13px]"></Box>
-                          <Typography>Payme</Typography>
+                          <Box
+                            className={`${
+                              item.tolovTuri === "payme"
+                                ? "bg-blue-400"
+                                : item.tolovTuri === "naqd"
+                                ? "bg-green-400"
+                                : "bg-orange-400"
+                            } aspect-square rounded-full me-1 h-[13px]`}
+                          ></Box>
+                          <Typography>{item.tolovTuri}</Typography>
                         </Stack>
                       </Stack>
                       <Divider></Divider>
@@ -387,7 +395,7 @@ export function Kanban() {
                       >
                         <div className="mb-4">
                           <p className="text-gray-600">Operator:</p>
-                          <p className="text-xl">
+                          <p className="text-xl font-bold">
                             {(() => {
                               const operator = hodimlar.find(
                                 (jtem) => jtem.id === item.hodimId
@@ -424,7 +432,7 @@ export function Kanban() {
                           <Typography className="text-gray-600">
                             Filial:
                           </Typography>
-                          <Typography className="text-xl font-semibold">
+                          <Typography className="text-xl font-bold">
                             {
                               filiallar.find((i) => i.id === item?.filialId)
                                 ?.nameUz
