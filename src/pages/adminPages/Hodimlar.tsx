@@ -12,6 +12,10 @@ import {
 	Select,
 	MenuItem,
 	SelectChangeEvent,
+	FormControl,
+	RadioGroup,
+	FormControlLabel,
+	Radio,
 } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -27,6 +31,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { v4 as uuidv4 } from "uuid";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
+import axios from "axios";
 
 export function Hodimlar() {
 	const { hodimlar, setHodimlar, rollar } = useDataContext();
@@ -35,6 +40,12 @@ export function Hodimlar() {
 
 	const location = useLocation();
 	const navigate = useNavigate();
+
+	const [filterRadio, setFilterRadio] = useState("");
+	const [filterRole, setFilterRole] = useState("all");
+	const [filterAdd, setFilterAdd] = useState(false);
+	const [filteredHodimlar, setFilteredHodimlar] =
+		useState<IHodim[]>(hodimlar);
 
 	const params = queryString.parse(location.search, {
 		parseNumbers: true,
@@ -64,15 +75,35 @@ export function Hodimlar() {
 	const openPopover = Boolean(popover);
 	const PopoverId = openPopover ? "simple-popover" : undefined;
 
-	const onFinish = (values: Omit<IHodim, "id">) => {
+	const handleFilterClick = () => {
+		setFilterAdd(!filterAdd);
+		handleClosePopover();
+	};
+
+	const handleCancelFilter = () => {
+		setFilterRadio("");
+		setFilterRole("all");
+		setFilteredHodimlar(hodimlar);
+		handleClosePopover();
+	};
+
+	const onFinish = async (values: Omit<IHodim, "id">) => {
 		if (editingHodim) {
 			const updatedHodimlar = hodimlar.map((m) =>
 				m.id === editingHodim.id ? { ...m, ...values } : m
 			);
 			setHodimlar(updatedHodimlar);
+			await axios.patch(
+				`https://1df7137a16f23f61.mokky.dev/hodimlar/${editingHodim.id}`,
+				{ ...editingHodim, ...values }
+			);
 			message.success("Updated successfully");
 		} else {
 			setHodimlar([...hodimlar, { ...values, id: uuidv4() }]);
+			await axios.post(
+				`https://1df7137a16f23f61.mokky.dev/hodimlar`,
+				{ ...values }
+			);
 			message.success("Created successfully");
 		}
 		form.resetFields();
@@ -83,21 +114,49 @@ export function Hodimlar() {
 		if (editingHodim) form.setFieldsValue(editingHodim);
 	}, [editingHodim]);
 
-	const onDelete = (id: number | string) => {
+	const onDelete = async (id: number | string) => {
 		const filteredHodimlar = hodimlar.filter((m) => m.id !== id);
 		setHodimlar(filteredHodimlar);
+		await axios.delete(
+			`https://1df7137a16f23f61.mokky.dev/hodimlar/${id}`
+		);
 		message.success("Deleted successfully");
 	};
 
-	let filteredHodimlar: IHodim[] = hodimlar;
+	useEffect(() => {
+		let dataToFilter = [...hodimlar];
 
-	if (search) {
-		filteredHodimlar = hodimlar.filter((mijoz) =>
-			mijoz.firstName
-				.toLocaleLowerCase()
-				.includes(search.toLocaleLowerCase())
-		);
-	}
+		if (filterRole !== "all") {
+			dataToFilter = dataToFilter.filter(
+				(item) => String(item.role) === String(filterRole)
+			);
+		}
+
+		switch (filterRadio) {
+			case "nameAZ":
+				dataToFilter = dataToFilter.sort((a, b) =>
+					a.firstName.localeCompare(b.firstName)
+				);
+				break;
+			case "nameZA":
+				dataToFilter = dataToFilter.sort((a, b) =>
+					b.firstName.localeCompare(a.firstName)
+				);
+				break;
+			default:
+				break;
+		}
+
+		if (search) {
+			dataToFilter = dataToFilter.filter((hodim) =>
+				hodim.firstName
+					.toLocaleLowerCase()
+					.includes(search.toLocaleLowerCase())
+			);
+		}
+
+		setFilteredHodimlar(dataToFilter);
+	}, [filterRole, filterRadio, search, hodimlar]);
 
 	const handleChange = (event: SelectChangeEvent) => {
 		form.setFieldsValue({ role: event.target.value });
@@ -207,9 +266,101 @@ export function Hodimlar() {
 								horizontal: "left",
 							}}
 						>
-							<Typography sx={{ p: 2 }}>
-								The content of the Popover.
-							</Typography>
+							<Box sx={{ p: 2, width: "300px" }}>
+								<FormLabel htmlFor="kategoriya">
+									Lavozim
+								</FormLabel>
+								<Select
+									value={filterRole}
+									onChange={(e) =>
+										setFilterRole(e.target.value)
+									}
+									sx={{
+										"&.Mui-focused .MuiOutlinedInput-notchedOutline":
+											{
+												borderColor: "orange",
+											},
+									}}
+									className="mb-3"
+									size="small"
+									fullWidth
+									id="kategoriyda"
+								>
+									<MenuItem value="all">
+										Hammasi
+									</MenuItem>
+									{rollar.map((item) => (
+										<MenuItem
+											key={item.id}
+											value={item.name}
+										>
+											{item.name}
+										</MenuItem>
+									))}
+								</Select>
+								<FormControl
+									sx={{
+										"& .MuiRadio-root": {
+											"& .MuiSvgIcon-root": {
+												borderRadius: "none",
+											},
+											"&.Mui-checked": {
+												color: "orange",
+											},
+										},
+									}}
+								>
+									<RadioGroup
+										value={filterRadio}
+										onChange={(e) =>
+											setFilterRadio(
+												e.target.value
+											)
+										}
+										aria-labelledby="demo-radio-buttons-group-label"
+										name="radio-buttons-group"
+									>
+										<FormControlLabel
+											value="nameAZ"
+											control={<Radio />}
+											label="Ism (A-Z)"
+										/>
+										<FormControlLabel
+											value="nameZA"
+											control={<Radio />}
+											label="Ism (Z-A)"
+										/>
+									</RadioGroup>
+								</FormControl>
+								<Box
+									sx={{
+										"& .MuiButton-root": {
+											textTransform: "none",
+										},
+									}}
+									className="flex justify-end gap-4"
+								>
+									<Button
+										onClick={handleCancelFilter}
+										variant="contained"
+										color="inherit"
+									>
+										Bekor qilish
+									</Button>
+									<Button
+										onClick={handleFilterClick}
+										sx={{
+											bgcolor: "orange",
+											"&:hover": {
+												bgcolor: "orange",
+											},
+										}}
+										variant="contained"
+									>
+										Filter
+									</Button>
+								</Box>
+							</Box>
 						</Popover>
 					</Grid>
 				</Grid>
@@ -429,7 +580,7 @@ export function Hodimlar() {
 							>
 								<Select
 									style={{
-										width: "150px",
+										width: "100%",
 										height: "40px",
 									}}
 									placeholder="Lavozimni tanlang"

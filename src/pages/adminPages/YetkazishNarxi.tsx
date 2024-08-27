@@ -14,7 +14,6 @@ export function YetkazishNarxi() {
             className="flex items-center justify-center h-full gap-3 px-4 border-solid border-x-8 border-slate-100"
           >
             <Fab
-              onClick={() => setOpenDrawer(true)}
               sx={{
                 width: "40px",
                 height: "40px",

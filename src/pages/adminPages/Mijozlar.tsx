@@ -9,6 +9,12 @@ import {
   OutlinedInput,
   FormLabel,
   Popover,
+  Select,
+  MenuItem,
+  FormControl,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
@@ -26,16 +32,22 @@ import { FiSlash } from "react-icons/fi";
 import { v4 as uuidv4 } from "uuid";
 import { useLocation, useNavigate } from "react-router-dom";
 import queryString from "query-string";
+import axios from "axios";
 
 export function Mijozlar() {
   const { mijozlar, setMijozlar, buyurtmalar } = useDataContext();
 
   const [form] = Form.useForm();
 
-  const [search, setSearch] = useState<string | null>(null);
+  const [search, setSearch] = useState<string>("");
 
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [filterRadio, setFilterRadio] = useState("");
+  const [filterActive, setFilterActive] = useState("all");
+  const [filterAdd, setFilterAdd] = useState(false);
+  const [filteredMijozlar, setFilteredMijozlar] = useState<IMijoz[]>([]);
 
   const params = queryString.parse(location.search, {
     parseNumbers: true,
@@ -53,6 +65,18 @@ export function Mijozlar() {
     setPopover(event.currentTarget);
   };
 
+  const handleFilterClick = () => {
+    setFilterAdd(!filterAdd);
+    handleClosePopover();
+  };
+
+  const handleCancelFilter = () => {
+    setFilterRadio("");
+    setFilterActive("all");
+    setFilteredMijozlar(mijozlar);
+    handleClosePopover();
+  };
+
   const handleClosePopover = () => {
     setPopover(null);
   };
@@ -60,15 +84,22 @@ export function Mijozlar() {
   const openPopover = Boolean(popover);
   const PopoverId = openPopover ? "simple-popover" : undefined;
 
-  const onFinish = (values: Omit<IMijoz, "id" | "active">) => {
+  const onFinish = async (values: Omit<IMijoz, "id" | "active">) => {
     if (editingMijoz) {
       const updatedMijoz = mijozlar.map((m) =>
         m.id === editingMijoz.id ? { ...m, ...values } : m
       );
       setMijozlar(updatedMijoz);
+      await axios.patch(
+        `https://1df7137a16f23f61.mokky.dev/mijozlar/${editingMijoz.id}`,
+        { ...editingMijoz, ...values }
+      );
       message.success("Updated successfully");
     } else {
       setMijozlar([...mijozlar, { ...values, id: uuidv4(), active: true }]);
+      await axios.post(`https://1df7137a16f23f61.mokky.dev/mijozlar`, {
+        ...values,
+      });
       message.success("Created successfully");
     }
     form.resetFields();
@@ -77,29 +108,58 @@ export function Mijozlar() {
 
   useEffect(() => {
     if (editingMijoz) form.setFieldsValue(editingMijoz);
-  }, [editingMijoz]);
+  }, [editingMijoz, form]);
 
-  const onDelete = (id: number | string) => {
+  useEffect(() => {
+    let dataToFilter = [...mijozlar];
+
+    if (filterActive !== "all") {
+      dataToFilter = dataToFilter.filter(
+        (item) => String(item.active) === String(filterActive)
+      );
+    }
+
+    switch (filterRadio) {
+      case "nameAZ":
+        dataToFilter = dataToFilter.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        break;
+      case "nameZA":
+        dataToFilter = dataToFilter.sort((a, b) =>
+          b.name.localeCompare(a.name)
+        );
+        break;
+      default:
+        break;
+    }
+
+    if (search) {
+      dataToFilter = dataToFilter.filter((mijoz) =>
+        mijoz.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+      );
+    }
+
+    setFilteredMijozlar(dataToFilter);
+  }, [filterActive, filterRadio, search, mijozlar]);
+
+  const onDelete = async (id: number | string) => {
     const filteredMijoz = mijozlar.filter((m) => m.id !== id);
+    await axios.delete(`https://1df7137a16f23f61.mokky.dev/mijozlar/${id}`);
     setMijozlar(filteredMijoz);
     message.success("Deleted successfully");
   };
 
-  const toggleBlock = (id: number | string) => {
+  const toggleBlock = async (id: number | string) => {
+    const mijoz = mijozlar.find((f) => f.id === id);
     setMijozlar(
-      mijozlar.map((mijoz) =>
-        mijoz.id === id ? { ...mijoz, active: !mijoz.active } : mijoz
-      )
+      mijozlar.map((m) => (m.id === id ? { ...m, active: !m.active } : m))
     );
+    await axios.patch(`https://1df7137a16f23f61.mokky.dev/mijozlar/${id}`, {
+      ...mijoz,
+      active: !mijoz?.active,
+    });
   };
-
-  let filteredMijozlar: IMijoz[] = mijozlar;
-
-  if (search) {
-    filteredMijozlar = mijozlar.filter((mijoz) =>
-      mijoz.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
-    );
-  }
 
   return (
     <Box className="w-full h-full bg-slate-100">
@@ -132,7 +192,7 @@ export function Mijozlar() {
             >
               <AddIcon />
             </Fab>
-            <Typography variant="body2">Yangi Mahsulot Qoshish</Typography>
+            <Typography variant="body2">Yangi Mijoz Qoshish</Typography>
           </Grid>
           <Grid
             item
@@ -203,7 +263,84 @@ export function Mijozlar() {
                 horizontal: "left",
               }}
             >
-              <Typography sx={{ p: 2 }}>The content of the Popover.</Typography>
+              <Box sx={{ p: 2, width: "300px" }}>
+                <FormLabel htmlFor="kategoriya">Active</FormLabel>
+                <Select
+                  value={filterActive}
+                  onChange={(e) => setFilterActive(e.target.value)}
+                  sx={{
+                    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                      borderColor: "orange",
+                    },
+                  }}
+                  className="mb-3"
+                  size="small"
+                  fullWidth
+                  id="kategoriyda"
+                >
+                  <MenuItem value="all">Hammasi</MenuItem>
+                  <MenuItem value="true">Active</MenuItem>
+                  <MenuItem value="false">Block</MenuItem>
+                </Select>
+                <FormControl
+                  sx={{
+                    "& .MuiRadio-root": {
+                      "& .MuiSvgIcon-root": {
+                        borderRadius: "none",
+                      },
+                      "&.Mui-checked": {
+                        color: "orange",
+                      },
+                    },
+                  }}
+                >
+                  <RadioGroup
+                    value={filterRadio}
+                    onChange={(e) => setFilterRadio(e.target.value)}
+                    aria-labelledby="demo-radio-buttons-group-label"
+                    name="radio-buttons-group"
+                  >
+                    <FormControlLabel
+                      value="nameAZ"
+                      control={<Radio />}
+                      label="Ism (A-Z)"
+                    />
+                    <FormControlLabel
+                      value="nameZA"
+                      control={<Radio />}
+                      label="Ism (Z-A)"
+                    />
+                  </RadioGroup>
+                </FormControl>
+                <Box
+                  sx={{
+                    "& .MuiButton-root": {
+                      textTransform: "none",
+                    },
+                  }}
+                  className="flex justify-end gap-4"
+                >
+                  <Button
+                    onClick={handleCancelFilter}
+                    variant="contained"
+                    color="inherit"
+                  >
+                    Bekor qilish
+                  </Button>
+                  <Button
+                    onClick={handleFilterClick}
+                    sx={{
+                      bgcolor: "orange",
+                      "&:hover": {
+                        bgcolor: "orange",
+                      },
+                    }}
+                    variant="contained"
+                  >
+                    Filter
+                  </Button>
+                </Box>
+              </Box>
             </Popover>
           </Grid>
         </Grid>
