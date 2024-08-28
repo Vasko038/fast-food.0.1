@@ -88,7 +88,10 @@ export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
             <Grid container>
               <Grid item xs={3} sx={{ display: "flex", alignItems: "center" }}>
                 <Avatar src={item.image}></Avatar>
-                <Typography className="ps-2"> {item.name}</Typography>
+                <Typography className="ps-2" noWrap>
+                  {" "}
+                  {item.name}
+                </Typography>
               </Grid>
               <Grid item xs={2} sx={{ display: "flex", alignItems: "center" }}>
                 <Divider
@@ -161,8 +164,8 @@ export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
           </Box>
         ))}
       </Box>
-      <Drawer width="1000px" setOpen={setOpenDrawer} open={openDrawer}>
-        <MahsulotForm setOpenDrawer={setOpenDrawer} id={selectedId} />
+      <Drawer setOpen={setOpenDrawer} open={openDrawer}>
+        <MahsulotForm id={selectedId} />
       </Drawer>
     </React.Fragment>
   );

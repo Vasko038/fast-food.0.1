@@ -23,6 +23,8 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import Popover from "@mui/material/Popover";
 import { useDataContext } from "../../components/Context";
 import { MahsulotForm } from "../../components/forms/MahsulotForm";
+import { GrSquare } from "react-icons/gr";
+import { BiSquareRounded } from "react-icons/bi";
 import CloseIcon from "@mui/icons-material/Close";
 
 function Mahsulotlar() {
@@ -35,7 +37,7 @@ function Mahsulotlar() {
   const [filteredData, setFilteredData] = useState(mahsulotlar);
   const [searchData, setSearchData] = useState(mahsulotlar);
   const [filterAdd, setFilterAdd] = useState(false);
-
+  const [openDrawer, setOpenDrawer] = useState(false);
   const openPopover = Boolean(popover);
   const PopoverId = openPopover ? "simple-popover" : undefined;
 
@@ -122,6 +124,7 @@ function Mahsulotlar() {
             className="flex items-center justify-center h-full gap-3 px-4 border-l-8 border-solid border-slate-100"
           >
             <Fab
+              onClick={() => setOpenDrawer(true)}
               sx={{
                 width: "40px",
                 height: "40px",
@@ -246,7 +249,7 @@ function Mahsulotlar() {
                   sx={{
                     "& .MuiRadio-root": {
                       "& .MuiSvgIcon-root": {
-                        borderRadius: "none",
+                        borderRadius: "px",
                       },
                       "&.Mui-checked": {
                         color: "orange",
@@ -262,22 +265,42 @@ function Mahsulotlar() {
                   >
                     <FormControlLabel
                       value="narxO"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="Narx bo'yicha (o'sish)"
                     />
                     <FormControlLabel
                       value="narxK"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="Narx bo'yicha (kamayish)"
                     />
                     <FormControlLabel
                       value="nameAZ"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="nom bo'yicha (A-Z)"
                     />
                     <FormControlLabel
                       value="nameZA"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="nom bo'yicha (Z-A)"
                     />
                   </RadioGroup>
@@ -308,7 +331,7 @@ function Mahsulotlar() {
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
         <MahsulotTable data={searchData}></MahsulotTable>
-        <Drawer open={false}>
+        <Drawer open={openDrawer}>
           <MahsulotForm></MahsulotForm>
         </Drawer>
       </Box>

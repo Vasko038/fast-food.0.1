@@ -1,13 +1,4 @@
-import {
-  IBasket,
-  IBuyurtma,
-  IFilial,
-  IHodim,
-  IKategoriya,
-  IMahsulot,
-  IMijoz,
-  IRole,
-} from "./Interface";
+import { IBasket, IRole } from "./Interface";
 export const AdminData = [
   {
     email: "husan@gmail.com",

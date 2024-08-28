@@ -12,6 +12,8 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
+import { GrSquare } from "react-icons/gr";
+import { BiSquareRounded } from "react-icons/bi";
 import React, { useContext, useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { Drawer } from "../../components/Drawer";
@@ -90,13 +92,13 @@ export function Kategoriyalar() {
     }
   }, [search]);
   return (
-    <Box className="bg-slate-100 w-full h-full">
+    <Box className="w-full h-full bg-slate-100">
       <Box className="h-[90px] bg-white ">
         <Grid container className="h-full">
           <Grid
             item
             xs={2}
-            className="border-l-8 border-solid border-slate-100 h-full px-4 flex gap-3 items-center justify-center"
+            className="flex items-center justify-center h-full gap-3 px-4 border-l-8 border-solid border-slate-100"
           >
             <Fab
               sx={{
@@ -117,13 +119,13 @@ export function Kategoriyalar() {
           <Grid
             item
             xs={10}
-            className="border-l-8 border-solid border-slate-100 h-full  flex align-middle px-5"
+            className="flex h-full px-5 align-middle border-l-8 border-solid border-slate-100"
           >
             <Box className="rounded-full bg-slate-100 w-[300px] flex justify-between items-center px-2 my-4 ">
               <OutlinedInput
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="border-0 outline-none flex-1"
+                className="flex-1 border-0 outline-none"
                 id="search"
                 name="search"
                 type="name"
@@ -219,19 +221,29 @@ export function Kategoriyalar() {
                   >
                     <FormControlLabel
                       value="nameAZ"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="nom bo'yicha (A-Z)"
                     />
                     <FormControlLabel
                       value="nameZA"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="nom bo'yicha (Z-A)"
                     />
                   </RadioGroup>
                 </FormControl>
                 <Box
                   sx={{ "& .MuiButton-root": { textTransform: "none" } }}
-                  className="flex gap-4 justify-end"
+                  className="flex justify-end gap-4"
                 >
                   <Button
                     variant="contained"

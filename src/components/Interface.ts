@@ -4,6 +4,7 @@ export interface IFilial {
   nameRu: string;
   moljal: string;
   ishVaqt: string;
+  cardinate: [number, number];
 }
 
 export interface IMahsulot {

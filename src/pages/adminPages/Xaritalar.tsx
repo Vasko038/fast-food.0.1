@@ -19,25 +19,24 @@ const customIcon = new L.Icon({
 
 interface DraggableMarkerProps {
   position: [number, number];
+  popupText: string;
 }
 
-function DraggableMarker({ position }: DraggableMarkerProps) {
+export function DraggableMarker({ position, popupText }: DraggableMarkerProps) {
   return (
     <Marker
       position={position}
       icon={customIcon}
       draggable={false} // Markerni tahrir qilish mumkin emas
     >
-      <Popup>
-        Marker <br /> O'zbekiston
-      </Popup>
+      <Popup>{popupText}</Popup>
     </Marker>
   );
 }
 
 export function Xarita() {
   const { filiallar } = useDataContext();
-
+  console.log(filiallar);
   return (
     <Box className="w-full h-full bg-slate-100 ">
       <Box className="h-[90px] bg-white shadow-lg "></Box>
@@ -58,6 +57,13 @@ export function Xarita() {
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             />
+            {filiallar.map((item) => (
+              <DraggableMarker
+                popupText={item.nameUz}
+                key={item.id}
+                position={item.cardinate}
+              ></DraggableMarker>
+            ))}
           </MapContainer>
         </Box>
       </Box>

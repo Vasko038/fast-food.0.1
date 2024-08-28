@@ -16,6 +16,8 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
+import { GrSquare } from "react-icons/gr";
+import { BiSquareRounded } from "react-icons/bi";
 import React, { useEffect, useMemo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useDataContext } from "../../components/Context";
@@ -302,12 +304,22 @@ export function Mijozlar() {
                   >
                     <FormControlLabel
                       value="nameAZ"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="Ism (A-Z)"
                     />
                     <FormControlLabel
                       value="nameZA"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="Ism (Z-A)"
                     />
                   </RadioGroup>

@@ -14,6 +14,8 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
+import { GrSquare } from "react-icons/gr";
+import { BiSquareRounded } from "react-icons/bi";
 import React, { useEffect, useMemo, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { useDataContext } from "../../components/Context";
@@ -24,14 +26,9 @@ import { LuTrash2 } from "react-icons/lu";
 import { IFilial } from "../../components/Interface";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { v4 as uuidv4 } from "uuid";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMapEvents,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import queryString from "query-string";
@@ -47,19 +44,22 @@ const svgString = getIcon("#FF0000");
 const encodedIcon = btoa(svgString);
 
 // Yangi ikonkani yaratish
-const customIcon = new L.Icon({
+export const customIcon = new L.Icon({
   iconUrl: `data:image/svg+xml;base64,${encodedIcon}`,
   iconSize: [54, 54],
   iconAnchor: [12, 24],
   popupAnchor: [0, -24],
 });
 
-interface DraggableMarkerProps {
+export interface DraggableMarkerProps {
   position: [number, number];
   setPosition: (value: [number, number]) => void;
 }
 
-function DraggableMarker({ position, setPosition }: DraggableMarkerProps) {
+export function DraggableMarker({
+  position,
+  setPosition,
+}: DraggableMarkerProps) {
   useMapEvents({
     click(e) {
       setPosition([e.latlng.lat, e.latlng.lng]);
@@ -77,19 +77,12 @@ function DraggableMarker({ position, setPosition }: DraggableMarkerProps) {
           setPosition([latlng.lat, latlng.lng]);
         },
       }}
-    >
-      <Popup>
-        Marker <br /> O'zbekiston
-      </Popup>
-    </Marker>
+    ></Marker>
   );
 }
 
 export function Filiallar() {
   const { filiallar, setFiliallar } = useDataContext();
-  const [position1, setPosition1] = useState<[number, number]>([
-    41.31115, 69.27951,
-  ]);
 
   const location = useLocation();
 
@@ -98,11 +91,11 @@ export function Filiallar() {
     parseBooleans: true,
   });
 
-  const editingFilial = useMemo(
-    () => filiallar.find((item) => item.id === params.id),
-    [filiallar, params.id]
-  );
+  const editingFilial = filiallar.find((item) => item.id === params.id);
 
+  const [position1, setPosition1] = useState<[number, number]>(
+    editingFilial ? editingFilial.cardinate : [41.31115, 69.27951]
+  );
   const navigate = useNavigate();
 
   const [filterRadio, setFilterRadio] = useState("");
@@ -111,7 +104,6 @@ export function Filiallar() {
     useState<IFilial[]>(filiallar);
 
   const [form] = Form.useForm();
-
   const [search, setSearch] = useState<string | null>(null);
 
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
@@ -141,19 +133,26 @@ export function Filiallar() {
   const onFinish = async (values: Omit<IFilial, "id">) => {
     if (editingFilial) {
       const updatedFiliallar = filiallar.map((f) =>
-        f.id === editingFilial.id ? { ...f, ...values } : f
+        f.id === editingFilial.id
+          ? { ...f, ...values, cardinate: position1 }
+          : f
       );
+
       await axios.patch(
         `https://1df7137a16f23f61.mokky.dev/filiallar/${editingFilial.id}`,
-        { ...editingFilial, ...values }
+        { ...editingFilial, ...values, cardinate: position1 }
       );
       setFiliallar(updatedFiliallar);
       message.success("Updated successfully");
     } else {
       await axios.post(`https://1df7137a16f23f61.mokky.dev/filiallar`, {
         ...values,
+        cardinate: position1,
       });
-      setFiliallar([...filiallar, { ...values, id: uuidv4() }]);
+      setFiliallar([
+        ...filiallar,
+        { ...values, id: uuidv4(), cardinate: position1 },
+      ]);
       message.success("Created successfully");
     }
     form.resetFields();
@@ -161,7 +160,12 @@ export function Filiallar() {
   };
 
   useEffect(() => {
-    if (editingFilial) form.setFieldsValue(editingFilial);
+    if (editingFilial) {
+      form.setFieldsValue(editingFilial);
+      setPosition1(editingFilial.cardinate);
+    } else {
+      setPosition1([41.31115, 69.27951]);
+    }
   }, [editingFilial]);
 
   useEffect(() => {
@@ -320,12 +324,22 @@ export function Filiallar() {
                   >
                     <FormControlLabel
                       value="nameAZ"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="Filial nomi (A-Z)"
                     />
                     <FormControlLabel
                       value="nameZA"
-                      control={<Radio />}
+                      control={
+                        <Radio
+                          checkedIcon={<GrSquare></GrSquare>}
+                          icon={<BiSquareRounded></BiSquareRounded>}
+                        />
+                      }
                       label="Filial nomi (Z-A)"
                     />
                   </RadioGroup>
@@ -457,6 +471,14 @@ export function Filiallar() {
                             border: "4px solid #EDEFF3",
                             marginRight: "12px",
                           }}
+                        >
+                          <LocationOnIcon />
+                        </IconButton>
+                        <IconButton
+                          sx={{
+                            border: "4px solid #EDEFF3",
+                            marginRight: "12px",
+                          }}
                           onClick={() => {
                             navigate(
                               "?" +
@@ -506,23 +528,44 @@ export function Filiallar() {
               className="mt-5 w-[100%]"
               onFinish={onFinish}
             >
-              <Form.Item label="Filial nomi uz" name={"nameUz"} required>
+              <Form.Item
+                rules={[{ required: true, message: "Nomini tanlang!" }]}
+                label="Filial nomi uz"
+                name={"nameUz"}
+                required
+              >
                 <Input />
               </Form.Item>
-              <Form.Item label="Filial nomi ru" name={"nameRu"}>
+              <Form.Item
+                rules={[{ required: true, message: "Nomini tanlang!" }]}
+                label="Filial nomi ru"
+                name={"nameRu"}
+              >
                 <Input />
               </Form.Item>
-              <Form.Item label="Ish vaqti" name={"ishVaqt"} required>
+              <Form.Item
+                rules={[
+                  { required: true, message: "ish Vaqt oraligini tanlang!" },
+                ]}
+                label="Ish vaqti"
+                name={"ishVaqt"}
+                required
+              >
                 <Input />
               </Form.Item>
-              <Form.Item label="Mo'ljal" name={"moljal"}>
+              <Form.Item
+                rules={[{ required: true, message: "Moljalni tanlang!" }]}
+                label="Mo'ljal"
+                name={"moljal"}
+              >
                 <Input />
               </Form.Item>
             </Form>
             <MapContainer
-              center={[41.31115, 69.27951]}
-              zoom={30}
-              style={{ height: "200px" }}
+              key={position1.toString()}
+              center={position1}
+              zoom={20}
+              style={{ height: "180px", width: "100%" }}
             >
               <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

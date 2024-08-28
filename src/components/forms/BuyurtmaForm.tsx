@@ -10,17 +10,18 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { LuTrash2 } from "react-icons/lu";
 import { useDataContext } from "../Context";
 import { Form, message } from "antd";
 import { BuyurtmaFormTableCard } from "../tables/buyurtmaTables/BuyurtmaCard";
-import { v4 as uuidv4 } from "uuid";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { PresentDay } from "../tables/buyurtmaTables/Functions";
 import { IBuyurtma } from "../Interface";
 import { useNavigate } from "react-router-dom";
 import queryString from "query-string";
 import axios from "axios";
+import { DraggableMarker } from "../../pages/adminPages/Filiallar";
 
 export const BuyurtmaForm = () => {
   const {
@@ -38,7 +39,9 @@ export const BuyurtmaForm = () => {
   const [form] = Form.useForm();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const navigate = useNavigate();
-
+  const [position1, setPosition1] = useState<[number, number]>([
+    41.31115, 69.27951,
+  ]);
   const totalSum = basket.reduce((acc, item) => {
     const mahsulot = mahsulotlar.find((m) => m.id === item.mahsulotId);
     if (mahsulot) {
@@ -420,6 +423,21 @@ export const BuyurtmaForm = () => {
                   </Select>
                 </Form.Item>
               </Form>
+              <MapContainer
+                key={position1.toString()}
+                center={position1}
+                zoom={20}
+                style={{ height: "180px", width: "100%" }}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <DraggableMarker
+                  position={position1}
+                  setPosition={setPosition1}
+                ></DraggableMarker>
+              </MapContainer>
             </Box>
 
             <button
