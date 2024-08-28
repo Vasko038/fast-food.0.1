@@ -34,6 +34,7 @@ export const BuyurtmaForm = () => {
     hodimlar,
     basket,
     setBasket,
+    yetkazish,
   } = useDataContext();
 
   const [form] = Form.useForm();
@@ -116,7 +117,6 @@ export const BuyurtmaForm = () => {
         manzil: "",
         status: "yangi",
         saqlangan: false,
-        dostavka: 5000,
         mahsulotlar: [...basket],
         date: PresentDay(),
         buyurtmaSoni: buyurtmaSoni + 1,
@@ -339,7 +339,6 @@ export const BuyurtmaForm = () => {
                       ))}
                   </Select>
                 </Form.Item>
-
                 <Form.Item
                   label="Filial"
                   name="filialId"
@@ -420,6 +419,40 @@ export const BuyurtmaForm = () => {
                     <MenuItem value={"payme"}>Payme</MenuItem>
                     <MenuItem value={"naxt"}>Naxt tolov</MenuItem>
                     <MenuItem value={"terminal"}>Terminal</MenuItem>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  label="Yetkazish"
+                  name="yetkazishId"
+                  style={{ marginBottom: "10px" }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "Iltimos yetkazishni tanlang",
+                    },
+                  ]}
+                >
+                  <Select
+                    label=" "
+                    size="small"
+                    fullWidth
+                    onChange={(event) => {
+                      form.setFieldsValue({
+                        yetkazishId: event.target.value,
+                      });
+                    }}
+                  >
+                    {yetkazish.map((y) => {
+                      const filial = filiallar.find((f) => f.id === y.filialId);
+                      return (
+                        <MenuItem key={y.id} value={y.id}>
+                          <div className="flex items-center justify-start">
+                            <p>{filial?.nameUz}</p>
+                            <p className="ms-3">{y.price} UZS</p>
+                          </div>
+                        </MenuItem>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
               </Form>
