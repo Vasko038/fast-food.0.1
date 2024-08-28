@@ -57,7 +57,7 @@ export function Mijozlar() {
   });
 
   const editingMijoz = useMemo(
-    () => mijozlar.find((item) => item.id == params.id),
+    () => mijozlar.find((item) => item.id === params.id),
     [mijozlar, params.id]
   );
 

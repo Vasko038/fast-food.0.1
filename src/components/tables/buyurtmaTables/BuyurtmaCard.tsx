@@ -1,7 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { Button, Grid, IconButton, Stack } from "@mui/material";
+import { Grid, IconButton, Stack } from "@mui/material";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { useDataContext } from "../../Context";
 import { IMahsulot } from "../../Interface";

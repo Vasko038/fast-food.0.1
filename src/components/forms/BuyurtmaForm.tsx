@@ -10,7 +10,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { LuTrash2 } from "react-icons/lu";
 import { useDataContext } from "../Context";
 import { Form, message } from "antd";
