@@ -1,40 +1,11 @@
-import {
-	Box,
-	Button,
-	Fab,
-	Grid,
-	Typography,
-	IconButton,
-	Divider,
-	OutlinedInput,
-	FormLabel,
-	Popover,
-	Select,
-	MenuItem,
-	SelectChangeEvent,
-	FormControl,
-	RadioGroup,
-	FormControlLabel,
-	Radio,
-	Dialog,
-	DialogTitle,
-	DialogActions,
-} from "@mui/material";
-import React, { useEffect, useMemo, useState } from "react";
-import AddIcon from "@mui/icons-material/Add";
+import { Box, Grid, IconButton, Divider } from "@mui/material";
+import React from "react";
 import { useDataContext } from "../Context";
-import { Drawer } from "../Drawer";
-import { Form, Input, message } from "antd";
-import { MdOutlineEdit } from "react-icons/md";
+import { message } from "antd";
 import { LuTrash2 } from "react-icons/lu";
-import { IBuyurtma, IHodim } from "../Interface";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
-
-import { v4 as uuidv4 } from "uuid";
-import { useLocation, useNavigate } from "react-router-dom";
-import queryString from "query-string";
+import { IBuyurtma } from "../Interface";
 import axios from "axios";
+import BasicModal from "../Modal";
 
 export function HisobotTable({
 	filteredBuyurtmalar,
@@ -50,25 +21,24 @@ export function HisobotTable({
 		setBuyurtmalar,
 	} = useDataContext();
 
-	const [openDialog, setOpenDialog] = useState<boolean>(false);
-	const [deletingItem, setDeletingItem] = useState<
-		number | string | null
-	>();
-
-	const onDelete = async () => {
-		const filteredBuyurtmalar = buyurtmalar.filter(
-			(m) => m.id !== deletingItem
+	const onDelete = async (id: number | string) => {
+		const previousBuyurtmalar = buyurtmalar;
+		const updatedBuyurtmalar = buyurtmalar.filter(
+			(m) => m.id !== id
 		);
-		setBuyurtmalar(filteredBuyurtmalar);
-		await axios.delete(
-			`https://1df7137a16f23f61.mokky.dev/buyurtmalar/${deletingItem}`
-		);
-		message.success("Deleted successfully");
-	};
+		setBuyurtmalar(updatedBuyurtmalar);
 
-	const cancelDelete = () => {
-		setDeletingItem(null);
-		setOpenDialog(false);
+		try {
+			await axios.delete(
+				`https://1df7137a16f23f61.mokky.dev/buyurtmalar/${id}`
+			);
+			message.success("Deleted successfully");
+		} catch (error) {
+			setBuyurtmalar(previousBuyurtmalar);
+			message.error(
+				"Failed to delete the item. Please try again."
+			);
+		}
 	};
 
 	return (
@@ -286,21 +256,23 @@ export function HisobotTable({
 														"center",
 												}}
 											>
-												<IconButton
-													sx={{
-														border: "4px solid #EDEFF3",
-													}}
-													onClick={() => {
-														setDeletingItem(
+												<BasicModal
+													okFunction={() => {
+														onDelete(
 															m.id
 														);
-														setOpenDialog(
-															true
-														);
 													}}
-												>
-													<LuTrash2 />
-												</IconButton>
+													title="Haqiqatdan buyurtma ochirilsinmi"
+													button={
+														<IconButton
+															sx={{
+																border: "4px solid #EDEFF3",
+															}}
+														>
+															<LuTrash2 />
+														</IconButton>
+													}
+												></BasicModal>
 											</Grid>
 										</Grid>
 									</Box>
@@ -310,33 +282,6 @@ export function HisobotTable({
 					</Box>
 				</Box>
 			</Box>
-			<Dialog
-				open={openDialog}
-				onClose={() => setOpenDialog(false)}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
-			>
-				<DialogTitle id="alert-dialog-title">
-					{"Confirm delete"}
-				</DialogTitle>
-				<DialogActions style={{ width: "300px" }}>
-					<Button
-						onClick={cancelDelete}
-						variant="outlined"
-						color="primary"
-					>
-						Cancel
-					</Button>
-					<Button
-						onClick={onDelete}
-						variant="outlined"
-						color="error"
-						autoFocus
-					>
-						Delete
-					</Button>
-				</DialogActions>
-			</Dialog>
 		</Box>
 	);
 }
