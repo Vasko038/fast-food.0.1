@@ -120,7 +120,7 @@ export default function KategoriyaTable({ data }: { data: IKategoriya[] }) {
           </Box>
         ))}
       </Box>
-      <Drawer setOpen={setOpenDrawer} open={openDrawer}>
+      <Drawer  open={openDrawer}>
         <KategoriyaForm id={editId} />
       </Drawer>
     </React.Fragment>

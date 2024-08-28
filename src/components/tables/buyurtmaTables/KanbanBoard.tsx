@@ -467,7 +467,7 @@ export function Kanban() {
           </KanbanColumn>
         ))}
       </Box>
-      <Drawer setOpen={setOpenDrawer} open={openDrawer}>
+      <Drawer  open={openDrawer}>
         <KanbanDescription
           id={buyurtmaId}
           closeDrawer={setOpenDrawer}

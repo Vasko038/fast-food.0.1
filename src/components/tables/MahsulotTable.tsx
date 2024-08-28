@@ -164,7 +164,7 @@ export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
           </Box>
         ))}
       </Box>
-      <Drawer setOpen={setOpenDrawer} open={openDrawer}>
+      <Drawer open={openDrawer}>
         <MahsulotForm id={selectedId} />
       </Drawer>
     </React.Fragment>

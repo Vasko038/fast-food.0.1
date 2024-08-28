@@ -24,8 +24,9 @@ import Popover from "@mui/material/Popover";
 import { KategoriyaForm } from "../../components/forms/KategoriyaForm";
 import CloseIcon from "@mui/icons-material/Close";
 import { DataContext } from "../../components/Context";
+import { useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
 export function Kategoriyalar() {
-  const [openDrawer, setOpenDrawer] = useState(false);
   const [search, setSearch] = React.useState<string>("");
   const [iconSearch, setIconSearch] = useState(false);
   const [popover, setPopover] = React.useState<HTMLButtonElement | null>(null);
@@ -37,6 +38,12 @@ export function Kategoriyalar() {
   const [filterAdd, setFilterAdd] = useState(false);
   const [filteredData, setFilteredData] = useState(kategoriyalar);
   const [searchData, setSearchData] = useState(kategoriyalar);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = queryString.parse(location.search, {
+    parseNumbers: true,
+    parseBooleans: true,
+  });
   const handleClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     setPopover(event.currentTarget);
     setSearch("");
@@ -110,7 +117,14 @@ export function Kategoriyalar() {
               size="small"
               color="success"
               aria-label="add"
-              onClick={() => setOpenDrawer(true)}
+              onClick={() =>
+                navigate(
+                  "?" +
+                    queryString.stringify({
+                      add: true,
+                    })
+                )
+              }
             >
               <AddIcon />
             </Fab>
@@ -270,7 +284,7 @@ export function Kategoriyalar() {
         className="relative"
       >
         <KategoriyaTable data={searchData}></KategoriyaTable>
-        <Drawer setOpen={setOpenDrawer} open={openDrawer}>
+        <Drawer open={params.add as boolean}>
           <KategoriyaForm></KategoriyaForm>
         </Drawer>
       </Box>

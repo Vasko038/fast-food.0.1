@@ -26,6 +26,8 @@ import { MahsulotForm } from "../../components/forms/MahsulotForm";
 import { GrSquare } from "react-icons/gr";
 import { BiSquareRounded } from "react-icons/bi";
 import CloseIcon from "@mui/icons-material/Close";
+import { useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
 
 function Mahsulotlar() {
   const { mahsulotlar, kategoriyalar } = useDataContext();
@@ -37,10 +39,14 @@ function Mahsulotlar() {
   const [filteredData, setFilteredData] = useState(mahsulotlar);
   const [searchData, setSearchData] = useState(mahsulotlar);
   const [filterAdd, setFilterAdd] = useState(false);
-  const [openDrawer, setOpenDrawer] = useState(false);
   const openPopover = Boolean(popover);
   const PopoverId = openPopover ? "simple-popover" : undefined;
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = queryString.parse(location.search, {
+    parseBooleans: true,
+    parseNumbers: true,
+  });
   const handleClickPopover = (event: React.MouseEvent<HTMLButtonElement>) => {
     setPopover(event.currentTarget);
     setSearch("");
@@ -124,7 +130,9 @@ function Mahsulotlar() {
             className="flex items-center justify-center h-full gap-3 px-4 border-l-8 border-solid border-slate-100"
           >
             <Fab
-              onClick={() => setOpenDrawer(true)}
+              onClick={() =>
+                navigate("?" + queryString.stringify({ add: true }))
+              }
               sx={{
                 width: "40px",
                 height: "40px",
@@ -331,7 +339,7 @@ function Mahsulotlar() {
       </Box>
       <Box sx={{ height: "calc(100vh - 90px)" }} className="relative">
         <MahsulotTable data={searchData}></MahsulotTable>
-        <Drawer open={openDrawer}>
+        <Drawer open={params.add as boolean}>
           <MahsulotForm></MahsulotForm>
         </Drawer>
       </Box>
