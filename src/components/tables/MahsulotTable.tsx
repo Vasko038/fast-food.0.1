@@ -14,17 +14,22 @@ import { MahsulotForm } from "../forms/MahsulotForm";
 import { Drawer } from "../Drawer";
 import { IMahsulot } from "../Interface";
 import BasicModal from "../Modal";
+import { useLocation, useNavigate } from "react-router-dom";
+import queryString from "query-string";
 export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
-  const [openDrawer, setOpenDrawer] = React.useState(false);
-  const [selectedId, setSelectedId] = React.useState<number | string>("");
   const { mahsulotlar, setMahsulotlar, kategoriyalar } = useDataContext();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const params = queryString.parse(location.search, {
+    parseBooleans: true,
+    parseNumbers: true,
+  });
   function handleDelete(id: number | string) {
     const UpdateData = mahsulotlar.filter((item) => item.id !== id);
     setMahsulotlar(UpdateData);
   }
   function handleEdit(id: number | string) {
-    setSelectedId(id);
-    setOpenDrawer(true);
+    navigate("?" + queryString.stringify({ edit: true, id: id }));
   }
   return (
     <React.Fragment>
@@ -109,7 +114,7 @@ export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
                   flexItem
                   sx={{ marginX: 2, height: "100%" }}
                 />
-                {item.narx.toLocaleString("uz-UZ")} UZS
+                {item.narx.toLocaleString("en-US")} UZS
               </Grid>
               <Grid item xs={3} sx={{ display: "flex", alignItems: "center" }}>
                 <Divider
@@ -164,8 +169,8 @@ export default function MahsulotTable({ data }: { data: IMahsulot[] }) {
           </Box>
         ))}
       </Box>
-      <Drawer open={openDrawer}>
-        <MahsulotForm id={selectedId} />
+      <Drawer open={params.edit as boolean}>
+        <MahsulotForm id={params.id as number | string} />
       </Drawer>
     </React.Fragment>
   );
