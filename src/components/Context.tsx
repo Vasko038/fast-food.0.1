@@ -53,5 +53,10 @@ export const DataContext = createContext<{
 });
 
 export const useDataContext = () => {
+	try {
+	} catch (error) {
+		console.log(error);
+	}
+
 	return useContext(DataContext);
 };
